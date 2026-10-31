@@ -41,6 +41,7 @@ plugin/
 ├── .claude-plugin/plugin.json   # namn, version, beskrivning
 ├── .mcp.json                    # pekar på vår fjärr-MCP-server
 └── skills/
+    ├── market/SKILL.md          # /market: frågar köpare/säljare och väljer väg
     ├── market-analysis/SKILL.md # säljarens marknadsanalys
     ├── create-request/SKILL.md  # hjälper köparen formulera förfrågan
     └── respond-to-lead/SKILL.md # hjälper säljaren skriva erbjudande
@@ -69,6 +70,8 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 | `respond_to_lead` | Skickar erbjudande (paket + pris + meddelande) | false | false | false |
 | `get_credit_balance` | Visar saldo, aldrig köpknapp eller pris | true | false | false |
 | `get_contact` | Kontaktuppgifter för ett betalt lead | true | false | false |
+
+Rollvalet i `/market` görs med klientens egna frågeknappar (i Claude Code: AskUserQuestion), inte med ett eget gränssnitt. Ett formulär inne i chatten för köparens förfrågan kräver MCP-servern och hör till fas 3; läs aktuell dokumentation om interaktiva gränssnitt i appar för Claude och ChatGPT innan det byggs.
 
 Marknadsanalysen är en **skill** (instruktioner + webbsökning i Claude/ChatGPT), inte ett verktyg på vår server, i MVP.
 

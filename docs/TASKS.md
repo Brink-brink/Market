@@ -14,6 +14,8 @@ Uppdatera när något blir klart eller tillkommer.
 ## Fas 1
 - [x] Skriv SKILL.md för marknadsanalys (`plugin/skills/market-analysis/SKILL.md`)
 - [x] Skapa plugin-skelett (`plugin/.claude-plugin/plugin.json`, `plugin/README.md`)
+- [x] Ingångskommandot `/market` som frågar köpare/säljare (`plugin/skills/market/SKILL.md`)
+- [ ] Testa `/market` i Claude-chatten (claude.ai) och inte bara i Claude Code
 - [x] Lokal marknadsplats (`.claude-plugin/marketplace.json`) så pluginen kan installeras med `claude plugin install ai-jobb@ai-jobb`
 - [x] `claude plugin validate --strict` passerar för plugin och marknadsplats
 - [x] Pluginen laddar med `--plugin-dir` (`claude plugin list`)

@@ -14,6 +14,15 @@
 | Säljare | Personer som vill ha ett extrajobb och bygger med Claude/ChatGPT; många från AI-communities på Skool | Uppdrag, och veta vilken nisch som lönar sig |
 | Admin | Philip | Godkänna säljare, hantera paket, följa intäkter |
 
+## Ingång: `/market`
+
+Både köpare och säljare börjar med kommandot `/market` (fullt namn `/ai-jobb:market`). Claude frågar "Är du köpare eller säljare?" med klickbara alternativ där klienten har det, annars i text.
+
+- **Säljare** → Claude frågar efter nisch och kör marknadsanalysen.
+- **Köpare** → fas 1: Claude säger att matchningen inte är öppen än och att inget har sparats. Fas 2–3: köparens förfrågan enligt kärnflödet nedan.
+
+Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer Claude marknadsanalysen själv.
+
 ## Kärnflöde
 
 1. Köparen beskriver sitt behov i chatten. Pluginen gör om det till en strukturerad förfrågan (bransch, behov, budget, kontakt-e-post). Köparen godkänner innan den skickas.

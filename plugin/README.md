@@ -16,7 +16,15 @@ Varje siffra får en källa. När skillen inte hittar något skriver den "hittad
 
 ## Användning
 
-I Claude Code:
+I Claude Code, skriv:
+
+```
+/market
+```
+
+Claude frågar om du är köpare eller säljare. Som säljare får du ange en nisch och sedan analysen. Som köpare får du veta att matchningen inte är öppen än; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
+
+Du kan också gå direkt till analysen:
 
 ```
 /ai-jobb:market-analysis bokningsagent för frisörer
