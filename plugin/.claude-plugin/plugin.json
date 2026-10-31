@@ -1,0 +1,10 @@
+{
+  "name": "ai-jobb",
+  "displayName": "AI-jobb",
+  "version": "0.1.0",
+  "description": "Market analysis for people who build AI agents as a side job: demand, price levels, competitors, three package suggestions and a beginner assessment for a niche, with a source for every figure.",
+  "author": {
+    "name": "Philip Norrbrink"
+  },
+  "keywords": ["market-analysis", "ai-agents", "freelance", "pricing", "niche"]
+}

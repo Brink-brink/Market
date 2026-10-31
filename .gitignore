@@ -1,0 +1,14 @@
+# OS files (the plugin directory refuses these)
+.DS_Store
+Thumbs.db
+desktop.ini
+__MACOSX/
+
+# Editor
+.vscode/
+.idea/
+
+# Node (later phases)
+node_modules/
+.env
+.env.*

@@ -1,0 +1,14 @@
+{
+  "name": "ai-jobb",
+  "description": "Local marketplace for developing and testing the AI-jobb plugin.",
+  "owner": {
+    "name": "Philip Norrbrink"
+  },
+  "plugins": [
+    {
+      "name": "ai-jobb",
+      "source": "./plugin",
+      "description": "Market analysis of a niche for people who build AI agents as a side job."
+    }
+  ]
+}
