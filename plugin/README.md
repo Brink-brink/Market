@@ -12,6 +12,8 @@ Skillen `market-analysis` tar en nisch, till exempel "bokningsagent för frisör
 
 Utifrån det föreslår den **tre paket med fast prisintervall** och bedömer om nischen **passar en nybörjare**.
 
+Skillen `listing-draft` hjälper dig skriva ett **annonsutkast** för ditt paket: innehåll, prisintervall, leveranstid, prototyp eller produkt i drift, demo, testinstruktioner och datahantering. Den kontrollerar utkastet mot granskningskraven och säger vad du behöver rätta. Inget sparas eller skickas än; att skicka in annonser för granskning öppnar senare.
+
 Varje siffra får en källa. När skillen inte hittar något skriver den "hittade inget" i stället för att gissa. Svaret kommer på samma språk som du skriver på.
 
 ## Användning
@@ -22,7 +24,7 @@ I Claude Code, skriv:
 /market
 ```
 
-Claude frågar om du är köpare eller säljare. Som säljare får du ange en nisch och sedan analysen. Som köpare får du veta att matchningen inte är öppen än; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
+Claude frågar om du är köpare eller säljare. Som säljare väljer du att analysera en nisch, se köparnas intresse, skapa en annons eller se dina annonser; i dag fungerar analysen och annonsutkastet. Som köpare får du veta att katalogen och matchningen inte är öppna än; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
 
 Du kan också gå direkt till analysen:
 

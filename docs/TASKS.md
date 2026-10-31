@@ -15,6 +15,8 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Skriv SKILL.md för marknadsanalys (`plugin/skills/market-analysis/SKILL.md`)
 - [x] Skapa plugin-skelett (`plugin/.claude-plugin/plugin.json`, `plugin/README.md`)
 - [x] Ingångskommandot `/market` som frågar köpare/säljare (`plugin/skills/market/SKILL.md`)
+- [x] Design: säljarmeny, annonser, katalog för köpare, granskning (`docs/GRANSKNING.md`, PRD, ARKITEKTUR)
+- [x] Säljarmeny i `/market` och annonsutkast (`plugin/skills/listing-draft/SKILL.md`), inget sparas
 - [ ] Testa `/market` i Claude-chatten (claude.ai) och inte bara i Claude Code
 - [x] Lokal marknadsplats (`.claude-plugin/marketplace.json`) så pluginen kan installeras med `claude plugin install ai-jobb@ai-jobb`
 - [x] `claude plugin validate --strict` passerar för plugin och marknadsplats
@@ -24,7 +26,7 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Repo skapat på GitHub (`Brink-brink/Market`, privat) och kopplat som `origin`
 - [ ] Första push till GitHub (`git push -u origin main`, kräver inloggning i webbläsaren)
 - [ ] Bjud in testarna som collaborators och skicka testinstruktion
-- [ ] 10 säljare testar analysen
+- [ ] 10 säljare testar analysen och annonsutkastet
 - [ ] Beslut: licens (krävs av katalogen, `license` i plugin.json eller LICENSE-fil)
 - [ ] Ikon 512–2048 px PNG (varning i katalogvalideringen)
 - [ ] Eval-svit med `claude plugin eval` (källa per siffra, "hittade inget", språk, inga kreditpriser)
@@ -33,16 +35,20 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Landningssida för säljare
 - [ ] Stripe Payment Links för kreditpaket
 - [ ] Formulär för köpare
+- [ ] Formulär för säljarnas annonser + manuell granskning enligt `GRANSKNING.md`
+- [ ] Enkel katalog med godkända annonser på webbplatsen
 - [ ] Kalkylark för manuell matchning och debitering
 
 ## Fas 3
 - [ ] Repo-struktur (monorepo: `plugin/`, `server/`, `web/`)
 - [ ] Postgres-schema + migrationer
-- [ ] MCP-server: köparverktyg
-- [ ] MCP-server: säljarverktyg
+- [ ] MCP-server: köparverktyg (inkl. `search_listings`, `get_listing`)
+- [ ] MCP-server: säljarverktyg (inkl. `create_listing`, `update_listing`, `list_my_listings`, `get_demand_stats`)
 - [ ] Debitering i transaktion vid `accept_offer`
 - [ ] OAuth för säljare
-- [ ] Webbplats: registrering och inträdestest
+- [ ] Webbplats: registrering (första godkända annonsen ersätter inträdestestet)
+- [ ] Webbplats: katalog
+- [ ] Admin: granskning av annonser med checklista och beslut
 - [ ] Webbplats: Stripe-köp av krediter
 - [ ] Webbplats: admin
 - [ ] E-postaviseringar
@@ -53,3 +59,5 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Hur hämtar köparen erbjudanden utan konto? (förslag: id + token + e-post)
 - [ ] Pris per lead
 - [ ] Ansvarsbegränsning i villkoren
+- [ ] Hur hindrar vi att köpare och säljare går runt tjänsten via katalogen?
+- [ ] Granskningskapacitet när säljarna blir många

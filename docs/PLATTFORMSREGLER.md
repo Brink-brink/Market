@@ -12,7 +12,8 @@ Källor:
 ## Gemensamt
 
 - [ ] Inga annonser, sponsrat innehåll eller köpta placeringar
-- [ ] Matchning styrs bara av relevans och kvalitet
+- [ ] Matchning och katalogens ordning styrs bara av relevans och kvalitet
+- [ ] Katalogen visar inga kontaktuppgifter till säljare
 - [ ] Bara nödvändig data samlas in; ingen chatthistorik
 - [ ] Integritetspolicy publicerad och länkad
 - [ ] Supportkontakt

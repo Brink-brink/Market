@@ -30,14 +30,25 @@ If an ask-the-user tool with clickable options is available (in Claude Code: Ask
 
 ## Step 2a: Seller
 
-1. If the arguments or the conversation already name a niche (customer type + agent type, such as "bokningsagent för frisörer"), use it. Otherwise ask for it in one short question with one or two examples.
-2. Run the market analysis for that niche by following this plugin's `market-analysis` skill. In Claude Code, load it with the Skill tool (`ai-jobb:market-analysis`) and pass the niche as the argument.
+If the arguments or the conversation already make clear what the seller wants (for example "analysera frisörer" or "skapa annons"), go straight to that option. Otherwise ask which of these they want, the same way as the role question:
+
+1. **Analyse a niche:** demand, prices and competitors from the web.
+2. **See buyer interest:** what buyers ask for in this service.
+3. **Create a listing:** your package with a prototype or live product, reviewed before it is shown.
+4. **My listings and requests:** status, matched requests and credit balance.
+
+Then:
+
+- **1:** If a niche (customer type + agent type, such as "bokningsagent för frisörer") is already named, use it; otherwise ask for it in one short question with one or two examples. Run the market analysis by following this plugin's `market-analysis` skill. In Claude Code, load it with the Skill tool (`ai-jobb:market-analysis`) and pass the niche as the argument.
+- **2:** Buyer interest is not open yet, because there are no buyer requests in the service yet. Say so in one sentence and offer option 1 instead, which shows demand on the web.
+- **3:** Follow this plugin's `listing-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:listing-draft`), passing anything the seller has already said about the package.
+- **4:** Listings and requests are not open yet. Say so in one sentence and offer options 1 and 3.
 
 ## Step 2b: Buyer
 
-Matching buyers with sellers is not open yet. Tell the buyer that in two or three sentences:
+The catalog and matching are not open yet. Tell the buyer that in two or three sentences:
 
-- Matching with people who build AI agents is not open yet.
+- Browsing listings from people who build AI agents, and getting matched with them, is not open yet.
 - Nothing they wrote has been saved or sent anywhere.
 
 Then stop. Do not:

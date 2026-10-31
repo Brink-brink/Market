@@ -14,7 +14,8 @@ Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina 
 
 - Skriv `skills/market-analysis/SKILL.md`: tar en nisch, söker på webben, ger efterfrågan, prisnivåer, konkurrenter och paketförslag
 - Paketera som plugin, testa lokalt i Claude Code
-- Låt 10 säljare testa
+- `/market` med säljarmeny och annonsutkast (inget sparas)
+- Låt 10 säljare testa analysen och annonsutkastet
 
 **Klart när:** 7 av 10 testare tycker analysen är användbar.
 
@@ -22,6 +23,8 @@ Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina 
 
 - Enkel landningssida för säljare + köp av krediter (Stripe Payment Links räcker)
 - Formulär för köpare
+- Formulär där säljare skickar in sitt annonsutkast; Philip granskar enligt `GRANSKNING.md`
+- Enkel katalog på webbplatsen med godkända annonser (utan kontaktuppgifter)
 - Philip matchar för hand, tar betalt per svarat lead
 
 **Klart när:** ≥ 20 säljare har köpt krediter, ≥ 50 % av svarade leads blir affär.
@@ -29,9 +32,9 @@ Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina 
 ## Fas 3 – MCP-server och plugin (MVP)
 
 - Postgres-schema enligt `ARKITEKTUR.md`
-- MCP-server med köpar- och säljarverktyg
+- MCP-server med köpar- och säljarverktyg, inklusive katalog och annonser
 - OAuth för säljare, token för köpare
-- Webbplats: registrering, inträdestest, krediter, admin
+- Webbplats: registrering, krediter, admin med granskning av annonser
 - E-postaviseringar
 
 **Klart när:** hela flödet i `PRD.md` fungerar för en bransch, i Claude.

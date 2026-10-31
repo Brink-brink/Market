@@ -17,7 +17,7 @@ Detaljer: `docs/PRD.md`. Bakgrund och marknadsanalys: `docs/MARKNADSANALYS.md`.
 Dessa kommer från Anthropics och OpenAIs regler för plugins. Bryts de avslås pluginen vid granskning. Full lista: `docs/PLATTFORMSREGLER.md`.
 
 1. **Inget köp i pluginen.** Krediter säljs bara på vår webbplats. Pluginen visar aldrig priser på krediter, länkar aldrig till kassan och uppmanar aldrig till köp.
-2. **Ingen köpt placering.** Matchning och rankning styrs bara av relevans och kvalitet, aldrig av betalning.
+2. **Ingen köpt placering.** Matchning, katalogens ordning och rankning styrs bara av relevans och kvalitet, aldrig av betalning. Granskningen av annonser kan inte heller påverkas med betalning.
 3. **Inga profiler från chattar.** Spara bara det köparen själv skickar in i en förfrågan, efter att köparen godkänt den. Begär aldrig chatthistorik.
 4. **Köparen ska inte behöva skapa konto** för att använda pluginen.
 5. **Kontaktuppgifter lämnas ut först när leadet är betalt** (köparen har svarat på ett erbjudande).
@@ -47,6 +47,7 @@ Dessa kommer från Anthropics och OpenAIs regler för plugins. Bryts de avslås 
 | `docs/PRD.md` | Användare, flöden, funktioner, vad som inte ingår |
 | `docs/ARKITEKTUR.md` | Komponenter, datamodell, lead-livscykel, MCP-verktyg |
 | `docs/PLATTFORMSREGLER.md` | Checklista mot Anthropic och OpenAI |
+| `docs/GRANSKNING.md` | Hur säljarnas annonser granskas |
 | `docs/PLAN.md` | Faser från validering till lansering |
 | `docs/TASKS.md` | Backlog |
 | `docs/MARKNADSANALYS.md` | Sammanfattning av marknadsanalysen |

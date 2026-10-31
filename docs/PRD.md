@@ -18,15 +18,24 @@
 
 Både köpare och säljare börjar med kommandot `/market` (fullt namn `/ai-jobb:market`). Claude frågar "Är du köpare eller säljare?" med klickbara alternativ där klienten har det, annars i text.
 
-- **Säljare** → Claude frågar efter nisch och kör marknadsanalysen.
-- **Köpare** → fas 1: Claude säger att matchningen inte är öppen än och att inget har sparats. Fas 2–3: köparens förfrågan enligt kärnflödet nedan.
+- **Säljare** → en meny:
+  1. *Analysera en nisch*: marknadsanalysen (efterfrågan, priser, konkurrenter från webben)
+  2. *Se köparnas intresse*: summerad efterfrågan per nisch från förfrågningar i tjänsten, och matchade förfrågningar
+  3. *Skapa en annons*: paket + prototyp eller produkt i drift, som granskas innan den visas (se `GRANSKNING.md`)
+  4. *Mina annonser och förfrågningar*: status, matchade förfrågningar, kreditsaldo
+- **Köpare** → bläddra i katalogen av granskade annonser och begära offert, eller beskriva sitt behov och bli matchad.
+
+Fas 1: säljare kan analysera och skapa ett **annonsutkast** (inget sparas eller skickas). Köparens intresse, inskickade annonser och köparvägen kräver servern; tills dess säger Claude att det inte är öppet än.
 
 Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer Claude marknadsanalysen själv.
 
 ## Kärnflöde
 
-1. Köparen beskriver sitt behov i chatten. Pluginen gör om det till en strukturerad förfrågan (bransch, behov, budget, kontakt-e-post). Köparen godkänner innan den skickas.
-2. Servern sparar förfrågan och matchar den mot högst 3 säljare, efter nisch, testresultat och omdömen.
+0. Säljaren skapar en annons som granskas (`GRANSKNING.md`). Först en godkänd annons gör säljaren synlig i katalogen och matchningen.
+1. Köparen hittar en säljare på ett av två sätt, och godkänner förfrågan (bransch, behov, budget, kontakt-e-post) innan den skickas:
+   - **Katalogen:** bläddrar bland godkända annonser och begär offert från upp till 3 av dem.
+   - **Matchning:** beskriver sitt behov i chatten; servern matchar mot högst 3 säljare med godkänd annons i nischen, efter relevans, omdömen och svarstid.
+2. Servern sparar förfrågan och skickar den till de valda eller matchade säljarna.
 3. Säljaren ser förfrågan anonymiserad (ingen kontaktinfo) och svarar med ett paket och ett pris.
 4. Köparen ser erbjudandena i chatten och svarar på ett.
 5. Då dras en kredit från säljaren och kontaktuppgifterna lämnas ut åt båda.
@@ -38,6 +47,8 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 ### MVP (måste finnas)
 
 **Köpare (i pluginen)**
+- Bläddra i katalogen av granskade annonser (nisch, paket, prisintervall, märket Prototyp/I drift, betyg). Inga kontaktuppgifter visas
+- Begära offert från en eller flera annonser (högst 3 per förfrågan)
 - Skapa förfrågan utifrån samtalet, med godkännande innan den skickas
 - Se inkomna erbjudanden för sin förfrågan
 - Svara på ett erbjudande
@@ -45,15 +56,19 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 
 **Säljare (i pluginen + webbplatsen)**
 - Marknadsanalys av en nisch: efterfrågan, prisnivåer, konkurrenter (som en färdighet/skill med webbsökning)
+- Skapa annons med Claudes hjälp: paket, fast prisintervall, leveranstid, bevistyp (Prototyp/I drift), demo, testinstruktioner, datahantering. Skickas till granskning efter säljarens godkännande
+- Se sina annonser och deras granskningsstatus
+- Se köparnas intresse: antal förfrågningar och vanlig budget per nisch, bara summor
 - Se matchade förfrågningar, anonymiserade
 - Svara med paket och pris
 - Se sitt kreditsaldo (bara saldot, aldrig köpknapp i pluginen)
 
 **Webbplats**
-- Säljarregistrering med inträdestest
+- Säljarregistrering. Den första godkända annonsen ersätter inträdestestet
 - Köp av kreditpaket (Stripe)
-- Paketkatalog: färdiga paketmallar per bransch
-- Admin: godkänna säljare, se leads, återbetala krediter
+- Katalogen av godkända annonser (samma innehåll som i pluginen)
+- Paketmallar per bransch som säljare kan utgå från
+- Admin: granska annonser enligt `GRANSKNING.md`, pausa annonser, se leads, återbetala krediter
 
 ### Senare
 
@@ -65,7 +80,9 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 ### Ingår inte
 
 - Betalning för själva paketet mellan köpare och säljare
-- Köpt placering eller "boost" av säljare (förbjudet enligt plattformsreglerna)
+- Köpt placering eller "boost" av säljare eller annonser, i katalogen eller matchningen (förbjudet enligt plattformsreglerna)
+- Snabbare eller mildare granskning mot betalning
+- Att ta emot, lagra eller köra säljarens kod; allt granskas via säljarens egen demo
 - Kall utgående e-post som paket i MVP (för riskabelt för nybörjare)
 
 ## Intäktsmodell
@@ -99,3 +116,6 @@ Bransch är inte beslutad – se `TASKS.md`.
 - Hur hämtar köparen erbjudanden utan konto? Förslag: förfrågans id + hemlig token, plus e-postavisering.
 - Vilket pris per lead tål nybörjare?
 - Ansvar om en säljares agent ger fel besked till en kund (villkor/ansvarsbegränsning).
+- Katalogen gör det lättare för köpare och säljare att gå runt tjänsten (hitta säljaren via demon och kontakta direkt). Räcker det att granskningen stoppar kontaktuppgifter i annons och demo?
+- Hinner en person granska alla annonser? Mål 3 arbetsdagar; behövs fler granskare när säljarna blir många.
+- Annonsen ersätter inträdestestet: ska nya säljare utan godkänd annons kunna göra något alls utöver analys och utkast?

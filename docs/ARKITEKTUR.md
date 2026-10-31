@@ -43,6 +43,7 @@ plugin/
 └── skills/
     ├── market/SKILL.md          # /market: frågar köpare/säljare och väljer väg
     ├── market-analysis/SKILL.md # säljarens marknadsanalys
+    ├── listing-draft/SKILL.md   # hjälper säljaren skriva annons (fas 1: bara utkast)
     ├── create-request/SKILL.md  # hjälper köparen formulera förfrågan
     └── respond-to-lead/SKILL.md # hjälper säljaren skriva erbjudande
 ```
@@ -57,7 +58,9 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 
 | Verktyg | Gör | readOnly | destructive | openWorld |
 | --- | --- | --- | --- | --- |
-| `create_service_request` | Skapar förfrågan från fält som köparen godkänt (bransch, behov, budget, e-post) | false | false | false |
+| `search_listings` | Söker i katalogen av godkända annonser (nisch, prisintervall); aldrig kontaktuppgifter | true | false | false |
+| `get_listing` | En annons i detalj: paket, pris, leveranstid, bevistyp, betyg | true | false | false |
+| `create_service_request` | Skapar förfrågan från fält som köparen godkänt (bransch, behov, budget, e-post). Valfritt: upp till 3 `listing_id` från katalogen; annars matchas den | false | false | false |
 | `list_offers` | Visar erbjudanden för en förfrågan | true | false | false |
 | `accept_offer` | Köparen svarar på ett erbjudande; triggar debitering av säljaren och utlämnande av kontakt | false | true | false |
 | `submit_review` | Omdöme efter leverans | false | false | false |
@@ -66,24 +69,39 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 
 | Verktyg | Gör | readOnly | destructive | openWorld |
 | --- | --- | --- | --- | --- |
+| `create_listing` | Skickar in en annons som säljaren godkänt; status `in_review` | false | false | false |
+| `update_listing` | Ändrar en annons; väsentliga ändringar granskas igen | false | false | false |
+| `list_my_listings` | Säljarens annonser med granskningsstatus och granskarens kommentar | true | false | false |
+| `get_demand_stats` | Köparnas intresse per nisch: antal förfrågningar och budgetintervall, bara summor | true | false | false |
 | `list_matched_leads` | Anonymiserade förfrågningar matchade mot säljaren | true | false | false |
-| `respond_to_lead` | Skickar erbjudande (paket + pris + meddelande) | false | false | false |
+| `respond_to_lead` | Skickar erbjudande (annons + pris + meddelande) | false | false | false |
 | `get_credit_balance` | Visar saldo, aldrig köpknapp eller pris | true | false | false |
 | `get_contact` | Kontaktuppgifter för ett betalt lead | true | false | false |
 
 Rollvalet i `/market` görs med klientens egna frågeknappar (i Claude Code: AskUserQuestion), inte med ett eget gränssnitt. Ett formulär inne i chatten för köparens förfrågan kräver MCP-servern och hör till fas 3; läs aktuell dokumentation om interaktiva gränssnitt i appar för Claude och ChatGPT innan det byggs.
 
-Marknadsanalysen är en **skill** (instruktioner + webbsökning i Claude/ChatGPT), inte ett verktyg på vår server, i MVP.
+Marknadsanalysen är en **skill** (instruktioner + webbsökning i Claude/ChatGPT), inte ett verktyg på vår server, i MVP. Annonsutkastet är också en skill; i fas 3 skickar den in via `create_listing`.
+
+Granskningen av annonser görs i admin på webbplatsen, inte i pluginen. Process och checklista: `GRANSKNING.md`.
 
 ## Datamodell
 
 ```
-sellers          id, email, name, niches[], test_passed_at, rating_avg, status
-packages         id, niche, title, description, price_min, price_max, template_url
+sellers          id, email, display_name, rating_avg, status, created_at
+packages         id, niche, title, description, price_min, price_max   # mallar
+listings         id, seller_id, package_id?, niche, title, includes,
+                 setup_price_min, setup_price_max, monthly_price_min?,
+                 monthly_price_max?, delivery_days, proof_type (prototype|live),
+                 demo_url, test_instructions, data_handling,
+                 status (in_review|changes_requested|approved|rejected|paused),
+                 approved_version_id?, created_at, updated_at
+listing_reviews  id, listing_id, reviewer, decision, checklist (jsonb),
+                 comment, created_at
 requests         id, access_token_hash, niche, need, budget, buyer_email,
                  buyer_name, status, created_at, expires_at
-matches          id, request_id, seller_id, status, created_at
-offers           id, match_id, package_id, price, message, created_at
+matches          id, request_id, seller_id, listing_id, source (catalog|matched),
+                 status, created_at
+offers           id, match_id, listing_id, price, message, created_at
 credit_ledger    id, seller_id, delta, reason, offer_id, stripe_ref, created_at
 reviews          id, request_id, seller_id, rating, comment, created_at
 ```
@@ -92,6 +110,19 @@ Regler:
 - `buyer_email` och `buyer_name` exponeras aldrig för säljaren förrän det finns en debitering i `credit_ledger` för det erbjudandet.
 - Ingen chatttext sparas. `need` är köparens egen, godkända beskrivning.
 - Saldo = summan av `credit_ledger.delta`. Aldrig ett lagrat saldofält.
+- En säljare är aktiv (syns i katalog och matchning) när hen har minst en annons med status `approved`. Det ersätter `test_passed_at`.
+- Katalogen visar bara den godkända versionen av en annons, aldrig e-post eller annan kontakt.
+
+## Annons-livscykel
+
+```
+listing:  in_review ──► approved ──► paused ──► approved
+              │  ▲          │
+              ▼  │          └──► (väsentlig ändring) in_review, godkänd version visas under tiden
+       changes_requested
+              │
+              └──► rejected
+```
 
 ## Lead-livscykel
 
@@ -109,8 +140,10 @@ offer:    sent ──► accepted (kredit dras, kontakt lämnas ut)
 
 ## Matchning (MVP)
 
-Enkel regelbaserad ordning, aldrig påverkad av betalning:
-1. Rätt nisch och godkänt test
+Samma ordning gäller katalogens sortering. Den påverkas aldrig av betalning eller kreditsaldo.
+
+Enkel regelbaserad ordning:
+1. Rätt nisch och godkänd annons
 2. Har inte fått lead senaste X timmar (sprid till nya säljare)
 3. Snittbetyg
 4. Svarstid
