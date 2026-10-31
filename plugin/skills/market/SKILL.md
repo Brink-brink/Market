@@ -19,13 +19,12 @@ Keep that language for the rest of the conversation, including the market analys
 
 ## Step 1: Find out the role
 
-If the arguments already say the role, skip the question. Words like "säljare", "seller", "sälja", "bygger" mean seller. Words like "köpare", "buyer", "köpa", "behöver" mean buyer.
+If the arguments already say the role, skip the question. Words like "säljare", "seller", "sälja", "bygger" mean seller. Words like "köpare", "buyer", "köpa", "behöver", "behov" mean buyer, and so does a user who describes their own business ("jag har en frisörsalong").
 
 Otherwise ask one question: are you a buyer or a seller? Explain each in a few words:
 
 - **Seller:** you build AI agents and want to know which niche pays and what to charge.
 - **Buyer:** your business needs an AI agent, such as a chatbot, booking or phone agent, built for it.
-
 If an ask-the-user tool with clickable options is available (in Claude Code: AskUserQuestion), use it with exactly these two options. Otherwise ask in plain text. Do not build a page, form or artifact for this question.
 
 ## Step 2a: Seller
@@ -46,14 +45,20 @@ Then:
 
 ## Step 2b: Buyer
 
-The catalog and matching are not open yet. Tell the buyer that in two or three sentences:
+The catalog, matching and offers are not open yet. Tell the buyer that in two or three sentences:
 
 - Browsing listings from people who build AI agents, and getting matched with them, is not open yet.
 - Nothing they wrote has been saved or sent anywhere.
 
-Then stop. Do not:
+Then offer one thing they can do now: write a **need draft**, a short description of what their business needs, that sellers could quote a fixed price on. Ask the same way as the role question, with two options: write a need draft now, or not now.
 
-- ask for or store contact details, company name or any other information
+- If they want the draft, follow this plugin's `need-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:need-draft`), passing anything the buyer has already said about their business and need.
+- If they say they have a code for a request or ask to see offers, say that requests and offers are not open yet, so there is no code yet. Do not ask for the code.
+- Otherwise stop.
+
+Do not:
+
+- ask for or store contact details, company name or other identifying information
 - promise a launch date
 - link to any website, sign-up or purchase page
 - mention prices of credits, leads or anything else in the service

@@ -14,7 +14,9 @@ Utifrån det föreslår den **tre paket med fast prisintervall** och bedömer om
 
 Skillen `listing-draft` hjälper dig skriva ett **annonsutkast** för ditt paket: innehåll, prisintervall, leveranstid, prototyp eller produkt i drift, demo, testinstruktioner och datahantering. Den kontrollerar utkastet mot granskningskraven och säger vad du behöver rätta. Inget sparas eller skickas än; att skicka in annonser för granskning öppnar senare.
 
-Varje siffra får en källa. När skillen inte hittar något skriver den "hittade inget" i stället för att gissa. Svaret kommer på samma språk som du skriver på.
+Skillen `need-draft` hjälper dig som företagare beskriva vilken AI-agent du behöver, som ett **behovsutkast** säljare kan sätta fast pris på: bransch, problem, vad agenten ska göra, nuvarande system, volym, budget, när och område. Inga kontaktuppgifter tas med. Inget sparas eller skickas än.
+
+I marknadsanalysen får varje siffra en källa. När skillen inte hittar något skriver den "hittade inget" i stället för att gissa. Svaret kommer på samma språk som du skriver på.
 
 ## Användning
 
@@ -24,7 +26,7 @@ I Claude Code, skriv:
 /market
 ```
 
-Claude frågar om du är köpare eller säljare. Som säljare väljer du att analysera en nisch, se köparnas intresse, skapa en annons eller se dina annonser; i dag fungerar analysen och annonsutkastet. Som köpare får du veta att katalogen och matchningen inte är öppna än; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
+Claude frågar om du är köpare eller säljare. Som säljare väljer du att analysera en nisch, se köparnas intresse, skapa en annons eller se dina annonser; i dag fungerar analysen och annonsutkastet. Som köpare får du veta att katalogen och matchningen inte är öppna än, och kan skriva ett behovsutkast; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
 
 Du kan också gå direkt till analysen:
 
@@ -56,4 +58,4 @@ Du kan också fråga med egna ord, till exempel "Lönar det sig att bygga AI-rec
 
 ## Vad pluginen kör och skickar
 
-Pluginen innehåller bara instruktioner (en skill). Den har ingen egen server, inga skript och ingen MCP-koppling. Den använder Claudes inbyggda webbsökning (`WebSearch`) och sidhämtning (`WebFetch`). Sökfrågorna bygger på nischen du anger. För att räkna om priser i utländsk valuta till kronor hämtar den dagens kurs från Riksbankens öppna API (`api.riksbank.se`). Pluginen sparar ingenting och skickar inga data någon annanstans.
+Pluginen innehåller bara instruktioner (skills). Den har ingen egen server, inga skript och ingen MCP-koppling. Den använder Claudes inbyggda webbsökning (`WebSearch`) och sidhämtning (`WebFetch`). Sökfrågorna bygger på nischen du anger. För att räkna om priser i utländsk valuta till kronor hämtar den dagens kurs från Riksbankens öppna API (`api.riksbank.se`). Pluginen sparar ingenting och skickar inga data någon annanstans.

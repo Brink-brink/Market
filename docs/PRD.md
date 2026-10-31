@@ -23,9 +23,11 @@ Både köpare och säljare börjar med kommandot `/market` (fullt namn `/ai-jobb
   2. *Se köparnas intresse*: summerad efterfrågan per nisch från förfrågningar i tjänsten, och matchade förfrågningar
   3. *Skapa en annons*: paket + prototyp eller produkt i drift, som granskas innan den visas (se `GRANSKNING.md`)
   4. *Mina annonser och förfrågningar*: status, matchade förfrågningar, kreditsaldo
-- **Köpare** → bläddra i katalogen av granskade annonser och begära offert, eller beskriva sitt behov och bli matchad.
+- **Köpare** → en meny:
+  1. *Hitta någon som bygger din AI-agent*: beskriva behovet, och sedan bläddra i katalogen eller bli matchad (se Köparens väg)
+  2. *Mina förfrågningar och erbjudanden*: köparen klistrar in koden från bekräftelsemejlet
 
-Fas 1: säljare kan analysera och skapa ett **annonsutkast** (inget sparas eller skickas). Köparens intresse, inskickade annonser och köparvägen kräver servern; tills dess säger Claude att det inte är öppet än.
+Fas 1: säljare kan analysera och skapa ett **annonsutkast**, och köpare kan skriva ett **behovsutkast**. Inget av dem sparas eller skickas. Köparens intresse, inskickade annonser, katalogen, förfrågningar och erbjudanden kräver servern; tills dess säger Claude att det inte är öppet än.
 
 Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer Claude marknadsanalysen själv.
 
@@ -35,12 +37,57 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 1. Köparen hittar en säljare på ett av två sätt, och godkänner förfrågan (bransch, behov, budget, kontakt-e-post) innan den skickas:
    - **Katalogen:** bläddrar bland godkända annonser och begär offert från upp till 3 av dem.
    - **Matchning:** beskriver sitt behov i chatten; servern matchar mot högst 3 säljare med godkänd annons i nischen, efter relevans, omdömen och svarstid.
-2. Servern sparar förfrågan och skickar den till de valda eller matchade säljarna.
+2. Köparen bekräftar sin e-post med en länk. Först då går förfrågan ut till säljarna. Bekräftelsemejlet innehåller koden köparen använder för att se förfrågan och erbjudandena.
 3. Säljaren ser förfrågan anonymiserad (ingen kontaktinfo) och svarar med ett paket och ett pris.
-4. Köparen ser erbjudandena i chatten och svarar på ett.
+4. Köparen ser erbjudandena i chatten (med koden) och svarar på högst 2 åt gången inom varje kategori.
 5. Då dras en kredit från säljaren och kontaktuppgifterna lämnas ut åt båda.
 6. Leverans och betalning för paketet sker direkt mellan köpare och säljare.
 7. Köparen lämnar omdöme, som påverkar framtida matchning.
+
+## Köparens väg
+
+Köparen behöver inget konto. Bara det köparen godkänner sparas, och ingen kontakt sker före betalt lead.
+
+### 1. Behovet
+
+Claude hjälper köparen beskriva behovet med enkla frågor: bransch, vad som går fel i dag, vad agenten ska göra, nuvarande system, volym, budget, när och område (stad eller region, aldrig exakt adress). Svaret "vet inte" är okej. Kontaktuppgifter tas aldrig med i behovstexten. I fas 1 är det här **behovsutkastet** (skill `need-draft`); inget sparas.
+
+### 2. Katalog eller matchning
+
+- **Katalogen:** Claude visar godkända annonser som passar bransch och budget: alias, paket, prisintervall, leveranstid, märket Prototyp/I drift, "demo granskad <datum>" och betyg. Ordningen går inte att köpa, och det står i svaret. Köparen väljer upp till 3 annonser.
+- **Matchning:** tjänsten väljer upp till 3 säljare med godkänd annons i nischen (se ARKITEKTUR, Matchning).
+
+### 3. Godkänna och bekräfta
+
+Claude visar exakt vad som skickas: alla fält från behovet, vilka säljare (alias) eller "matchas av tjänsten", och e-postadressen med texten "visas bara för säljaren vars erbjudande du svarar på". Köparen väljer Skicka eller Ändra. Kontaktfiltret körs på behovstexten.
+
+Efter Skicka får köparen ett mejl med en bekräftelselänk och en kod. Förfrågan går ut till säljarna först när länken är klickad. Det skyddar säljarna mot falska förfrågningar, som de annars skulle betala för. En obekräftad förfrågan raderas efter 48 timmar.
+
+### 4. Koden
+
+Koden identifierar köparen utan konto. Köparen skriver `/market` → Köpare → *Mina förfrågningar och erbjudanden* och klistrar in koden; samma kod fungerar på webbplatsen. Koden ger bara tillgång till den förfrågan och dess erbjudanden. Tappar köparen koden kan en ny skickas till samma e-post.
+
+### 5. Erbjudanden
+
+Ett erbjudande visar: säljarens alias och betyg, paket, pris (fast intervall eller fast pris), vad som ingår, leveranstid, ett kort meddelande som passerat kontaktfiltret, och hur länge erbjudandet gäller (14 dagar). Köparen får mejl när ett erbjudande kommer.
+
+Köparen kan:
+
+- **Svara.** Claude frågar först: "När du svarar får säljaren ditt namn och din e-post, och du får säljarens kontaktuppgifter. Vill du svara?" Vid ja dras krediten och kontakten lämnas ut åt båda hållen.
+- **Tacka nej**, med frivillig anledning. Säljaren betalar ingenting.
+
+**Högst 2 åt gången inom varje kategori.** En kategori är en typ av agent, till exempel chattbot, bokningsagent eller telefonagent. Köparen kan ha svarat på högst 2 erbjudanden i samma kategori samtidigt. Vill köparen svara på ett tredje markerar hen först ett av de tidigare som "blev ingen affär". Det håller nere antalet säljare som betalar för samma affär.
+
+### 6. Om ingen svarar
+
+Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett ärligt mejl om det. En matchad förfrågan kan då gå till nästa säljare i turordningen, högst 3 totalt. Förfrågan stängs efter 14 dagar; köparen kan skapa en ny.
+
+### 7. Efter kontakt
+
+- Leverans och betalning sker direkt mellan köpare och säljare.
+- 3–4 veckor efter svaret får köparen ett mejl: "Blev det affär?" och ett omdöme 1–5. Bara den som fått kontakt genom ett betalt lead kan lämna omdöme.
+- Köparen kan anmäla en säljare som aldrig hör av sig; det påverkar säljarens betyg och kan pausa annonsen (`GRANSKNING.md`).
+- Säljaren kan begära tillbaka krediten om köparen är falsk eller inte går att nå. Admin beslutar.
 
 ## Funktioner
 
@@ -50,8 +97,10 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 - Bläddra i katalogen av granskade annonser. Köparen ser bara: säljarens alias, nisch, paketets innehåll, prisintervall, leveranstid, märket Prototyp/I drift, "demo granskad <datum>" och betyg. Aldrig namn, företagsnamn, demo-länk eller annat som gör kontakt möjlig före betalt lead
 - Begära offert från en eller flera annonser (högst 3 per förfrågan)
 - Skapa förfrågan utifrån samtalet, med godkännande innan den skickas
-- Se inkomna erbjudanden för sin förfrågan
-- Svara på ett erbjudande
+- Bekräfta e-posten innan förfrågan går ut; få en kod i bekräftelsemejlet
+- Se inkomna erbjudanden för sin förfrågan med koden
+- Svara på ett erbjudande (högst 2 åt gången inom varje kategori) eller tacka nej
+- Anmäla en säljare som inte hör av sig
 - Lämna omdöme
 
 **Säljare (i pluginen + webbplatsen)**
@@ -115,14 +164,14 @@ Bransch är inte beslutad – se `TASKS.md`.
 | Mätetal | Mål i validering |
 | --- | --- |
 | Säljare som köpt krediter | ≥ 20 |
-| Andel svarade leads som blir affär | ≥ 50 % |
+| Andel svarade leads som blir affär (mejlet "Blev det affär?") | ≥ 50 % |
 | Svarstid säljare → erbjudande | < 24 h |
 | Snittbetyg från köpare | ≥ 4 av 5 |
 
 ## Öppna frågor
 
 - Godkänner Anthropic och OpenAI lead-modellen? (Fråga innan bygge.)
-- Hur hämtar köparen erbjudanden utan konto? Förslag: förfrågans id + hemlig token, plus e-postavisering.
+- Ska Claude säga till när köparen sannolikt inte behöver någon som bygger (t.ex. när bokningssystemet redan skickar påminnelser)? Beslut: senare, troligen ja.
 - Vilket pris per lead tål nybörjare?
 - Ansvar om en säljares agent ger fel besked till en kund (villkor/ansvarsbegränsning).
 - Hinner en person granska alla annonser? Mål 3 arbetsdagar; behövs fler granskare när säljarna blir många.

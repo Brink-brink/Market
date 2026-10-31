@@ -17,6 +17,9 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Ingångskommandot `/market` som frågar köpare/säljare (`plugin/skills/market/SKILL.md`)
 - [x] Design: säljarmeny, annonser, katalog för köpare, granskning (`docs/GRANSKNING.md`, PRD, ARKITEKTUR)
 - [x] Säljarmeny i `/market` och annonsutkast (`plugin/skills/listing-draft/SKILL.md`), inget sparas
+- [x] Design: köparens väg (e-postbekräftelse, kod utan konto, högst 2 svar åt gången per kategori, 48 h / 14 dagar) i PRD och ARKITEKTUR
+- [x] Behovsutkast för köpare (`plugin/skills/need-draft/SKILL.md`) via `/market` → Köpare, inget sparas
+- [ ] Använd behovsutkastet i de 10 intervjuerna med företagare
 - [ ] Testa `/market` i Claude-chatten (claude.ai) och inte bara i Claude Code
 - [x] Lokal marknadsplats (`.claude-plugin/marketplace.json`) så pluginen kan installeras med `claude plugin install ai-jobb@ai-jobb`
 - [x] `claude plugin validate --strict` passerar för plugin och marknadsplats
@@ -34,7 +37,8 @@ Uppdatera när något blir klart eller tillkommer.
 ## Fas 2
 - [ ] Landningssida för säljare
 - [ ] Stripe Payment Links för kreditpaket
-- [ ] Formulär för köpare
+- [ ] Formulär för köpare (fälten från behovsutkastet) med e-postbekräftelse och kod
+- [ ] Manuellt: skicka förfrågan till säljare, mejla erbjudanden till köparen, mejla "Blev det affär?" efter 3–4 veckor
 - [ ] Formulär för säljarnas annonser + manuell granskning enligt `GRANSKNING.md`
 - [ ] Enkel katalog med godkända annonser på webbplatsen
 - [ ] Kalkylark för manuell matchning och debitering
@@ -42,7 +46,9 @@ Uppdatera när något blir klart eller tillkommer.
 ## Fas 3
 - [ ] Repo-struktur (monorepo: `plugin/`, `server/`, `web/`)
 - [ ] Postgres-schema + migrationer
-- [ ] MCP-server: köparverktyg (inkl. `search_listings`, `get_listing`)
+- [ ] MCP-server: köparverktyg (inkl. `search_listings`, `get_listing`, `get_request_status`, `decline_offer`, `mark_no_deal`, `report_problem`)
+- [ ] E-postbekräftelse av förfrågan och kod (hash, ny kod till samma e-post, rate limit)
+- [ ] Spärr: högst 2 öppna svar per köpare och kategori i `accept_offer`
 - [ ] MCP-server: säljarverktyg (inkl. `create_listing`, `update_listing`, `list_my_listings`, `get_demand_stats`)
 - [ ] Debitering i transaktion vid `accept_offer`
 - [ ] OAuth för säljare
@@ -58,7 +64,8 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Tester för lead-livscykeln
 
 ## Öppna frågor
-- [ ] Hur hämtar köparen erbjudanden utan konto? (förslag: id + token + e-post)
+- [x] Hur hämtar köparen erbjudanden utan konto? Beslut: kod i bekräftelsemejlet
+- [ ] Senare: ska Claude säga till när köparen sannolikt inte behöver någon som bygger?
 - [ ] Pris per lead
 - [ ] Ansvarsbegränsning i villkoren
 - [ ] Granskningskapacitet när säljarna blir många
