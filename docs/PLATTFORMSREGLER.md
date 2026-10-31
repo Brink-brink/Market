@@ -13,7 +13,7 @@ Källor:
 
 - [ ] Inga annonser, sponsrat innehåll eller köpta placeringar
 - [ ] Matchning och katalogens ordning styrs bara av relevans och kvalitet
-- [ ] Katalogen visar inga kontaktuppgifter till säljare
+- [ ] Katalogen visar inga kontaktuppgifter, namn eller demolänkar till säljare (alias)
 - [ ] Bara nödvändig data samlas in; ingen chatthistorik
 - [ ] Integritetspolicy publicerad och länkad
 - [ ] Supportkontakt

@@ -11,7 +11,7 @@ The seller wants a draft listing for an AI agent package. Arguments, if any: $AR
 
 1. **Language.** If your instructions set a response language for this session, use it. Otherwise use the language of the seller's own messages in this conversation. If there is nothing to go on, use Swedish.
 2. **Nothing is saved or sent.** Submitting listings is not open yet. Say so at the start and again with the finished draft. Never claim the draft has been submitted, received or queued for review.
-3. **No contact details in the listing.** No e-mail, phone number (except a demo test number), personal website, booking page or social media handle. If the seller gives one, leave it out and say why: contact details are shared only after a buyer has replied to an offer.
+3. **Nothing in the buyer-facing part that lets a buyer find or contact the seller.** No personal name, company name, brand name, e-mail, phone number, website, booking page, link or social media handle. Buyers see the seller only under an alias the service assigns. If the seller gives any of these, leave them out of the buyer-facing part and say why: buyer and seller can reach each other only after the lead is paid, that is, after the buyer has replied to an offer. The demo link, test number and video go only in the reviewer block; buyers never see them.
 4. **No claims beyond the demo.** Every feature in the listing must be something the demo shows, or be marked "built at delivery". Do not write claims like "GDPR-certified", "100 % secure" or "guaranteed more bookings".
 5. **No sales for the service.** Do not mention prices of credits or leads, do not link to any website, sign-up or purchase page, and do not promise that the listing will be approved or when.
 
@@ -38,7 +38,7 @@ Write the listing as a buyer will see it in the catalog: short, concrete, in the
 
 ```
 # <Package name>
-<Niche> · <Prototype|Live> · Delivery in <n> working days
+<Seller alias, assigned by the service> · <Niche> · <Prototype|Live> · Demo reviewed · Delivery in <n> working days
 
 **Price:** <setup range> setup, <monthly range>/month (or "no monthly fee")
 
@@ -52,7 +52,7 @@ Write the listing as a buyer will see it in the catalog: short, concrete, in the
 <one or two sentences>
 ```
 
-Below the listing, add a separate block for the reviewer only (buyers do not see it): demo link or video, test instructions, and full data handling.
+Below the listing, add a separate block for the reviewer only (buyers never see it): demo link, test number or video, test instructions, and full data handling.
 
 ## Step 3: Check it against the review
 
@@ -60,7 +60,7 @@ Go through the review criteria and report each as ✔ (met), ✘ (not met, with 
 
 1. All fields filled in
 2. Price is a fixed range with numbers
-3. No contact details in the listing or demo description
+3. Nothing in the buyer-facing part that identifies or reaches the seller (name, company or brand name, e-mail, phone, website, link, social media)
 4. Every feature is shown in the demo or marked "built at delivery"
 5. No unsupported claims
 6. Data handling describes what data, where, and which services

@@ -49,6 +49,8 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Webbplats: registrering (första godkända annonsen ersätter inträdestestet)
 - [ ] Webbplats: katalog
 - [ ] Admin: granskning av annonser med checklista och beslut
+- [ ] Alias för säljare och kontaktfilter på all fritext (annonser, förfrågningar, erbjudanden) + tester
+- [ ] Villkor: förbud mot att kringgå tjänsten
 - [ ] Webbplats: Stripe-köp av krediter
 - [ ] Webbplats: admin
 - [ ] E-postaviseringar
@@ -59,5 +61,4 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Hur hämtar köparen erbjudanden utan konto? (förslag: id + token + e-post)
 - [ ] Pris per lead
 - [ ] Ansvarsbegränsning i villkoren
-- [ ] Hur hindrar vi att köpare och säljare går runt tjänsten via katalogen?
 - [ ] Granskningskapacitet när säljarna blir många

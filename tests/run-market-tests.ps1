@@ -1,5 +1,7 @@
 ﻿# Runs the /market entry command on its short paths and saves each answer to tests/output/.
-# Run from the repository root: .\tests\run-market-tests.ps1
+# Run from the repository root: .\tests\run-market-tests.ps1 [-Only <file-name prefix>]
+
+param([string]$Only = '')
 
 $ErrorActionPreference = 'Stop'
 # Windows PowerShell 5.1 decodes native output with the console code page; claude prints UTF-8.
@@ -17,10 +19,11 @@ $cases = @(
     @{ File = 'market5-seller-en.md'; Prompt = '/market I build AI agents and want to sell them' },
     @{ File = 'market6-seller-listing.md'; Prompt = '/market säljare, jag vill skapa en annons' },
     @{ File = 'market7-seller-interest.md'; Prompt = '/market säljare, visa köparnas intresse' },
-    @{ File = 'listing1-full.md'; Prompt = '/ai-jobb:listing-draft Bokningsagent för frisörer. Paket: AI svarar i telefon och bokar i Bokadirekt, 3 månaders support. Pris 15 000-25 000 kr uppstart, 1 000 kr/mån. Leverans 10 arbetsdagar. Prototyp, demo: https://example.com/demo. Testa: 1) boka klippning tisdag 14 -> bokning skapas, 2) avboka -> tiden frigörs, 3) fråga om pris -> svarar med prislistan. Data: namn och telefonnummer, lagras i Sverige, använder Retell och OpenAI. GDPR-certifierad lösning. Kontakta mig på anna@example.se.' }
+    @{ File = 'listing1-full.md'; Prompt = '/ai-jobb:listing-draft Bokningsagent för frisörer. Paket: AI svarar i telefon och bokar i Bokadirekt, 3 månaders support. Pris 15 000-25 000 kr uppstart, 1 000 kr/mån. Leverans 10 arbetsdagar. Prototyp, demo: https://example.com/demo. Testa: 1) boka klippning tisdag 14 -> bokning skapas, 2) avboka -> tiden frigörs, 3) fråga om pris -> svarar med prislistan. Data: namn och telefonnummer, lagras i Sverige, använder Retell och OpenAI. GDPR-certifierad lösning. Kontakta mig på anna@example.se.' },
+    @{ File = 'listing2-identity.md'; Prompt = '/ai-jobb:listing-draft Chattbot för tandläkare från Anna Berg AB (annaberg.se, @annabergai på Instagram). Paket: chatt på hemsidan som svarar på frågor om öppettider och priser, 1 månads support. Pris 5 000-8 000 kr, ingen månadsavgift. Leverans 5 arbetsdagar. I drift hos en klinik i Malmö. Demo: https://annaberg.se/demo. Testa: 1) fråga om öppettider, 2) fråga om pris för undersökning, 3) be om akuttid -> hänvisar till telefon. Data: inga personuppgifter sparas, OpenAI används.' }
 )
 
-foreach ($case in $cases) {
+foreach ($case in $cases | Where-Object { $_.File -like "$Only*" }) {
     $path = Join-Path $out $case.File
     Write-Host "Running: $($case.Prompt)"
     claude -p $case.Prompt --plugin-dir ./plugin --allowedTools 'Skill' | Out-File -Encoding utf8 $path

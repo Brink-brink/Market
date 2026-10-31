@@ -17,13 +17,15 @@ En säljares första godkända annons ersätter inträdestestet. Granskningen sk
 
 Vi tar inte emot kod och kör aldrig säljarens kod. Allt granskas via säljarens egen demo.
 
+Demon, testinstruktionerna och den fullständiga datahanteringen ses bara av granskaren. Köparen ser aldrig demolänken, testnumret eller videon, bara att demon är granskad och när.
+
 ## Steg 1: Automatisk förkontroll
 
 Görs innan annonsen hamnar hos en granskare. Fel här skickas direkt tillbaka till säljaren.
 
 - Alla fält ovan är ifyllda.
 - Priset är ett fast intervall med siffror.
-- Annonsen och demon innehåller inga kontaktuppgifter: ingen e-post, inget telefonnummer (utom demons testnummer), ingen länk till säljarens egen webbplats eller bokningssida. Kontakt lämnas ut först när leadet är betalt.
+- Det köparen ser i annonsen innehåller inget som gör det möjligt att hitta eller kontakta säljaren: inget namn, företagsnamn, varumärke, e-post, telefonnummer, webbadress eller konto i sociala medier. Kontakt lämnas ut först när leadet är betalt.
 - Demolänken svarar.
 - Inga påståenden som "GDPR-certifierad", "100 % säker" eller "garanterad ökning" utan belägg.
 
@@ -59,7 +61,7 @@ Görs av admin (Philip) i fas 2–3. Mål: beslut inom 3 arbetsdagar.
 
 | Beslut | När | Vad säljaren får |
 | --- | --- | --- |
-| **Godkänd** | A–D uppfyllda | Annonsen syns i katalogen och matchningen, med märket Prototyp eller I drift |
+| **Godkänd** | A–D uppfyllda | Annonsen syns i katalogen och matchningen under säljarens alias, med märket Prototyp eller I drift och "demo granskad <datum>" |
 | **Ändringar begärs** | Något i A–D saknas men går att rätta | En lista med det som ska rättas. Säljaren skickar in igen |
 | **Avslagen** | Demon fungerar inte alls, annonsen är vilseledande, eller nischen är olämplig | Motivering. Säljaren kan skicka in en ny annons |
 
@@ -68,5 +70,5 @@ Varje beslut sparas med checklistan (A–D) och en kommentar, så att det går a
 ## Efter godkännande
 
 - Väsentliga ändringar av annonsen (innehåll, pris, bevistyp, demo) granskas igen. Under tiden visas den godkända versionen.
-- En annons kan **pausas** vid klagomål från köpare, lågt snittbetyg (under 3 av 5 efter minst 3 omdömen) eller en demo som slutat fungera. Säljaren får motivering och kan rätta.
+- En annons kan **pausas** vid försök att kringgå tjänsten (kontakt före betalt lead), klagomål från köpare, lågt snittbetyg (under 3 av 5 efter minst 3 omdömen) eller en demo som slutat fungera. Säljaren får motivering och kan rätta.
 - Granskningen påverkar aldrig rankningen genom betalning. Ingen kan betala för snabbare eller mildare granskning.

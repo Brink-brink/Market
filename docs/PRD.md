@@ -47,7 +47,7 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 ### MVP (måste finnas)
 
 **Köpare (i pluginen)**
-- Bläddra i katalogen av granskade annonser (nisch, paket, prisintervall, märket Prototyp/I drift, betyg). Inga kontaktuppgifter visas
+- Bläddra i katalogen av granskade annonser. Köparen ser bara: säljarens alias, nisch, paketets innehåll, prisintervall, leveranstid, märket Prototyp/I drift, "demo granskad <datum>" och betyg. Aldrig namn, företagsnamn, demo-länk eller annat som gör kontakt möjlig före betalt lead
 - Begära offert från en eller flera annonser (högst 3 per förfrågan)
 - Skapa förfrågan utifrån samtalet, med godkännande innan den skickas
 - Se inkomna erbjudanden för sin förfrågan
@@ -85,6 +85,15 @@ Säljare kan också fråga med egna ord ("lönar det sig att…"); då väljer C
 - Att ta emot, lagra eller köra säljarens kod; allt granskas via säljarens egen demo
 - Kall utgående e-post som paket i MVP (för riskabelt för nybörjare)
 
+## Ingen kontakt före betalt lead
+
+Köpare och säljare kan inte hitta eller kontakta varandra förrän säljaren har betalat för leadet, det vill säga när köparen har svarat på säljarens erbjudande. Så upprätthålls det:
+
+- **Alias:** säljare visas under ett alias som tjänsten tilldelar. Inget riktigt namn eller företagsnamn.
+- **Demo bara för granskaren:** köparen ser att demon är granskad och när, men aldrig länken, testnumret eller videon.
+- **Kontaktfilter på all fritext:** annonser, förfrågningar och erbjudanden kontrolleras automatiskt för namn, företagsnamn, e-post, telefon, webbadresser och konton i sociala medier. Träffar tas bort innan texten visas för den andra parten. Annonser granskas dessutom manuellt.
+- **Villkor:** att försöka kringgå tjänsten är förbjudet i villkoren och leder till att annonsen pausas.
+
 ## Intäktsmodell
 
 - Säljaren köper krediter på webbplatsen.
@@ -116,6 +125,5 @@ Bransch är inte beslutad – se `TASKS.md`.
 - Hur hämtar köparen erbjudanden utan konto? Förslag: förfrågans id + hemlig token, plus e-postavisering.
 - Vilket pris per lead tål nybörjare?
 - Ansvar om en säljares agent ger fel besked till en kund (villkor/ansvarsbegränsning).
-- Katalogen gör det lättare för köpare och säljare att gå runt tjänsten (hitta säljaren via demon och kontakta direkt). Räcker det att granskningen stoppar kontaktuppgifter i annons och demo?
 - Hinner en person granska alla annonser? Mål 3 arbetsdagar; behövs fler granskare när säljarna blir många.
 - Annonsen ersätter inträdestestet: ska nya säljare utan godkänd annons kunna göra något alls utöver analys och utkast?

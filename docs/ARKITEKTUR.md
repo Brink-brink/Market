@@ -58,8 +58,8 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 
 | Verktyg | Gör | readOnly | destructive | openWorld |
 | --- | --- | --- | --- | --- |
-| `search_listings` | Söker i katalogen av godkända annonser (nisch, prisintervall); aldrig kontaktuppgifter | true | false | false |
-| `get_listing` | En annons i detalj: paket, pris, leveranstid, bevistyp, betyg | true | false | false |
+| `search_listings` | Söker i katalogen av godkända annonser (nisch, prisintervall). Returnerar bara katalogfälten, se Datamodell | true | false | false |
+| `get_listing` | En annons i detalj, bara katalogfälten: alias, paket, pris, leveranstid, bevistyp, granskningsdatum, betyg | true | false | false |
 | `create_service_request` | Skapar förfrågan från fält som köparen godkänt (bransch, behov, budget, e-post). Valfritt: upp till 3 `listing_id` från katalogen; annars matchas den | false | false | false |
 | `list_offers` | Visar erbjudanden för en förfrågan | true | false | false |
 | `accept_offer` | Köparen svarar på ett erbjudande; triggar debitering av säljaren och utlämnande av kontakt | false | true | false |
@@ -87,7 +87,7 @@ Granskningen av annonser görs i admin på webbplatsen, inte i pluginen. Process
 ## Datamodell
 
 ```
-sellers          id, email, display_name, rating_avg, status, created_at
+sellers          id, email, legal_name, alias, rating_avg, status, created_at
 packages         id, niche, title, description, price_min, price_max   # mallar
 listings         id, seller_id, package_id?, niche, title, includes,
                  setup_price_min, setup_price_max, monthly_price_min?,
@@ -111,7 +111,10 @@ Regler:
 - Ingen chatttext sparas. `need` är köparens egen, godkända beskrivning.
 - Saldo = summan av `credit_ledger.delta`. Aldrig ett lagrat saldofält.
 - En säljare är aktiv (syns i katalog och matchning) när hen har minst en annons med status `approved`. Det ersätter `test_passed_at`.
-- Katalogen visar bara den godkända versionen av en annons, aldrig e-post eller annan kontakt.
+- Katalogen visar bara den godkända versionen av en annons och bara katalogfälten: `alias`, `niche`, `title`, `includes`, priser, `delivery_days`, `proof_type`, granskningsdatum och `rating_avg`. Aldrig `email`, `legal_name`, `demo_url`, `test_instructions` eller `data_handling` i rå form.
+- `demo_url` och `test_instructions` läses bara av admin vid granskning.
+- Kontaktfilter körs på all fritext innan den visas för den andra parten (`listings.includes`, `listings.title`, `requests.need`, `offers.message`): e-post, telefonnummer, webbadresser, sociala medier-konton och säljarens `legal_name`. Träffar tas bort och loggas.
+- `alias` tilldelas av tjänsten och kan inte väljas fritt.
 
 ## Annons-livscykel
 

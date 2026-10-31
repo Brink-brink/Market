@@ -20,7 +20,7 @@ Dessa kommer från Anthropics och OpenAIs regler för plugins. Bryts de avslås 
 2. **Ingen köpt placering.** Matchning, katalogens ordning och rankning styrs bara av relevans och kvalitet, aldrig av betalning. Granskningen av annonser kan inte heller påverkas med betalning.
 3. **Inga profiler från chattar.** Spara bara det köparen själv skickar in i en förfrågan, efter att köparen godkänt den. Begär aldrig chatthistorik.
 4. **Köparen ska inte behöva skapa konto** för att använda pluginen.
-5. **Kontaktuppgifter lämnas ut först när leadet är betalt** (köparen har svarat på ett erbjudande).
+5. **Kontaktuppgifter lämnas ut först när leadet är betalt** (köparen har svarat på ett erbjudande). Innan dess får katalog, annonser, förfrågningar och erbjudanden aldrig innehålla något som gör det möjligt att hitta eller kontakta den andra parten: inget namn, företagsnamn, e-post, telefon, webbplats, länk eller konto i sociala medier. Säljare visas under ett alias. Säljarens demo ses bara av granskaren.
 6. **Inga automatiska pengaöverföringar** utan att en människa godkänner.
 7. Varje MCP-verktyg har `title`, `readOnlyHint`, `destructiveHint` och `openWorldHint` satta korrekt.
 
