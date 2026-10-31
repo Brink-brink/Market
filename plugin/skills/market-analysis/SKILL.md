@@ -14,7 +14,7 @@ If that is empty, take the niche from the seller's latest message. If there is n
 
 These apply to the whole answer and override everything else in this skill.
 
-1. **Answer in the seller's language.** Use the language the seller wrote in, including headings and labels. The niche text and earlier messages decide it, not the language of this skill or of the sources.
+1. **Answer in the seller's language.** Use the language the seller writes in, including headings and labels. If your instructions set a response language for this session, use that. Otherwise the seller's messages in this conversation and the niche text decide it, never the language of this skill or of the sources.
 2. **Every figure needs a source.** Every number (price, market size, count, share, growth, salary, fee) is followed by its source as a Markdown link, with the publication or retrieval date when known. One number, one source; do not attach a single source to a paragraph of numbers.
 3. **"Found nothing" beats a guess.** If a search turns up nothing usable for a point, say so plainly in the seller's language (for Swedish: "hittade inget"). Never fill a gap with a typical-sounding number, a number from memory, or an unsourced range.
 4. **Separate facts from judgement.** Anything you conclude yourself (package prices, the beginner assessment, which competitor is strongest) is marked as your assessment and says which sourced facts it rests on.

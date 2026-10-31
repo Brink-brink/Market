@@ -13,7 +13,8 @@ $cases = @(
     @{ File = 'market1-no-args.md'; Prompt = '/market' },
     @{ File = 'market2-buyer.md';   Prompt = '/market köpare' },
     @{ File = 'market3-seller.md';  Prompt = '/market säljare' },
-    @{ File = 'market4-buyer-en.md'; Prompt = '/market I am a buyer, I run a dental clinic' }
+    @{ File = 'market4-buyer-en.md'; Prompt = '/market I am a buyer, I run a dental clinic' },
+    @{ File = 'market5-seller-en.md'; Prompt = '/market I build AI agents and want to sell them' }
 )
 
 foreach ($case in $cases) {

@@ -9,7 +9,13 @@ The user ran `/market`. Arguments, if any: $ARGUMENTS
 
 ## Language
 
-Answer in the language the user writes in. If they have written nothing but the command, use Swedish.
+Work out the session's language before you write anything, in this order:
+
+1. If your instructions set a response language for this session (for example a language setting in Claude Code), use it.
+2. Otherwise use the language of the user's own messages in this conversation, including any text after the command. The command word itself says nothing about language.
+3. If neither gives an answer (the user has written only `/market`), write the role question in both Swedish and English, one line each, and label the options in both languages ("Säljare / Seller", "Köpare / Buyer"). Then continue in the language the user answers in.
+
+Keep that language for the rest of the conversation, including the market analysis.
 
 ## Step 1: Find out the role
 
