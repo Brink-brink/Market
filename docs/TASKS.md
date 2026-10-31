@@ -18,7 +18,7 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] `claude plugin validate --strict` passerar för plugin och marknadsplats
 - [x] Pluginen laddar med `--plugin-dir` (`claude plugin list`)
 - [x] Git-repo initierat med första commit
-- [ ] Testa analysen själv på 2–3 nischer och justera SKILL.md
+- [x] Testa analysen själv på 2–3 nischer och justera SKILL.md (`tests/run-tests.ps1`: frisörer, tandläkare, mäklare på engelska)
 - [ ] Lägg repot på GitHub så testarna kan installera
 - [ ] 10 säljare testar analysen
 - [ ] Beslut: licens (krävs av katalogen, `license` i plugin.json eller LICENSE-fil)

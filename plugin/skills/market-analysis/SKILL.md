@@ -23,8 +23,8 @@ These apply to the whole answer and override everything else in this skill.
 ## Step 1: Pin down the niche and market
 
 - Restate the niche as: **customer type** (e.g. hair salons) + **agent type** (e.g. booking agent).
-- Decide the market and currency. Use what the seller said; otherwise infer from their language (Swedish → Sweden, SEK). Only ask if it is genuinely ambiguous, and then ask once.
-- Show all prices in that currency. When a source uses another currency, give the original amount and the converted amount, and say that you converted it.
+- Decide the market and currency. Use what the seller said; otherwise infer from their language (Swedish → Sweden, SEK). Only ask if it is genuinely ambiguous, and then ask once. When you inferred the market rather than being told it, say so in one line under the title, so the seller can correct it.
+- Show all prices in that currency. When a source uses another currency, look up the current exchange rate from a central bank and cite it like any other figure. For SEK, fetch Riksbanken's latest rate with WebFetch from `https://api.riksbank.se/swea/v1/Observations/Latest/SEK<CUR>PMI`, where `<CUR>` is the source currency (for example `SEKUSDPMI`, `SEKEURPMI`, `SEKGBPPMI`). For other currencies, use the ECB or the market's own central bank. Then give the original amount and the converted amount. If you find no rate, show the original amount only and say so.
 
 ## Step 2: Search
 
@@ -62,7 +62,7 @@ For each factor, write one line and cite the sourced fact it rests on where ther
 
 ## Output format
 
-Use this structure, translated into the seller's language. Keep it tight: short paragraphs and tables, no filler.
+Use this structure, translated into the seller's language. Start directly with the title: no preamble such as "I've finished searching". Keep it tight: short paragraphs and tables, no filler.
 
 ```
 # Market analysis: <niche> (<market>)

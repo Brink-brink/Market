@@ -4,6 +4,9 @@ Thumbs.db
 desktop.ini
 __MACOSX/
 
+# Test output
+tests/output/
+
 # Editor
 .vscode/
 .idea/

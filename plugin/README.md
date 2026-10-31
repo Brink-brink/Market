@@ -33,4 +33,4 @@ Du kan också fråga med egna ord, till exempel "Lönar det sig att bygga AI-rec
 
 ## Vad pluginen kör och skickar
 
-Pluginen innehåller bara instruktioner (en skill). Den har ingen egen server, inga skript och ingen MCP-koppling. Den använder Claudes inbyggda webbsökning (`WebSearch`) och sidhämtning (`WebFetch`). Sökfrågorna bygger på nischen du anger. Pluginen sparar ingenting och skickar inga data någon annanstans.
+Pluginen innehåller bara instruktioner (en skill). Den har ingen egen server, inga skript och ingen MCP-koppling. Den använder Claudes inbyggda webbsökning (`WebSearch`) och sidhämtning (`WebFetch`). Sökfrågorna bygger på nischen du anger. För att räkna om priser i utländsk valuta till kronor hämtar den dagens kurs från Riksbankens öppna API (`api.riksbank.se`). Pluginen sparar ingenting och skickar inga data någon annanstans.
