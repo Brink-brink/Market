@@ -22,6 +22,19 @@ I Claude Code:
 /ai-jobb:market-analysis bokningsagent för frisörer
 ```
 
+Installera från GitHub (kräver Claude Code 2.1.275 eller senare, och att du har åtkomst till repot medan det är privat):
+
+```
+/plugin install ai-jobb --marketplace Brink-brink/Market
+```
+
+Eller i två steg från terminalen:
+
+```
+claude plugin marketplace add Brink-brink/Market
+claude plugin install ai-jobb@ai-jobb
+```
+
 Installera lokalt från repots marknadsplats (kör från mappen `ai-jobb-plugin`):
 
 ```
