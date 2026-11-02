@@ -27,7 +27,7 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Git-repo initierat med första commit
 - [x] Testa analysen själv på 2–3 nischer och justera SKILL.md (`tests/run-tests.ps1`: frisörer, tandläkare, mäklare på engelska)
 - [x] Repo skapat på GitHub (`Brink-brink/Market`, privat) och kopplat som `origin`
-- [ ] Första push till GitHub (`git push -u origin main`, kräver inloggning i webbläsaren)
+- [x] Första push till GitHub (`git push -u origin main`)
 - [ ] Bjud in testarna som collaborators och skicka testinstruktion
 - [ ] 10 säljare testar analysen och annonsutkastet
 - [ ] Beslut: licens (krävs av katalogen, `license` i plugin.json eller LICENSE-fil)
