@@ -33,7 +33,7 @@ Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina 
 
 - Postgres-schema enligt `ARKITEKTUR.md`
 - MCP-server med köpar- och säljarverktyg, inklusive katalog och annonser
-- OAuth för säljare, token för köpare
+- OAuth för säljare, kod i bekräftelsemejlet för köpare
 - Webbplats: registrering, krediter, admin med granskning av annonser
 - E-postaviseringar
 
