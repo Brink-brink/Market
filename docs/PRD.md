@@ -153,6 +153,7 @@ Köpare och säljare kan inte hitta eller kontakta varandra förrän säljaren h
 - En kredit dras **först när köparen svarar** på säljarens erbjudande. Inget svar = ingen kostnad.
 - Startpris att testa: 5–10 % av paketets pris per svarat lead (t.ex. 150–300 kr för ett paket på 3 000 kr).
 - Nya säljare får gratis krediter de första månaderna.
+- **Annonsassistenten** på webbplatsen är ett tillval för säljare: gratis under lanseringen, betalt senare. Pris inte bestämt.
 
 ## Startnisch
 

@@ -38,6 +38,12 @@ Uppdatera när något blir klart eller tillkommer.
 
 ## Fas 2
 - [x] Skelett för säljarwebbplatsen (`web/`, Next.js 16): start, skicka in annons, krediter, katalog, villkor, integritet, kontakt
+- [x] Hela webbplatsen på engelska och svenska: delad startsida, köparsida, säljarsida, katalog med sök och filter, annonssidor, bygg vidare, vanliga frågor
+- [x] AI-assistenter på webbplatsen (behov och annons) via Claude API, avstängda tills `ANTHROPIC_API_KEY` är satt
+- [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
+- [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik
+- [ ] Ta bort exempelannonserna i `web/lib/listings.ts` vid lansering
+- [ ] Beslut: pris för annonsassistenten efter lanseringen
 - [ ] Tally-formulär för annonser och koppling i `web/.env.local`
 - [ ] Publicera på Vercel och koppla domänen
 - [ ] Landningssida för säljare: slutlig text när namn och pris är beslutade

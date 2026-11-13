@@ -26,7 +26,7 @@ Dessa kommer från Anthropics och OpenAIs regler för plugins. Bryts de avslås 
 
 ## Arbetssätt
 
-- Kod, identifierare och commit-meddelanden på engelska. Dokumentation och UI-text på svenska tills vidare.
+- Kod, identifierare och commit-meddelanden på engelska. Dokumentation på svenska. Webbplatsen är internationell: engelska som standard och svenska (`web/lib/dict/`). Pluginen svarar på användarens språk.
 - Bygg i den ordning som står i `docs/PLAN.md`. Fas 2 får byggas parallellt med fas 0 och 1, men ingen lansering med betalning innan en plattform svarat om lead-modellen.
 - Uppdatera `docs/TASKS.md` när en uppgift blir klar eller tillkommer.
 - Gissa inte om plattformsregler eller API:er. Läs aktuell dokumentation (länkar i `docs/PLATTFORMSREGLER.md`) innan du implementerar något som rör dem.
