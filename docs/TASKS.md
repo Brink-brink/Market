@@ -9,7 +9,9 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Beslut: 3 paket med prisintervall
 - [ ] 10 intervjuer med företagare
 - [ ] 10 intervjuer med blivande säljare (Skool-communities)
-- [ ] Beslut: arbetsnamn och domän
+- [x] Arbetsnamn: Brinc (tillfälligt)
+- [ ] Köp domän före fas 2 (brinc.se, .com, .ai och .io är upptagna; brinc.nu och brincai.se var lediga 2026-11-13)
+- [ ] Kolla varumärkesintrång för "Brinc" (PRV, EUIPO)
 
 ## Fas 1
 - [x] Skriv SKILL.md för marknadsanalys (`plugin/skills/market-analysis/SKILL.md`)

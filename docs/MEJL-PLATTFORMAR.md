@@ -1,6 +1,6 @@
 # Utkast: frågor till Anthropic och OpenAI om lead-modellen
 
-Utkast, inte skickade. Fyll i `[arbetsnamn]` och `[domän]` när de är beslutade (fas 0). Skicka från den adress du vill använda för plattformskontakten.
+Utkast, inte skickade. Arbetsnamn: Brinc (tillfälligt). Domän behövs inte för mejlen. Skicka från den adress du vill använda för plattformskontakten.
 
 - Anthropic: e-post till mcp-review@anthropic.com
 - OpenAI: via plugin-portalen (texten nedan passar i ett supportformulär)
@@ -43,7 +43,7 @@ I am happy to share the design documents or a short demo.
 
 Best regards,
 Philip Norrbrink
-[arbetsnamn] · [domän]
+Working title: Brinc
 
 ---
 
@@ -81,4 +81,4 @@ I can share design documents or a demo on request.
 
 Best regards,
 Philip Norrbrink
-[arbetsnamn] · [domän]
+Working title: Brinc
