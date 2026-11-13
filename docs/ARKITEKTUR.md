@@ -131,6 +131,36 @@ Regler:
 - `category` är typ av agent (chattbot, bokningsagent, telefonagent …). Per `buyer_email` och `category` får högst 2 erbjudanden ha status `accepted` utan `outcome = no_deal` samtidigt.
 - `area` är stad eller region, aldrig exakt adress.
 
+### Delägarskap och uppköp (efter MVP, se `DELAGARSKAP.md`)
+
+Förbered i fas 3 genom att låta en annons höra till en produkt, inte direkt till en säljare.
+
+```
+products          id, title, niche, repo_ref?, status (active|for_sale|sold|paused),
+                  open_for_contributions, created_at
+product_owners    id, product_id, seller_id, share_bp,      # andel i baspunkter
+                  role (owner|contributor), valid_from, valid_to?
+contributions     id, product_id, contributor_id, title, size (s|m|l),
+                  level (simple|medium|advanced), proposed_share_bp,
+                  status (proposed|agreed|in_progress|submitted|approved|rejected),
+                  agreement_ref?, created_at
+work_log          id, contribution_id, kind (commit|pull_request|demo|test|
+                  description|time), payload (jsonb), checksum, prev_checksum,
+                  created_at                                  # bara insert
+buyouts           id, product_id, buyer_seller_id, price, status (offered|accepted|
+                  escrow_paid|handover|completed|cancelled), escrow_ref,
+                  created_at
+payouts           id, source (package_sale|buyout), source_id, seller_id, amount,
+                  stripe_transfer_ref, created_at
+```
+
+Regler:
+- `work_log` får bara ha insert. `checksum` täcker posten och `prev_checksum`, så att ändringar i efterhand syns.
+- Kodbevis hämtas som metadata via en GitHub-app med läsbehörighet. Koden sparas och körs aldrig.
+- Summan av `share_bp` för en produkt är alltid 10 000 vid varje tidpunkt.
+- Utbetalningar görs via Stripe Connect först efter att köparen bekräftat leveransen eller överlämningen, eller att tidsgränsen gått ut.
+- Säljare ser varandra bara som alias tills ett avtal skrivs eller köparen har betalat till escrow.
+
 ## Annons-livscykel
 
 ```

@@ -65,6 +65,16 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Integritetspolicy och villkor
 - [ ] Tester för lead-livscykeln
 
+## Fas 5 – Delägarskap och uppköp (`DELAGARSKAP.md`)
+- [x] Design: bygga vidare, andelstabell, arbetslogg med bevis, uppköp med utlösen, alias mellan säljare
+- [ ] Jurist: bidragsavtal, delägaravtal, köpeavtal, upphovsrätt och patent, moms vid delade intäkter
+- [ ] Stripe Connect: konton med identitetskontroll, betalning av paket via tjänsten, utbetalning efter bekräftad leverans
+- [ ] GitHub-app med läsbehörighet för arbetsloggen (bara metadata)
+- [ ] Andelsbok, bidragsflöde och granskning av bidrag
+- [ ] Uppköp: värderingsunderlag, escrow, överlämningschecklista
+- [ ] Beslut: avgiftsnivåer (procent av uppköp och av intäkter)
+- [ ] Förbered i fas 3: annonser hör till en produkt (`products`), inte direkt till en säljare
+
 ## Öppna frågor
 - [x] Hur hämtar köparen erbjudanden utan konto? Beslut: kod i bekräftelsemejlet
 - [ ] Senare: ska Claude säga till när köparen sannolikt inte behöver någon som bygger?

@@ -119,6 +119,10 @@ Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett
 - Paketmallar per bransch som säljare kan utgå från
 - Admin: granska annonser enligt `GRANSKNING.md`, pausa annonser, se leads, återbetala krediter
 
+### Delägarskap och uppköp (efter MVP)
+
+Andra säljare kan bygga vidare på en produkt och bli delägare, med en andel som bygger på en arbetslogg med bevis. En produkt kan köpas upp; bidragsgivarna löses då ut. Paket för produkter med delägare och alla uppköp betalas via tjänsten (Stripe Connect). Detaljer: `DELAGARSKAP.md`.
+
 ### Senare
 
 - Privatpersoner som köpare
@@ -128,7 +132,7 @@ Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett
 
 ### Ingår inte
 
-- Betalning för själva paketet mellan köpare och säljare
+- Betalning för själva paketet mellan köpare och säljare i MVP (undantag senare: produkter med delägare, se `DELAGARSKAP.md`)
 - Köpt placering eller "boost" av säljare eller annonser, i katalogen eller matchningen (förbjudet enligt plattformsreglerna)
 - Snabbare eller mildare granskning mot betalning
 - Att ta emot, lagra eller köra säljarens kod; allt granskas via säljarens egen demo

@@ -1,6 +1,6 @@
 # Plan
 
-Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina kriterier.
+Kvällar och helger. Beslut 2026-11-13: fas 2 byggs parallellt med fas 0 och 1. Ingen lansering med betalning förrän minst en plattform har svarat på frågan om lead-modellen.
 
 ## Fas 0 – Regler och samtal (vecka 1)
 
@@ -45,7 +45,19 @@ Kvällar och helger. Bygg inte nästa fas förrän föregående har klarat sina 
 - `claude plugin validate`
 - Skicka in till Claude-katalogen, sedan ChatGPT
 
-## Fas 5 – Skala
+## Fas 5 – Delägarskap och uppköp
+
+Se `DELAGARSKAP.md`.
+
+- Jurist: bidragsavtal, delägaravtal, köpeavtal, upphovsrätt och patent, moms
+- Stripe Connect för säljare, betalning av paket via tjänsten
+- Bidrag, arbetslogg med GitHub-app (bara läsbehörighet) och granskning av bidrag
+- Andelsbok och automatisk delning av intäkter
+- Uppköp med escrow och överlämningschecklista
+
+**Klart när:** minst en produkt har fått ett godkänt bidrag och delat intäkter, och ett uppköp har genomförts.
+
+## Fas 6 – Skala
 
 - Fler branscher och paket
 - Privatpersoner som köpare
