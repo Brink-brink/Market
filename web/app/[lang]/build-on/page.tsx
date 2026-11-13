@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { ChartNoAxesColumn, Coins, GitBranch, Hammer, KeyRound, ListChecks, MessageSquarePlus, Play, Wallet } from "lucide-react";
+import { IconGrid } from "@/components/IconGrid";
+import { images } from "@/lib/images";
 import { pageContext } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/build-on">): Promise<Metadata> {
@@ -18,14 +22,20 @@ export default async function BuildOnPage({ params }: PageProps<"/[lang]/build-o
 
   return (
     <>
-      <span className="badge badge-accent">{t.common.comingLater}</span>
-      <h1>{b.title}</h1>
-      <p className="lead">{b.lead}</p>
+      <section className="page-head">
+        <div>
+          <span className="badge badge-accent">{t.common.comingLater}</span>
+          <h1>{b.title}</h1>
+          <p className="lead">{b.lead}</p>
+        </div>
+        <Image src={images.team} alt="" width={1168} height={880} priority />
+      </section>
 
       <h2>{b.buildTitle}</h2>
-      <ol className="steps-list">
-        {b.build.map((step) => <li key={step}>{step}</li>)}
-      </ol>
+      <IconGrid boxed items={b.build} icons={[MessageSquarePlus, Hammer, Coins]} />
+
+      <h2>{b.logTitle}</h2>
+      <IconGrid boxed items={b.log} icons={[GitBranch, Play, ListChecks]} />
 
       <h2>{b.shareTitle}</h2>
       <div className="table-wrap">
@@ -50,16 +60,8 @@ export default async function BuildOnPage({ params }: PageProps<"/[lang]/build-o
       </div>
       <p className="meta">{b.shareNote}</p>
 
-      <h2>{b.logTitle}</h2>
-      <p>{b.logText}</p>
-      <ul className="steps">
-        {b.log.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-
       <h2>{b.buyTitle}</h2>
-      <ol className="steps-list">
-        {b.buy.map((step) => <li key={step}>{step}</li>)}
-      </ol>
+      <IconGrid boxed items={b.buy} icons={[ChartNoAxesColumn, Wallet, KeyRound]} />
     </>
   );
 }

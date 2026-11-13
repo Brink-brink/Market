@@ -32,11 +32,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           <div className="wrap header-inner">
             <Link href={link("")} className="logo">{site.name}</Link>
             <nav className="nav">
-              <Link href={link("/buyers")}>{t.buyers}</Link>
-              <Link href={link("/sellers")}>{t.sellers}</Link>
+              <Link href={link("/#how")}>{t.sellers}</Link>
               <Link href={link("/catalog")}>{t.catalog}</Link>
               <Link href={link("/build-on")}>{t.buildOn}</Link>
               <Link href={link("/faq")}>{t.faq}</Link>
+              <Link href={link("/buyers")}>{t.buyers}</Link>
             </nav>
             <LanguageSwitch current={lang} label={t.language} />
             <Link href={link("/listing")} className="pill">{t.listCta}</Link>

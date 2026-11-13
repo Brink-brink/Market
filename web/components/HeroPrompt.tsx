@@ -2,24 +2,25 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { PENDING_NEED_KEY } from "@/lib/pending-need";
+import { pendingKey } from "@/lib/pending-need";
 
 type Props = {
+  mode: "need" | "listing";
   target: string;
   placeholder: string;
   cta: string;
   hints: string[];
 };
 
-// The box on the home page. What the visitor writes is handed to the need assistant on the buyers page.
-export function HeroPrompt({ target, placeholder, cta, hints }: Props) {
+// The box on the home page. What the visitor writes is handed to the assistant on the target page.
+export function HeroPrompt({ mode, target, placeholder, cta, hints }: Props) {
   const router = useRouter();
   const [text, setText] = useState("");
 
   function go() {
     const value = text.trim();
     // Kept in the browser only, never in the address.
-    if (value) sessionStorage.setItem(PENDING_NEED_KEY, value);
+    if (value) sessionStorage.setItem(pendingKey(mode), value);
     router.push(target);
   }
 

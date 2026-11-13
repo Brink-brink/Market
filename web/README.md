@@ -1,5 +1,9 @@
 # Webbplatsen (fas 2)
 
+Sidan vänder sig till **nya frilansare som bygger AI-agenter**. Köpare får en egen sida och en flik på startsidan, men möter tjänsten i första hand i Claude.
+
+Designregel: varje avsnitt har en bild eller ikon och högst en mening per punkt. Detaljer hör hemma i vanliga frågor.
+
 Next.js 16, engelska och svenska, ingen databas. Läs `AGENTS.md` innan du ändrar kod: Next 16 skiljer sig från äldre versioner, och dokumentationen ligger i `node_modules/next/dist/docs/`.
 
 ## Sidor
@@ -8,9 +12,8 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 
 | Sida | Fil | Innehåll |
 | --- | --- | --- |
-| `/` | `app/[lang]/page.tsx` | Skrivruta över en bakgrundsbild som leder till behovsassistenten, annonser ur katalogen, och ett band för säljare |
+| `/` | `app/[lang]/page.tsx` | Foto med skrivrutan "Vad bygger du?" som leder till annonsassistenten, fyra fördelar med ikoner, "Så fungerar det" med fotokort och växel mellan frilansare och företag, annonser ur katalogen, och ett band för köpare |
 | `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och behovsassistenten |
-| `/sellers` | `app/[lang]/sellers/page.tsx` | Hur tjänsten fungerar för säljare |
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
 | `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter |
 | `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons |
@@ -27,7 +30,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Namn, valuta, kreditpaket | `lib/site.ts` |
 | Annonser i katalogen | `lib/listings.ts` |
 | Assistenternas instruktioner | `lib/assistant-prompts.ts` |
-| Bakgrundsbilden på startsidan | `public/hero.svg` (egen illustration). Byt mot ett foto genom att lägga filen i `public/` och ändra `.hero` i `app/globals.css` |
+| Foton | `public/img/*.webp`, listade i `lib/images.ts`. AI-genererade för sidan (nätverkstema). Byt en bild genom att ersätta filen |
 | Färger och stil | `app/globals.css` (variablerna överst) |
 
 Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`docs/GRANSKNING.md`). Bara katalogfält, aldrig namn, kontaktuppgifter eller demolänk. Annonserna med `example: true` är exempel och ska tas bort vid lansering.

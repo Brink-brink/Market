@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { Clock, Database, FileSearch, ListChecks, Package, Play, ShieldCheck, Tag, Target } from "lucide-react";
 import { Assistant } from "@/components/Assistant";
+import { IconGrid } from "@/components/IconGrid";
+import { images } from "@/lib/images";
 import { pageContext } from "@/lib/page";
 import { site } from "@/lib/site";
 
@@ -13,25 +17,26 @@ export default async function ListingPage({ params }: PageProps<"/[lang]/listing
 
   return (
     <>
-      <h1>{l.title}</h1>
-      <p className="lead">{l.lead}</p>
+      <section className="page-head">
+        <div>
+          <h1>{l.title}</h1>
+          <p className="lead">{l.lead}</p>
+        </div>
+        <Image src={images.pair} alt="" width={1168} height={880} priority />
+      </section>
 
       <h2 id="assistant">
-        {l.assistantTitle} <span className="badge badge-accent">{t.sellers.assistantBadge}</span>
+        {l.assistantTitle} <span className="badge badge-accent">{t.common.addonBadge}</span>
       </h2>
       <Assistant mode="listing" lang={lang} intro={t.assistant.listingIntro} labels={t.assistant} />
 
       <h2>{l.needTitle}</h2>
-      <ul className="steps">
-        {l.needs.map((need) => <li key={need}>{need}</li>)}
-      </ul>
+      <IconGrid boxed items={l.needs} icons={[Target, Package, Tag, Clock, Play, ListChecks, Database]} />
       <p className="note">{l.aliasNote}</p>
 
       <h2>{l.reviewTitle}</h2>
-      <ol className="steps-list">
-        {l.review.map((item) => <li key={item}>{item}</li>)}
-      </ol>
-      <p className="meta">{l.reviewNote}</p>
+      <IconGrid boxed items={l.review} icons={[Play, FileSearch, ShieldCheck, Tag]} />
+      <p className="meta" style={{ marginTop: 16 }}>{l.reviewNote}</p>
 
       <h2>{l.submitTitle}</h2>
       {site.listingFormUrl ? (

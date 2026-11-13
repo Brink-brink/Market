@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { images } from "@/lib/images";
 import { pageContext } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/faq">): Promise<Metadata> {
@@ -24,11 +26,14 @@ export default async function FaqPage({ params }: PageProps<"/[lang]/faq">) {
 
   return (
     <>
-      <h1>{f.title}</h1>
-      <h2>{f.buyersTitle}</h2>
-      <Questions items={f.buyers} />
+      <section className="page-head">
+        <h1>{f.title}</h1>
+        <Image src={images.demo} alt="" width={1168} height={880} priority />
+      </section>
       <h2>{f.sellersTitle}</h2>
       <Questions items={f.sellers} />
+      <h2>{f.buyersTitle}</h2>
+      <Questions items={f.buyers} />
     </>
   );
 }

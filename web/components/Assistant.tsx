@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dict, Locale } from "@/lib/i18n";
-import { PENDING_NEED_KEY } from "@/lib/pending-need";
+import { pendingKey } from "@/lib/pending-need";
 
 type Message = { role: "user" | "assistant"; content: string };
 type Status = "checking" | "ready" | "off";
@@ -30,10 +30,9 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
       .then((res) => res.json())
       .then((data: { enabled?: boolean }) => {
         setStatus(data.enabled ? "ready" : "off");
-        if (mode !== "need") return;
         // Text the visitor wrote in the box on the home page.
-        const pending = sessionStorage.getItem(PENDING_NEED_KEY);
-        sessionStorage.removeItem(PENDING_NEED_KEY);
+        const pending = sessionStorage.getItem(pendingKey(mode));
+        sessionStorage.removeItem(pendingKey(mode));
         if (!pending) return;
         if (data.enabled) void send(pending);
         else setCarried(pending);

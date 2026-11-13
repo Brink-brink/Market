@@ -29,7 +29,7 @@ export type CatalogListing = {
 export const listings: CatalogListing[] = [
   {
     id: "booking-hair-a7",
-    alias: "Maker A7",
+    alias: "Freelancer A7",
     industry: "hair",
     agentType: "phone",
     title: {
@@ -64,7 +64,7 @@ export const listings: CatalogListing[] = [
   },
   {
     id: "chatbot-dental-k2",
-    alias: "Maker K2",
+    alias: "Freelancer K2",
     industry: "dental",
     agentType: "chatbot",
     title: {
@@ -98,7 +98,7 @@ export const listings: CatalogListing[] = [
   },
   {
     id: "reviews-restaurant-m4",
-    alias: "Maker M4",
+    alias: "Freelancer M4",
     industry: "restaurant",
     agentType: "reviews",
     title: {
@@ -132,7 +132,7 @@ export const listings: CatalogListing[] = [
   },
   {
     id: "booking-trades-r9",
-    alias: "Maker R9",
+    alias: "Freelancer R9",
     industry: "trades",
     agentType: "booking",
     title: {
