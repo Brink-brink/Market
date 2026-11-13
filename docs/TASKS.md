@@ -37,7 +37,10 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Eval-svit med `claude plugin eval` (källa per siffra, "hittade inget", språk, inga kreditpriser)
 
 ## Fas 2
-- [ ] Landningssida för säljare
+- [x] Skelett för säljarwebbplatsen (`web/`, Next.js 16): start, skicka in annons, krediter, katalog, villkor, integritet, kontakt
+- [ ] Tally-formulär för annonser och koppling i `web/.env.local`
+- [ ] Publicera på Vercel och koppla domänen
+- [ ] Landningssida för säljare: slutlig text när namn och pris är beslutade
 - [ ] Stripe Payment Links för kreditpaket
 - [ ] Formulär för köpare (fälten från behovsutkastet) med e-postbekräftelse och kod
 - [ ] Manuellt: skicka förfrågan till säljare, mejla erbjudanden till köparen, mejla "Blev det affär?" efter 3–4 veckor
