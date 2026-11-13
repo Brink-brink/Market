@@ -43,13 +43,13 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       </div>
       <HowTabs
         tabs={[
-          { label: h.tabFreelancers, steps: withImages(h.freelancerSteps, [images.pair, images.demo, images.handshake]) },
-          { label: h.tabBusinesses, steps: withImages(h.businessSteps, [images.cafe, images.demo, images.handshake]) },
+          { label: h.tabFreelancers, steps: withImages(h.freelancerSteps, [images.typing, images.demo, images.handshake]) },
+          { label: h.tabBusinesses, steps: withImages(h.businessSteps, [images.bakery, images.offers, images.call]) },
         ]}
       />
 
       <section className="split">
-        <Image src={images.desk} alt="" width={1344} height={752} />
+        <Image src={images.phone} alt="" width={1168} height={880} />
         <div>
           <span className="badge badge-accent">{t.common.addonBadge}</span>
           <h2>{h.assistantTitle}</h2>
@@ -73,7 +73,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       )}
 
       <section className="split reverse">
-        <Image src={images.team} alt="" width={1168} height={880} />
+        <Image src={images.whiteboard} alt="" width={1168} height={880} />
         <div>
           <span className="badge">{t.common.comingLater}</span>
           <h2>{h.buildTitle}</h2>

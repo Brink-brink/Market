@@ -28,7 +28,7 @@ export default async function FaqPage({ params }: PageProps<"/[lang]/faq">) {
     <>
       <section className="page-head">
         <h1>{f.title}</h1>
-        <Image src={images.demo} alt="" width={1168} height={880} priority />
+        <Image src={images.meetup} alt="" width={1168} height={880} priority />
       </section>
       <h2>{f.sellersTitle}</h2>
       <Questions items={f.sellers} />

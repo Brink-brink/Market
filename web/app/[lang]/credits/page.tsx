@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { images } from "@/lib/images";
 import { fill } from "@/lib/i18n";
 import { pageContext } from "@/lib/page";
 import { creditPackages, formatMoney } from "@/lib/site";
@@ -14,8 +16,13 @@ export default async function CreditsPage({ params }: PageProps<"/[lang]/credits
 
   return (
     <>
-      <h1>{c.title}</h1>
-      <p className="lead">{c.lead}</p>
+      <section className="page-head wide">
+        <div>
+          <h1>{c.title}</h1>
+          <p className="lead">{c.lead}</p>
+        </div>
+        <Image src={images.desk} alt="" width={1344} height={752} priority />
+      </section>
 
       <div className="grid">
         {creditPackages.map((pkg) => (

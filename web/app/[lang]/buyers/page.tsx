@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/buyers">):
 export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">) {
   const { lang, t, link } = await pageContext(params);
   const b = t.buyers;
-  const pics = [images.cafe, images.demo, images.handshake];
+  const pics = [images.bakery, images.offers, images.call];
 
   return (
     <>
@@ -22,7 +22,7 @@ export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">
           <h1>{b.title}</h1>
           <p className="lead">{b.lead}</p>
         </div>
-        <Image src={images.cafe} alt="" width={1168} height={880} priority />
+        <Image src={images.street} alt="" width={1168} height={880} priority />
       </section>
 
       <h2 id="assistant">{b.assistantTitle}</h2>
