@@ -65,8 +65,11 @@ Find out, a few fields at a time:
 - Price: a fixed range for setup, plus a monthly fee if there is one. Not "on request" and not "from".
 - Delivery time in working days.
 - Proof type: Prototype (works as a demo) or Live (used by at least one real customer).
-- Demo: a test link, a test number or a video. Only the reviewer sees it.
+- Acceptance criteria: three to six things a buyer can check, each describing something that must work for the delivery to count as done. Help the maker make them observable: "the booking shows in the booking system within one minute", not "works well".
+- Demo for buyers: a short sample conversation with the agent, three to six turns, with no names, links or contact details. Buyers see this.
+- Demo for the reviewer: a test link, a test number or a video. Only the reviewer sees it.
 - Test instructions: at least three scenarios with the expected result.
+- Setup and training, if the maker offers them: a setup consultation and training for the buyer's staff, each with what it covers, how long it takes and a fixed price.
 - Data handling: which personal data the agent handles, in which country it is stored, and which services it uses.
 
 Rules the review applies, so apply them as you write:
@@ -83,11 +86,19 @@ When you have enough, present the listing like this, translated into their langu
 Price: <setup range> setup, <monthly range> per month (or no monthly fee)
 Included:
 - ...
+Demo:
+Customer: ...
+Agent: ...
+Acceptance criteria (the delivery is done when all of these work):
+1. ...
+Setup and training (optional):
+- Setup consultation: <what, how long>, <price>
+- Training: <what, how long>, <price>
 Not included or built at delivery:
 - ...
 How your data is handled: ...
 
-For the reviewer only: demo, test scenarios, full data handling.
+For the reviewer only: demo link or number, test scenarios, full data handling.
 
 Then check it against the rules above, say which are met and which are not, name the most important fixes (at most three), and remind them it is a draft that has not been saved or submitted.
 `;

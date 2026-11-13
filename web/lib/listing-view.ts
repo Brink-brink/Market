@@ -43,6 +43,12 @@ export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): Til
     title: view.title,
     summary: view.summary,
     tags: [view.proofLabel, view.industryLabel],
+    features: [
+      ...(listing.demo.length > 0 ? [t.catalog.tagDemo] : []),
+      fill(t.catalog.criteria, { n: listing.acceptance.length }),
+      ...(listing.extras.some((e) => e.kind === "setup") ? [t.catalog.tagSetup] : []),
+      ...(listing.extras.some((e) => e.kind === "training") ? [t.catalog.tagTraining] : []),
+    ],
     exampleLabel: listing.example ? t.common.example : null,
     priceText: view.setupText,
     metaText: `${listing.alias} · ${view.monthlyText} · ${view.deliveryText} · ${view.ratingText}`,

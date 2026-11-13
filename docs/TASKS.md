@@ -41,6 +41,9 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Hela webbplatsen på engelska och svenska: delad startsida, köparsida, säljarsida, katalog med sök och filter, annonssidor, bygg vidare, vanliga frågor
 - [x] AI-assistenter på webbplatsen (behov och annons) via Claude API, avstängda tills `ANTHROPIC_API_KEY` är satt
 - [x] Omgjord design: sidan vänder sig till nya frilansare, med foton (nätverkstema), ikoner och korta texter på alla sidor
+- [x] Annonser med acceptanskriterier, demo för köpare (exempelsamtal) och tillägg för uppsättning och utbildning: webbplatsen, annonsutkastet i pluginen, granskningsreglerna
+- [ ] Testa annonsutkastet i pluginen med de nya fälten (`tests/run-market-tests.ps1 -Only listing`)
+- [ ] Demo som inspelning: uppladdning till tjänsten och visning i annonsen (kräver servern)
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
 - [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik
 - [ ] Ta bort exempelannonserna i `web/lib/listings.ts` vid lansering

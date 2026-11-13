@@ -1,6 +1,6 @@
 ---
 name: listing-draft
-description: Helps someone who builds AI agents write a draft listing for their package (niche, contents, fixed price range, delivery time, prototype or live product, demo, test instructions, data handling) and checks it against the review criteria. Nothing is saved or submitted. Use when a seller wants to create, write or improve a listing, ad or offer for their AI agent package.
+description: Helps someone who builds AI agents write a draft listing for their package (niche, contents, fixed price range, delivery time, acceptance criteria, a demo conversation, optional setup consultation and training, prototype or live product, test instructions, data handling) and checks it against the review criteria. Nothing is saved or submitted. Use when a seller wants to create, write or improve a listing, ad or offer for their AI agent package.
 ---
 
 # Listing draft
@@ -11,7 +11,7 @@ The seller wants a draft listing for an AI agent package. Arguments, if any: $AR
 
 1. **Language.** If your instructions set a response language for this session, use it. Otherwise use the language of the seller's own messages in this conversation. If there is nothing to go on, use Swedish.
 2. **Nothing is saved or sent.** Submitting listings is not open yet. Say so at the start and again with the finished draft. Never claim the draft has been submitted, received or queued for review.
-3. **Nothing in the buyer-facing part that lets a buyer find or contact the seller.** No personal name, company name, brand name, e-mail, phone number, website, booking page, link or social media handle. Buyers see the seller only under an alias the service assigns. If the seller gives any of these, leave them out of the buyer-facing part and say why: buyer and seller can reach each other only after the lead is paid, that is, after the buyer has replied to an offer. The demo link, test number and video go only in the reviewer block; buyers never see them.
+3. **Nothing in the buyer-facing part that lets a buyer find or contact the seller.** No personal name, company name, brand name, e-mail, phone number, website, booking page, link or social media handle. Buyers see the seller only under an alias the service assigns. If the seller gives any of these, leave them out of the buyer-facing part and say why: buyer and seller can reach each other only after the lead is paid, that is, after the buyer has replied to an offer. The demo link, test number and video go only in the reviewer block; buyers never see them. What buyers do see is the sample conversation, so keep it free of anything that identifies the seller or a real customer.
 4. **No claims beyond the demo.** Every feature in the listing must be something the demo shows, or be marked "built at delivery". Do not write claims like "GDPR-certified", "100 % secure" or "guaranteed more bookings".
 5. **No sales for the service.** Do not mention prices of credits or leads, do not link to any website, sign-up or purchase page, and do not promise that the listing will be approved or when.
 
@@ -26,8 +26,11 @@ Use what the seller has already said in this conversation, especially a market a
 | Price | A fixed range for setup, plus a monthly fee if there is one. Not "on request" or "from". If a market analysis was run in this conversation, show its sourced price levels next to the seller's range; do not invent market prices |
 | Delivery time | In working days |
 | Proof type | **Prototype** (works as a demo) or **Live** (used by at least one real customer) |
-| Demo | Prototype: a test link or a video of at most 5 minutes. Live: a test link or test number, plus a short description of a real installation (no customer names needed) |
+| Acceptance criteria | 3 to 6 statements a buyer can check, each describing something that must work for the delivery to count as done. Observable and specific: "the booking shows in the booking system within one minute", not "works well" |
+| Demo for buyers | A short sample conversation with the agent (3 to 6 turns) that shows what it does. Written or copied from a real test, with no names, links or contact details. Buyers see this |
+| Demo for the reviewer | Prototype: a test link or a video of at most 5 minutes. Live: a test link or test number, plus a short description of a real installation (no customer names needed). Only the reviewer sees this |
 | Test instructions | At least 3 scenarios a reviewer should try, each with the expected result |
+| Setup and training (optional) | Help the seller offers on top of the package: a setup consultation and/or training for the buyer's staff. For each: what it covers, how long it takes, and a fixed price |
 | Data handling | Which personal data the agent handles, where it is stored (country), and which services it uses (for example voice platform, language model) |
 
 If the seller has no demo yet, finish the rest of the draft and list the demo as missing.
@@ -45,12 +48,27 @@ Write the listing as a buyer will see it in the catalog: short, concrete, in the
 **Included**
 - ...
 
+**Demo**
+Customer: ...
+Agent: ...
+
+**Acceptance criteria** (the delivery is done when all of these work)
+1. ...
+
+**Setup and training** (optional)
+- Setup consultation: <what, how long> · <price>
+- Training: <what, how long> · <price>
+
 **Not included / built at delivery**
 - ...
 
 **How your data is handled**
 <one or two sentences>
 ```
+
+If the seller has given no sample conversation, draft one from their test scenarios and say that it is a placeholder to replace with a real conversation from the demo. Do not invent names, phone numbers, prices or other facts in it; use neutral wording such as "your name and number" instead.
+
+Leave out "Setup and training" if the seller offers neither. Help the seller turn their test scenarios into acceptance criteria: a criterion says what the buyer will be able to observe, in the buyer's words.
 
 Below the listing, add a separate block for the reviewer only (buyers never see it): demo link, test number or video, test instructions, and full data handling.
 
@@ -66,5 +84,8 @@ Go through the review criteria and report each as ✔ (met), ✘ (not met, with 
 6. Data handling describes what data, where, and which services
 7. Sensitive niches (health, dental care, finance, children): the draft explains how sensitive data is avoided or protected
 8. Proof type matches the evidence (Live needs a real customer)
+9. Acceptance criteria: 3 to 6, each one something a buyer can check, and each covered by the demo or a test scenario
+10. The sample conversation shows what the listing promises and contains nothing that identifies the seller or a real customer
+11. Setup and training, if offered, each have a scope, a duration and a fixed price
 
 End with the most important fixes, at most three, and the reminder that this is a draft: nothing has been saved or sent.

@@ -7,6 +7,7 @@ export type TileData = {
   title: string;
   summary: string;
   tags: string[];
+  features: string[];
   exampleLabel: string | null;
   priceText: string;
   metaText: string;
@@ -25,6 +26,9 @@ export function ListingTile({ tile }: { tile: TileData }) {
       </div>
       <div className="tile-body">
         <p>{tile.summary}</p>
+        <div className="tile-features">
+          {tile.features.map((feature) => <span key={feature}>{feature}</span>)}
+        </div>
         <div className="tile-price">{tile.priceText}</div>
         <p className="meta">{tile.metaText}</p>
       </div>

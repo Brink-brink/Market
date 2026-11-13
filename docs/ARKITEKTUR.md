@@ -60,7 +60,7 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 | Verktyg | Gör | readOnly | destructive | openWorld |
 | --- | --- | --- | --- | --- |
 | `search_listings` | Söker i katalogen av godkända annonser (nisch, prisintervall). Returnerar bara katalogfälten, se Datamodell | true | false | false |
-| `get_listing` | En annons i detalj, bara katalogfälten: alias, paket, pris, leveranstid, bevistyp, granskningsdatum, betyg | true | false | false |
+| `get_listing` | En annons i detalj, bara katalogfälten: alias, paket, pris, leveranstid, bevistyp, granskningsdatum, betyg, acceptanskriterier, demo för köpare (exempelsamtal) och tillägg för uppsättning och utbildning. Claude visar dem i den ordningen: vad agenten gör, demo, acceptanskriterier, tillägg, pris | true | false | false |
 | `create_service_request` | Skapar förfrågan från fält som köparen godkänt (bransch, kategori, behov, nuvarande system, volym, budget, när, område, e-post). Valfritt: upp till 3 `listing_id` från katalogen; annars matchas den. Status `pending_confirmation`; servern mejlar bekräftelselänk och kod | false | false | false |
 | `get_request_status` | Förfrågans status och fält, med koden | true | false | false |
 | `list_offers` | Erbjudanden för en förfrågan, med koden | true | false | false |
@@ -100,6 +100,7 @@ listings         id, seller_id, package_id?, niche, title, includes,
                  setup_price_min, setup_price_max, monthly_price_min?,
                  monthly_price_max?, delivery_days, proof_type (prototype|live),
                  demo_url, test_instructions, data_handling,
+                 acceptance_criteria (jsonb), buyer_demo (jsonb), extras (jsonb),
                  status (in_review|changes_requested|approved|rejected|paused),
                  approved_version_id?, created_at, updated_at
 listing_reviews  id, listing_id, reviewer, decision, checklist (jsonb),
@@ -125,6 +126,8 @@ Regler:
 - En säljare är aktiv (syns i katalog och matchning) när hen har minst en annons med status `approved`. Det ersätter `test_passed_at`.
 - Katalogen visar bara den godkända versionen av en annons och bara katalogfälten: `alias`, `niche`, `title`, `includes`, priser, `delivery_days`, `proof_type`, granskningsdatum och `rating_avg`. Aldrig `email`, `legal_name`, `demo_url`, `test_instructions` eller `data_handling` i rå form.
 - `demo_url` och `test_instructions` läses bara av admin vid granskning.
+- `acceptance_criteria`, `buyer_demo` och `extras` är katalogfält och visas för köparen. `buyer_demo` är repliker (kund/agent) och senare en inspelning lagrad hos oss; `extras` är uppsättning och utbildning med omfattning, tid och pris. Kontaktfiltret körs på alla tre.
+- När köparen godkänner leveransen görs det mot `acceptance_criteria`. I fas 5 (betalning via tjänsten) är de underlaget för att pengarna betalas ut.
 - Kontaktfilter körs på all fritext innan den visas för den andra parten (`listings.includes`, `listings.title`, `requests.need`, `offers.message`): e-post, telefonnummer, webbadresser, sociala medier-konton och säljarens `legal_name`. Träffar tas bort och loggas.
 - `alias` tilldelas av tjänsten och kan inte väljas fritt.
 - Koden sparas bara som hash (`access_code_hash`) och ger tillgång till en enda förfrågan. Ny kod kan bara skickas till `buyer_email`.
