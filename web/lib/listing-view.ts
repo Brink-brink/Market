@@ -1,11 +1,21 @@
+import type { TileData } from "@/components/ListingTile";
 import { fill, type Dict, type Locale } from "./i18n";
 import type { CatalogListing } from "./listings";
 import { formatRange } from "./site";
 
-// Display strings shared by the catalog cards and the listing page.
+// Tile colour per type of agent.
+const tones: Record<CatalogListing["agentType"], string> = {
+  phone: "teal",
+  chatbot: "violet",
+  reviews: "coral",
+  booking: "amber",
+};
+
+// Display strings shared by the catalog tiles and the listing page.
 export function listingView(listing: CatalogListing, lang: Locale, t: Dict) {
   const c = t.common;
   return {
+    tone: tones[listing.agentType],
     title: listing.title[lang],
     summary: listing.summary[lang],
     industryLabel: t.industries[listing.industry],
@@ -21,5 +31,20 @@ export function listingView(listing: CatalogListing, lang: Locale, t: Dict) {
       listing.ratingAvg === null
         ? c.noRating
         : fill(c.rating, { avg: listing.ratingAvg.toFixed(1), count: listing.ratingCount }),
+  };
+}
+
+export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): TileData {
+  const view = listingView(listing, lang, t);
+  return {
+    id: listing.id,
+    href: `/${lang}/catalog/${listing.id}`,
+    tone: view.tone,
+    title: view.title,
+    summary: view.summary,
+    tags: [view.proofLabel, view.industryLabel],
+    exampleLabel: listing.example ? t.common.example : null,
+    priceText: view.setupText,
+    metaText: `${listing.alias} · ${view.monthlyText} · ${view.deliveryText} · ${view.ratingText}`,
   };
 }

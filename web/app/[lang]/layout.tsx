@@ -39,6 +39,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
               <Link href={link("/faq")}>{t.faq}</Link>
             </nav>
             <LanguageSwitch current={lang} label={t.language} />
+            <Link href={link("/listing")} className="pill">{t.listCta}</Link>
           </div>
         </header>
         <main className="wrap main">{children}</main>

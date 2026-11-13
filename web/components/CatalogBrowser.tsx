@@ -1,22 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { ListingTile, type TileData } from "./ListingTile";
 
 export type CatalogCard = {
-  id: string;
-  href: string;
-  alias: string;
-  title: string;
-  summary: string;
+  tile: TileData;
   industry: string;
   agentType: string;
   proofType: string;
   setupMin: number;
-  badges: string[];
-  priceText: string;
-  metaText: string;
-  example: boolean;
+  searchText: string;
 };
 
 type Option = { value: string; label: string };
@@ -37,7 +30,6 @@ type Props = {
     any: string;
     results: string;
     none: string;
-    example: string;
   };
 };
 
@@ -50,9 +42,8 @@ export function CatalogBrowser({ cards, industries, agentTypes, proofTypes, budg
 
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const visible = cards.filter((card) => {
-    const text = `${card.title} ${card.summary} ${card.badges.join(" ")}`.toLowerCase();
     return (
-      words.every((word) => text.includes(word)) &&
+      words.every((word) => card.searchText.includes(word)) &&
       (!industry || card.industry === industry) &&
       (!agentType || card.agentType === agentType) &&
       (!proofType || card.proofType === proofType) &&
@@ -94,18 +85,7 @@ export function CatalogBrowser({ cards, industries, agentTypes, proofTypes, budg
         <p>{labels.none}</p>
       ) : (
         <div className="grid grid-wide">
-          {visible.map((card) => (
-            <Link key={card.id} href={card.href} className="card card-link">
-              <p>
-                {card.example && <span className="badge badge-accent">{labels.example}</span>}
-                {card.badges.map((badge) => <span key={badge} className="badge">{badge}</span>)}
-              </p>
-              <h3>{card.title}</h3>
-              <p>{card.summary}</p>
-              <div className="price">{card.priceText}</div>
-              <p className="meta">{card.alias} · {card.metaText}</p>
-            </Link>
-          ))}
+          {visible.map((card) => <ListingTile key={card.tile.id} tile={card.tile} />)}
         </div>
       )}
     </>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dict, Locale } from "@/lib/i18n";
+import { PENDING_NEED_KEY } from "@/lib/pending-need";
 
 type Message = { role: "user" | "assistant"; content: string };
 type Status = "checking" | "ready" | "off";
@@ -21,13 +22,25 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [copied, setCopied] = useState(false);
+  const [carried, setCarried] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/assist")
       .then((res) => res.json())
-      .then((data: { enabled?: boolean }) => setStatus(data.enabled ? "ready" : "off"))
+      .then((data: { enabled?: boolean }) => {
+        setStatus(data.enabled ? "ready" : "off");
+        if (mode !== "need") return;
+        // Text the visitor wrote in the box on the home page.
+        const pending = sessionStorage.getItem(PENDING_NEED_KEY);
+        sessionStorage.removeItem(PENDING_NEED_KEY);
+        if (!pending) return;
+        if (data.enabled) void send(pending);
+        else setCarried(pending);
+      })
       .catch(() => setStatus("off"));
+    // Runs once on mount: checks whether the assistant is switched on.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -41,8 +54,8 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
     too_long: labels.tooLong,
   };
 
-  async function send() {
-    const text = input.trim();
+  async function send(initial?: string) {
+    const text = (initial ?? input).trim();
     if (!text || busy) return;
     const next: Message[] = [...messages, { role: "user", content: text }];
     setMessages(next);
@@ -84,7 +97,12 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
   }
 
   if (status === "off") {
-    return <p className="note">{labels.off}</p>;
+    return (
+      <div className="note">
+        {carried && <p><em>{carried}</em></p>}
+        {labels.off}
+      </div>
+    );
   }
 
   return (

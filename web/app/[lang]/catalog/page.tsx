@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CatalogBrowser, type CatalogCard } from "@/components/CatalogBrowser";
 import { fill } from "@/lib/i18n";
-import { listingView } from "@/lib/listing-view";
+import { listingTile, listingView } from "@/lib/listing-view";
 import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 import { formatMoney } from "@/lib/site";
@@ -13,25 +13,20 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/catalog">)
 const budgetSteps = [500, 1000, 2500];
 
 export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog">) {
-  const { lang, t, link } = await pageContext(params);
+  const { lang, t } = await pageContext(params);
   const c = t.catalog;
 
   const cards: CatalogCard[] = listings.map((listing) => {
     const view = listingView(listing, lang, t);
     return {
-      id: listing.id,
-      href: link(`/catalog/${listing.id}`),
-      alias: listing.alias,
-      title: view.title,
-      summary: view.summary,
+      tile: listingTile(listing, lang, t),
       industry: listing.industry,
       agentType: listing.agentType,
       proofType: listing.proofType,
       setupMin: listing.setupPrice[0],
-      badges: [view.proofLabel, view.industryLabel, view.agentTypeLabel],
-      priceText: view.setupText,
-      metaText: `${view.monthlyText} · ${view.deliveryText} · ${view.ratingText}`,
-      example: listing.example,
+      searchText: [view.title, view.summary, view.industryLabel, view.agentTypeLabel, view.proofLabel]
+        .join(" ")
+        .toLowerCase(),
     };
   });
 
@@ -69,7 +64,6 @@ export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog
             any: c.any,
             results: c.results,
             none: c.none,
-            example: t.common.example,
           }}
         />
       )}

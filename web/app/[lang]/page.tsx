@@ -1,35 +1,40 @@
 import Link from "next/link";
+import { HeroPrompt } from "@/components/HeroPrompt";
+import { ListingTile } from "@/components/ListingTile";
+import { listingTile } from "@/lib/listing-view";
+import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
-  const { t, link } = await pageContext(params);
+  const { lang, t, link } = await pageContext(params);
   const h = t.home;
+  const featured = listings.slice(0, 3).map((listing) => listingTile(listing, lang, t));
 
   return (
     <>
       <section className="hero">
-        <h1>{h.title}</h1>
-        <p className="lead">{h.lead}</p>
+        <h1>{h.heroTitle}</h1>
+        <p className="lead">{h.heroLead}</p>
+        <HeroPrompt
+          target={link("/buyers#assistant")}
+          placeholder={h.heroPlaceholder}
+          cta={h.heroCta}
+          hints={h.heroHints}
+        />
+        <p className="hero-note">{h.heroNote}</p>
       </section>
 
-      <section className="split">
-        <div className="card card-large">
-          <h2>{h.buyerTitle}</h2>
-          <p>{h.buyerText}</p>
-          <div className="actions">
-            <Link href={link("/buyers")} className="button">{h.buyerCta}</Link>
-            <Link href={link("/catalog")} className="button button-secondary">{h.buyerSecondary}</Link>
+      {featured.length > 0 && (
+        <>
+          <div className="section-head">
+            <h2>{h.featuredTitle}</h2>
+            <Link href={link("/catalog")}>{h.featuredCta} →</Link>
           </div>
-        </div>
-        <div className="card card-large">
-          <h2>{h.sellerTitle}</h2>
-          <p>{h.sellerText}</p>
-          <div className="actions">
-            <Link href={link("/listing")} className="button">{h.sellerCta}</Link>
-            <Link href={link("/sellers")} className="button button-secondary">{h.sellerSecondary}</Link>
+          <div className="grid grid-wide">
+            {featured.map((tile) => <ListingTile key={tile.id} tile={tile} />)}
           </div>
-        </div>
-      </section>
+        </>
+      )}
 
       <h2>{h.howTitle}</h2>
       <ol className="grid numbered">
@@ -41,15 +46,16 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         ))}
       </ol>
 
-      <h2>{h.typesTitle}</h2>
-      <div className="grid">
-        {h.types.map((type) => (
-          <div key={type.title} className="card">
-            <h3>{type.title}</h3>
-            <p>{type.text}</p>
-          </div>
-        ))}
-      </div>
+      <section className="band">
+        <div>
+          <h2>{h.sellerTitle}</h2>
+          <p>{h.sellerText}</p>
+        </div>
+        <div className="actions">
+          <Link href={link("/listing")} className="button">{h.sellerCta}</Link>
+          <Link href={link("/sellers")} className="button button-secondary">{h.sellerSecondary}</Link>
+        </div>
+      </section>
 
       <h2>{h.promisesTitle}</h2>
       <div className="grid">

@@ -8,7 +8,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 
 | Sida | Fil | Innehåll |
 | --- | --- | --- |
-| `/` | `app/[lang]/page.tsx` | Delad startsida: "Jag behöver en AI-agent" och "Jag bygger AI-agenter" |
+| `/` | `app/[lang]/page.tsx` | Skrivruta över en bakgrundsbild som leder till behovsassistenten, annonser ur katalogen, och ett band för säljare |
 | `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och behovsassistenten |
 | `/sellers` | `app/[lang]/sellers/page.tsx` | Hur tjänsten fungerar för säljare |
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
@@ -27,6 +27,8 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Namn, valuta, kreditpaket | `lib/site.ts` |
 | Annonser i katalogen | `lib/listings.ts` |
 | Assistenternas instruktioner | `lib/assistant-prompts.ts` |
+| Bakgrundsbilden på startsidan | `public/hero.svg` (egen illustration). Byt mot ett foto genom att lägga filen i `public/` och ändra `.hero` i `app/globals.css` |
+| Färger och stil | `app/globals.css` (variablerna överst) |
 
 Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`docs/GRANSKNING.md`). Bara katalogfält, aldrig namn, kontaktuppgifter eller demolänk. Annonserna med `example: true` är exempel och ska tas bort vid lansering.
 

@@ -26,16 +26,20 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
 
   return (
     <>
-      <p><Link href={link("/catalog")}>← {t.common.back}</Link></p>
-      <p>
-        {listing.example && <span className="badge badge-accent">{t.common.example}</span>}
-        <span className="badge">{view.proofLabel}</span>
-        <span className="badge">{view.reviewedText}</span>
-        <span className="badge">{view.industryLabel}</span>
-        <span className="badge">{view.agentTypeLabel}</span>
-      </p>
-      <h1>{view.title}</h1>
-      <p className="lead">{view.summary}</p>
+      <section className={`detail-top tone-${view.tone}`} style={{ marginTop: -40 }}>
+        <div className="wrap">
+          <p><Link href={link("/catalog")}>← {t.common.back}</Link></p>
+          <div className="tile-tags">
+            {listing.example && <span className="tag-solid">{t.common.example}</span>}
+            <span>{view.proofLabel}</span>
+            <span>{view.reviewedText}</span>
+            <span>{view.industryLabel}</span>
+            <span>{view.agentTypeLabel}</span>
+          </div>
+          <h1>{view.title}</h1>
+          <p className="lead">{view.summary}</p>
+        </div>
+      </section>
 
       <div className="detail">
         <div>
