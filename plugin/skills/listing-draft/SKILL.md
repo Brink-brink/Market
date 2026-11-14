@@ -27,7 +27,7 @@ Use what the seller has already said in this conversation, especially a market a
 | Delivery time | In working days |
 | Proof type | **Prototype** (works as a demo) or **Live** (used by at least one real customer) |
 | Acceptance criteria | 3 to 6 statements a buyer can check, each describing something that must work for the delivery to count as done. Observable and specific: "the booking shows in the booking system within one minute", not "works well" |
-| Demo for buyers | A short sample conversation with the agent (3 to 6 turns) that shows what it does. Written or copied from a real test, with no names, links or contact details. Buyers see this |
+| Live demo for buyers | Buyers try the agent themselves, through the service, so the seller's own address stays hidden. The seller supplies: a made-up business for the demo (opening hours, prices, free times), two or three things a buyer can say first, and a short sample conversation (3 to 6 turns) shown when the demo cannot be reached. No names, links, contact details or real customer data anywhere in it |
 | Demo for the reviewer | Prototype: a test link or a video of at most 5 minutes. Live: a test link or test number, plus a short description of a real installation (no customer names needed). Only the reviewer sees this |
 | Test instructions | At least 3 scenarios a reviewer should try, each with the expected result |
 | Setup and training (optional) | Help the seller offers on top of the package: a setup consultation and/or training for the buyer's staff. For each: what it covers, how long it takes, and a fixed price |
@@ -48,7 +48,10 @@ Write the listing as a buyer will see it in the catalog: short, concrete, in the
 **Included**
 - ...
 
-**Demo**
+**Live demo** (buyers try it through the service)
+Made-up business: <opening hours, prices, free times>
+Try saying: "...", "..."
+Sample conversation:
 Customer: ...
 Agent: ...
 
@@ -85,7 +88,7 @@ Go through the review criteria and report each as ✔ (met), ✘ (not met, with 
 7. Sensitive niches (health, dental care, finance, children): the draft explains how sensitive data is avoided or protected
 8. Proof type matches the evidence (Live needs a real customer)
 9. Acceptance criteria: 3 to 6, each one something a buyer can check, and each covered by the demo or a test scenario
-10. The sample conversation shows what the listing promises and contains nothing that identifies the seller or a real customer
+10. The live demo has a made-up business, opening lines and a sample conversation; it shows what the listing promises, asks for no real personal details, and contains nothing that identifies the seller or a real customer
 11. Setup and training, if offered, each have a scope, a duration and a fixed price
 
 End with the most important fixes, at most three, and the reminder that this is a draft: nothing has been saved or sent.

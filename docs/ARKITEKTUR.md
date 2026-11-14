@@ -69,6 +69,7 @@ Varje verktyg måste ha `title`, `readOnlyHint`, `destructiveHint`, `openWorldHi
 | `mark_no_deal` | Köparen markerar ett svarat erbjudande som "blev ingen affär", vilket frigör en plats i kategorin | false | false | false |
 | `report_problem` | Köparen anmäler en säljare som inte hör av sig efter betalt lead | false | false | false |
 | `submit_review` | Omdöme efter leverans, bara för en förfrågan med betalt lead | false | false | false |
+| `try_listing_demo` | Skickar ett meddelande till annonsens levande demo och returnerar agentens svar. Körs genom tjänsten: säljarens adress lämnas aldrig ut och kontaktfiltret körs på svaret. Inget sparas | false | false | true |
 
 E-postbekräftelsen görs på servern via länken i mejlet, inte med ett verktyg; Claude kan aldrig bekräfta åt köparen.
 
@@ -90,6 +91,17 @@ Rollvalet i `/market` görs med klientens egna frågeknappar (i Claude Code: Ask
 Marknadsanalysen är en **skill** (instruktioner + webbsökning i Claude/ChatGPT), inte ett verktyg på vår server, i MVP. Annonsutkastet och behovsutkastet är också skills; i fas 3 skickar de in via `create_listing` respektive `create_service_request`.
 
 Granskningen av annonser görs i admin på webbplatsen, inte i pluginen. Process och checklista: `GRANSKNING.md`.
+
+### Levande demo
+
+Köparen provar agenten själv, i annonsen på webbplatsen och via `try_listing_demo` i Claude och ChatGPT. Demon körs alltid genom tjänsten:
+
+- **Chattagenter:** säljaren registrerar en HTTPS-adress för demon. Servern förmedlar varje meddelande dit och tillbaka. Köparen ser bara svaret.
+- **Röstagenter:** köparen provar i text genom samma förmedling. Ett maskerat testnummer eller ett webbsamtal genom tjänsten kan läggas till senare.
+- **Skydd:** kontaktfiltret körs på varje svar, anropen begränsas per köpare och annons, och inget samtal sparas. Demon gäller ett påhittat företag.
+- **Reserv:** om demon inte svarar visas annonsens exempelsamtal.
+
+Fas 2 (webbplatsen utan server för säljare): demon för exempelannonserna spelas av Claude via `web/app/api/assist` (läge `demo`), utifrån annonsens innehåll och ett påhittat företag i `web/lib/listings.ts`. Den kräver `ANTHROPIC_API_KEY`; annars visas exempelsamtalet.
 
 ## Datamodell
 
@@ -126,7 +138,7 @@ Regler:
 - En säljare är aktiv (syns i katalog och matchning) när hen har minst en annons med status `approved`. Det ersätter `test_passed_at`.
 - Katalogen visar bara den godkända versionen av en annons och bara katalogfälten: `alias`, `niche`, `title`, `includes`, priser, `delivery_days`, `proof_type`, granskningsdatum och `rating_avg`. Aldrig `email`, `legal_name`, `demo_url`, `test_instructions` eller `data_handling` i rå form.
 - `demo_url` och `test_instructions` läses bara av admin vid granskning.
-- `acceptance_criteria`, `buyer_demo` och `extras` är katalogfält och visas för köparen. `buyer_demo` är repliker (kund/agent) och senare en inspelning lagrad hos oss; `extras` är uppsättning och utbildning med omfattning, tid och pris. Kontaktfiltret körs på alla tre.
+- `acceptance_criteria`, `buyer_demo` och `extras` är katalogfält och visas för köparen. `buyer_demo` innehåller demons adress hos säljaren (lämnas aldrig ut), det påhittade företaget, förslag på öppningar och ett exempelsamtal som reserv; `extras` är uppsättning och utbildning med omfattning, tid och pris. Kontaktfiltret körs på alla tre.
 - När köparen godkänner leveransen görs det mot `acceptance_criteria`. I fas 5 (betalning via tjänsten) är de underlaget för att pengarna betalas ut.
 - Kontaktfilter körs på all fritext innan den visas för den andra parten (`listings.includes`, `listings.title`, `requests.need`, `offers.message`): e-post, telefonnummer, webbadresser, sociala medier-konton och säljarens `legal_name`. Träffar tas bort och loggas.
 - `alias` tilldelas av tjänsten och kan inte väljas fritt.

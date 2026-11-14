@@ -43,7 +43,10 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Omgjord design: sidan vänder sig till nya frilansare, med foton (nätverkstema), ikoner och korta texter på alla sidor
 - [x] Annonser med acceptanskriterier, demo för köpare (exempelsamtal) och tillägg för uppsättning och utbildning: webbplatsen, annonsutkastet i pluginen, granskningsreglerna
 - [ ] Testa annonsutkastet i pluginen med de nya fälten (`tests/run-market-tests.ps1 -Only listing`)
-- [ ] Demo som inspelning: uppladdning till tjänsten och visning i annonsen (kräver servern)
+- [x] Levande demo i annonsen på webbplatsen: Claude spelar agenten för exempelannonserna (kräver `ANTHROPIC_API_KEY`), med exempelsamtal som reserv
+- [x] Omgjord annonssida: omslagsbild, höjdpunkter, demo först, acceptanskriterier som kort, leveranssteg, prisruta med valbara tillägg
+- [ ] Testa den levande demon med en riktig API-nyckel
+- [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
 - [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik
 - [ ] Ta bort exempelannonserna i `web/lib/listings.ts` vid lansering

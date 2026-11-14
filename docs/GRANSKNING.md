@@ -11,7 +11,7 @@ En säljares första godkända annons ersätter inträdestestet. Granskningen sk
 | Pris | Fast intervall för uppstart, plus månadsavgift om det finns. Aldrig "offert" eller "från" |
 | Leveranstid | I arbetsdagar |
 | Acceptanskriterier | 3–6 påståenden som köparen kan kontrollera. Leveransen är klar när alla stämmer. Konkreta och iakttagbara: "bokningen syns i bokningssystemet inom en minut", inte "fungerar bra" |
-| Demo för köpare | Ett kort exempelsamtal med agenten (3–6 repliker), senare även en inspelning som laddas upp till tjänsten. Inga namn, länkar eller kontaktuppgifter |
+| Demo för köpare | En **levande demo** som köparen själv provar. Säljaren kopplar sin agents chattadress eller testnummer till tjänsten, som förmedlar samtalet. Dessutom: ett påhittat företag som demon gäller (öppettider, priser, lediga tider), 2–3 förslag på vad köparen kan börja med, och ett kort exempelsamtal (3–6 repliker) som visas om demon inte går att nå. Inga namn, länkar eller kontaktuppgifter |
 | Uppsättning och utbildning (valfritt) | Konsultation vid uppsättning och/eller utbildning av köparens personal. För varje: vad som ingår, hur lång tid och ett fast pris |
 | Bevistyp | **Prototyp** eller **I drift** |
 | Demo för granskaren | Prototyp: testlänk eller video (max 5 min). I drift: testlänk eller testnummer, plus en kort beskrivning av en verklig installation |
@@ -20,7 +20,7 @@ En säljares första godkända annons ersätter inträdestestet. Granskningen sk
 
 Vi tar inte emot kod och kör aldrig säljarens kod. Allt granskas via säljarens egen demo.
 
-Säljarens demolänk, testnummer och video, testinstruktionerna och den fullständiga datahanteringen ses bara av granskaren. Köparen ser i stället **demon för köpare**: ett exempelsamtal som visas genom tjänsten och som granskaren har godkänt. Det får inte innehålla något som gör det möjligt att hitta eller kontakta säljaren.
+Säljarens demolänk, testnummer och video, testinstruktionerna och den fullständiga datahanteringen ses bara av granskaren. Köparen provar i stället **demon för köpare**: en levande demo som körs genom tjänsten. Tjänsten förmedlar varje meddelande, så köparen ser aldrig adressen eller numret till säljarens agent, och kontaktfiltret körs på agentens svar. Demon får inte innehålla något som gör det möjligt att hitta eller kontakta säljaren.
 
 ## Steg 1: Automatisk förkontroll
 
@@ -50,7 +50,8 @@ Görs av admin (Philip) i fas 2–3. Mål: beslut inom 3 arbetsdagar.
 - Integrationer som utlovas (t.ex. "bokar direkt i Bokadirekt") visas i demon eller är markerade som ej demonstrerade.
 - Bevistypen stämmer: "I drift" kräver att agenten används av en verklig kund.
 - Acceptanskriterierna är 3–6, går att kontrollera av köparen, och varje kriterium täcks av demon eller ett testscenario. Granskaren provar dem i demon.
-- Demon för köpare visar det annonsen lovar, stämmer med hur agenten faktiskt svarar i granskarens test, och innehåller inga namn, länkar eller kontaktuppgifter.
+- Den levande demon för köpare fungerar genom tjänsten, visar det annonsen lovar och klarar acceptanskriterierna. Granskaren provar också att få agenten att lämna ut säljarens namn, en länk eller kontaktuppgifter; lyckas det begärs ändringar.
+- Demon gäller ett påhittat företag och ber aldrig om riktiga personuppgifter.
 - Uppsättning och utbildning, om de erbjuds, har omfattning, tid och fast pris.
 
 ### C. Data och risk

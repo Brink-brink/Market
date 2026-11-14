@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Dict, Locale } from "@/lib/i18n";
 import { pendingKey } from "@/lib/pending-need";
 
@@ -8,14 +8,22 @@ type Message = { role: "user" | "assistant"; content: string };
 type Status = "checking" | "ready" | "off";
 
 type Props = {
-  mode: "need" | "listing";
+  // "need" and "listing" are the writing assistants. "demo" plays the agent in a listing.
+  mode: "need" | "listing" | "demo";
   lang: Locale;
   intro: string;
   labels: Dict["assistant"];
+  // For "demo": which listing's agent to play.
+  listingId?: string;
+  // Things the visitor can click to say.
+  suggestions?: string[];
+  placeholder?: string;
+  // Shown instead of the standard notice when the assistant is switched off.
+  offContent?: ReactNode;
 };
 
-// Chat with the need or listing assistant. The conversation lives only in this component.
-export function Assistant({ mode, lang, intro, labels }: Props) {
+// A chat with one of the assistants. The conversation lives only in this component.
+export function Assistant({ mode, lang, intro, labels, listingId, suggestions = [], placeholder, offContent }: Props) {
   const [status, setStatus] = useState<Status>("checking");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -24,12 +32,14 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
   const [copied, setCopied] = useState(false);
   const [carried, setCarried] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
+  const isDemo = mode === "demo";
 
   useEffect(() => {
     fetch("/api/assist")
       .then((res) => res.json())
       .then((data: { enabled?: boolean }) => {
         setStatus(data.enabled ? "ready" : "off");
+        if (mode === "demo") return;
         // Text the visitor wrote in the box on the home page.
         const pending = sessionStorage.getItem(pendingKey(mode));
         sessionStorage.removeItem(pendingKey(mode));
@@ -65,7 +75,7 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
       const res = await fetch("/api/assist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, lang, messages: next }),
+        body: JSON.stringify({ mode, lang, listingId, messages: next }),
       });
       const data = (await res.json()) as { reply?: string; error?: string };
       if (data.reply) {
@@ -96,6 +106,7 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
   }
 
   if (status === "off") {
+    if (offContent) return <>{offContent}</>;
     return (
       <div className="note">
         {carried && <p><em>{carried}</em></p>}
@@ -104,8 +115,10 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
     );
   }
 
+  const field = placeholder ?? labels.placeholder;
+
   return (
-    <div className="assistant">
+    <div className={isDemo ? "assistant assistant-demo" : "assistant"}>
       <div className="assistant-log" ref={logRef} aria-live="polite">
         <div className="bubble bubble-assistant">{intro}</div>
         {messages.map((message, i) => (
@@ -116,6 +129,16 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
 
       {notice && <p className="note" role="alert">{notice}</p>}
 
+      {suggestions.length > 0 && messages.length === 0 && (
+        <div className="chips">
+          {suggestions.map((suggestion) => (
+            <button key={suggestion} type="button" className="chip" disabled={busy} onClick={() => void send(suggestion)}>
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      )}
+
       <form
         className="assistant-form"
         onSubmit={(e) => {
@@ -125,10 +148,10 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
       >
         <textarea
           value={input}
-          rows={3}
+          rows={isDemo ? 2 : 3}
           maxLength={4000}
-          placeholder={labels.placeholder}
-          aria-label={labels.placeholder}
+          placeholder={field}
+          aria-label={field}
           disabled={status !== "ready"}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -142,7 +165,7 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
           <button className="button" type="submit" disabled={busy || status !== "ready" || !input.trim()}>
             {labels.send}
           </button>
-          {lastReply && (
+          {lastReply && !isDemo && (
             <button className="button button-secondary" type="button" onClick={() => void copyDraft()}>
               {copied ? labels.copied : labels.copy}
             </button>
@@ -162,7 +185,7 @@ export function Assistant({ mode, lang, intro, labels }: Props) {
           )}
         </div>
       </form>
-      <p className="meta">{labels.privacy}</p>
+      {!isDemo && <p className="meta">{labels.privacy}</p>}
     </div>
   );
 }

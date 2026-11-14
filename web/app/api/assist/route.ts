@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { systemPrompt, type AssistantMode } from "@/lib/assistant-prompts";
+import { demoPrompt, systemPrompt } from "@/lib/assistant-prompts";
 import { hasLocale } from "@/lib/i18n";
+import { getListing } from "@/lib/listings";
 
 // Limits that keep a public, unauthenticated endpoint cheap to abuse.
 const MAX_MESSAGES = 40;
@@ -25,7 +26,7 @@ export async function GET() {
   return Response.json({ enabled: enabled() });
 }
 
-type Body = { mode?: unknown; lang?: unknown; messages?: unknown };
+type Body = { mode?: unknown; lang?: unknown; listingId?: unknown; messages?: unknown };
 
 function parseMessages(value: unknown): Anthropic.MessageParam[] | "too_long" | null {
   if (!Array.isArray(value) || value.length === 0 || value.length > MAX_MESSAGES) return null;
@@ -51,7 +52,18 @@ export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as Body | null;
   const mode = body?.mode;
   const lang = body?.lang;
-  if ((mode !== "need" && mode !== "listing") || typeof lang !== "string" || !hasLocale(lang)) {
+  if (typeof lang !== "string" || !hasLocale(lang)) {
+    return Response.json({ error: "bad_request" }, { status: 400 });
+  }
+  let system: string;
+  if (mode === "need" || mode === "listing") {
+    system = systemPrompt(mode, lang);
+  } else if (mode === "demo") {
+    // The live demo plays the agent of one listing. It never calls the freelancer's own address.
+    const listing = typeof body?.listingId === "string" ? getListing(body.listingId) : undefined;
+    if (!listing) return Response.json({ error: "bad_request" }, { status: 400 });
+    system = demoPrompt(listing, lang);
+  } else {
     return Response.json({ error: "bad_request" }, { status: 400 });
   }
   const messages = parseMessages(body?.messages);
@@ -67,7 +79,7 @@ export async function POST(request: Request) {
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       output_config: { effort: "low" },
-      system: systemPrompt(mode as AssistantMode, lang),
+      system,
       messages,
     });
 

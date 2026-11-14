@@ -1,4 +1,5 @@
 import type { Locale } from "./i18n";
+import type { CatalogListing } from "./listings";
 
 export type AssistantMode = "need" | "listing";
 
@@ -66,7 +67,7 @@ Find out, a few fields at a time:
 - Delivery time in working days.
 - Proof type: Prototype (works as a demo) or Live (used by at least one real customer).
 - Acceptance criteria: three to six things a buyer can check, each describing something that must work for the delivery to count as done. Help the maker make them observable: "the booking shows in the booking system within one minute", not "works well".
-- Demo for buyers: a short sample conversation with the agent, three to six turns, with no names, links or contact details. Buyers see this.
+- Live demo for buyers: buyers try the agent themselves through the service. For it the maker supplies a made-up business (opening hours, prices, free times), two or three things a buyer can say first, and a short sample conversation of three to six turns shown when the demo cannot be reached. No names, links, contact details or real customer data.
 - Demo for the reviewer: a test link, a test number or a video. Only the reviewer sees it.
 - Test instructions: at least three scenarios with the expected result.
 - Setup and training, if the maker offers them: a setup consultation and training for the buyer's staff, each with what it covers, how long it takes and a fixed price.
@@ -102,6 +103,33 @@ For the reviewer only: demo link or number, test scenarios, full data handling.
 
 Then check it against the rules above, say which are met and which are not, name the most important fixes (at most three), and remind them it is a draft that has not been saved or submitted.
 `;
+
+// The live demo on a listing page: the model plays the listed agent for a made-up business.
+export const demoPrompt = (listing: CatalogListing, lang: Locale) => `
+You are a live demo of an AI agent that a freelancer sells to small businesses. A possible buyer is trying it on the listing page, playing the part of one of the business's own customers. Your job is to let them experience what the agent is like to use, so that they can judge whether it would work for their business.
+
+The agent: ${listing.title.en}
+What it does: ${listing.summary.en}
+Included in the package:
+${listing.includes.map((item) => `- ${item.en}`).join("\n")}
+Not included, so the agent does not do it:
+${listing.notIncluded.map((item) => `- ${item.en}`).join("\n")}
+
+The business in this demo is made up. These are its facts; use only these, and say you would have to check when asked for something that is not here:
+${listing.liveDemo.facts}
+
+How to behave:
+- Stay in the role of this agent from the first message. Speak to the visitor as the business's customer, not as a buyer of the agent.
+- Reply in the language the visitor writes in; if you cannot tell, use ${languageNames[lang]}.
+- Keep replies short, as a real agent on the phone or in a chat would: one to three sentences, one question at a time.
+- Do what the package includes and nothing more. If the visitor asks for something the package does not include, say that this agent cannot do it and what happens instead.
+- This is a demo, so nothing is really booked, sent or saved. Act as if it were, but if the visitor asks whether it is real, say plainly that it is a demo with a made-up business.
+- If the visitor asks whether you are a person, say you are an AI assistant.
+- Ask for no real personal details. If one is needed for the flow, such as a name for a booking, invite the visitor to make one up.
+- Never say who built the agent or how to reach them, and give no links. Buyers and freelancers get each other's details only when a buyer replies to an offer.
+- If the visitor steps out of the role and asks about price, delivery or the freelancer, say briefly that the listing page has that information, and offer to continue the demo.
+- Plain text only, with no headings, lists or bold.
+`.trim();
 
 export const systemPrompt = (mode: AssistantMode, lang: Locale) =>
   `${shared(lang)}\n${mode === "need" ? need : listing}`.trim();

@@ -1,7 +1,7 @@
 import type { TileData } from "@/components/ListingTile";
 import { fill, type Dict, type Locale } from "./i18n";
 import type { CatalogListing } from "./listings";
-import { formatRange } from "./site";
+import { formatMoney, formatRange } from "./site";
 
 // Tile colour per type of agent.
 const tones: Record<CatalogListing["agentType"], string> = {
@@ -16,6 +16,8 @@ export function listingView(listing: CatalogListing, lang: Locale, t: Dict) {
   const c = t.common;
   return {
     tone: tones[listing.agentType],
+    // The last word of the alias, such as "A7".
+    initials: listing.alias.split(" ").at(-1) ?? "",
     title: listing.title[lang],
     summary: listing.summary[lang],
     industryLabel: t.industries[listing.industry],
@@ -40,17 +42,21 @@ export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): Til
     id: listing.id,
     href: `/${lang}/catalog/${listing.id}`,
     tone: view.tone,
+    cover: listing.cover,
     title: view.title,
     summary: view.summary,
     tags: [view.proofLabel, view.industryLabel],
     features: [
-      ...(listing.demo.length > 0 ? [t.catalog.tagDemo] : []),
+      t.catalog.highlightLive,
       fill(t.catalog.criteria, { n: listing.acceptance.length }),
       ...(listing.extras.some((e) => e.kind === "setup") ? [t.catalog.tagSetup] : []),
       ...(listing.extras.some((e) => e.kind === "training") ? [t.catalog.tagTraining] : []),
     ],
     exampleLabel: listing.example ? t.common.example : null,
-    priceText: view.setupText,
-    metaText: `${listing.alias} · ${view.monthlyText} · ${view.deliveryText} · ${view.ratingText}`,
+    alias: listing.alias,
+    initials: view.initials,
+    ratingText: view.ratingText,
+    fromText: `${t.catalog.from} ${formatMoney(listing.setupPrice[0], lang)}`,
+    metaText: `${view.monthlyText} · ${view.deliveryText}`,
   };
 }

@@ -95,7 +95,7 @@ Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett
 
 **Köpare (i pluginen)**
 - Bläddra i katalogen av granskade annonser. Köparen ser bara: säljarens alias, nisch, paketets innehåll, prisintervall, leveranstid, märket Prototyp/I drift, "demo granskad <datum>" och betyg. Aldrig namn, företagsnamn, demo-länk eller annat som gör kontakt möjlig före betalt lead
-- I varje annons ser köparen dessutom **acceptanskriterier** (vad som ska fungera för att leveransen ska räknas som klar), en **demo** (ett granskat exempelsamtal med agenten, visat genom tjänsten) och säljarens valfria tillägg för **uppsättning och utbildning** med fast pris. Samma innehåll visas i Claude, i ChatGPT och på webbplatsen
+- I varje annons ser köparen dessutom **acceptanskriterier** (vad som ska fungera för att leveransen ska räknas som klar), en **levande demo** som köparen själv provar (den körs genom tjänsten, med ett exempelsamtal som reserv) och säljarens valfria tillägg för **uppsättning och utbildning** med fast pris. Samma innehåll visas i Claude, i ChatGPT och på webbplatsen
 - Begära offert från en eller flera annonser (högst 3 per förfrågan)
 - Skapa förfrågan utifrån samtalet, med godkännande innan den skickas
 - Bekräfta e-posten innan förfrågan går ut; få en kod i bekräftelsemejlet
@@ -145,7 +145,7 @@ Köpare och säljare kan inte hitta eller kontakta varandra förrän säljaren h
 
 - **Alias:** säljare visas under ett alias som tjänsten tilldelar. Inget riktigt namn eller företagsnamn.
 - **Säljarens demolänk bara för granskaren:** köparen ser att demon är granskad och när, men aldrig säljarens länk, testnummer eller video.
-- **Demo för köpare genom tjänsten:** det köparen ser är ett exempelsamtal (senare en inspelning) som granskaren godkänt och som inte innehåller namn, länkar eller kontaktuppgifter.
+- **Levande demo genom tjänsten:** köparen provar agenten själv, i annonsen på webbplatsen eller direkt i Claude och ChatGPT. Tjänsten förmedlar samtalet, så adressen till säljarens agent syns aldrig, och kontaktfiltret körs på svaren. Demon gäller ett påhittat företag och ber inte om riktiga personuppgifter.
 - **Kontaktfilter på all fritext:** annonser, förfrågningar och erbjudanden kontrolleras automatiskt för namn, företagsnamn, e-post, telefon, webbadresser och konton i sociala medier. Träffar tas bort innan texten visas för den andra parten. Annonser granskas dessutom manuellt.
 - **Villkor:** att försöka kringgå tjänsten är förbjudet i villkoren och leder till att annonsen pausas.
 

@@ -24,8 +24,18 @@ export type CatalogListing = {
   notIncluded: Localized[];
   // What must work for the delivery to count as done. The buyer checks these before approving.
   acceptance: Localized[];
-  // A sample conversation shown to buyers, reviewed with the listing. No names, links or contact details.
+  // Cover image in public/img.
+  cover: string;
+  // A sample conversation shown to buyers when the live demo is off. No names, links or contact details.
   demo: DemoTurn[];
+  // The live demo buyers can try. It runs through the service, never against the freelancer's own address.
+  liveDemo: {
+    greeting: Localized;
+    // Things a visitor can click to say first.
+    prompts: Localized[];
+    // The made-up business the demo agent works for. Written for the model, in English.
+    facts: string;
+  };
   // Optional help the freelancer offers on top of the package.
   extras: ListingExtra[];
   dataHandling: Localized;
@@ -45,6 +55,12 @@ export const listings: CatalogListing[] = [
   {
     id: "booking-hair-a7",
     alias: "Freelancer A7",
+    cover: "/img/cover-hair.webp",
+    liveDemo: {
+      greeting: {"en":"Hello, you've reached the salon. How can I help you?","sv":"Hej, du har kommit till salongen. Vad kan jag hjälpa dig med?"},
+      prompts: [{"en":"I'd like a haircut on Thursday","sv":"Jag vill klippa mig på torsdag"},{"en":"What does a colouring cost?","sv":"Vad kostar en färgning?"},{"en":"I need to cancel my appointment","sv":"Jag behöver avboka min tid"}],
+      facts: "A made-up hair salon. Open Tuesday to Saturday 9-18. Services: haircut 30 minutes 35 euros, colouring 90 minutes 95 euros, beard trim 15 minutes 15 euros. Free times this week: Thursday 14:30, Thursday 16:00, Friday 10:00, Saturday 11:30. A booking needs a first name; the visitor may give a made-up one. Cancelling and rebooking are allowed. Anything else is passed to staff by text message.",
+    },
     industry: "hair",
     agentType: "phone",
     title: {
@@ -95,6 +111,12 @@ export const listings: CatalogListing[] = [
   {
     id: "chatbot-dental-k2",
     alias: "Freelancer K2",
+    cover: "/img/cover-dental.webp",
+    liveDemo: {
+      greeting: {"en":"Hi! I can answer questions about the clinic. What would you like to know?","sv":"Hej! Jag kan svara på frågor om kliniken. Vad vill du veta?"},
+      prompts: [{"en":"What does a check-up cost?","sv":"Vad kostar en undersökning?"},{"en":"When are you open?","sv":"När har ni öppet?"},{"en":"I have a bad toothache","sv":"Jag har väldigt ont i en tand"}],
+      facts: "A made-up dental clinic. Open Monday to Friday 8-17. Prices: check-up 85 euros (30 minutes), hygienist 70 euros, whitening 250 euros. Before a visit: brush your teeth and bring ID. The chat cannot book appointments. Urgent pain, swelling or bleeding: tell the visitor to call the clinic, and give no medical advice. Ask visitors not to share health information.",
+    },
     industry: "dental",
     agentType: "chatbot",
     title: {
@@ -145,6 +167,12 @@ export const listings: CatalogListing[] = [
   {
     id: "reviews-restaurant-m4",
     alias: "Freelancer M4",
+    cover: "/img/cover-restaurant.webp",
+    liveDemo: {
+      greeting: {"en":"Thanks for visiting us yesterday! How was your evening, from 1 to 5?","sv":"Tack för besöket i går! Hur var kvällen, från 1 till 5?"},
+      prompts: [{"en":"5","sv":"5"},{"en":"2, the food was cold","sv":"2, maten var kall"},{"en":"Stop sending me messages","sv":"Sluta skicka meddelanden"}],
+      facts: "A made-up restaurant. The visitor is a guest who dined there yesterday. For a rating of 4 or 5: thank them and offer to send a link to leave a short review. For 1 to 3: apologise, ask what went wrong, and say the manager will be told; do not offer the review link. If the guest asks to stop: confirm that no more messages will be sent. One short message at a time.",
+    },
     industry: "restaurant",
     agentType: "reviews",
     title: {
@@ -191,6 +219,12 @@ export const listings: CatalogListing[] = [
   {
     id: "booking-trades-r9",
     alias: "Freelancer R9",
+    cover: "/img/cover-trades.webp",
+    liveDemo: {
+      greeting: {"en":"Hi! Tell me what you need help with and I'll book a visit.","sv":"Hej! Berätta vad du behöver hjälp med så bokar jag ett besök."},
+      prompts: [{"en":"My kitchen tap is dripping","sv":"Min kökskran droppar"},{"en":"Water is leaking under the sink!","sv":"Det läcker vatten under diskbänken!"},{"en":"I need a new socket installed","sv":"Jag behöver ett nytt eluttag"}],
+      facts: "A made-up plumbing and electrical firm. Working hours Monday to Friday 7-16. Free visits: Wednesday 9-11, Friday 13-15, next Monday 8-10. Ask what the job is, where in the home, and since when. Urgent jobs (a leak, no power, a burning smell): say it has been sent to the on-call phone at once. No quotes or prices in the chat. A booking needs a first name and an area; the visitor may give made-up ones.",
+    },
     industry: "trades",
     agentType: "booking",
     title: {
