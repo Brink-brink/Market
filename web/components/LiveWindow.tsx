@@ -3,13 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Check, ClipboardList, Copy, MessageCircle, Minus, Play, Sparkles, Wrench, X } from "lucide-react";
+import { Check, ClipboardList, Copy, MessageCircle, Minus, Play, Sparkles, Star, Wrench, X } from "lucide-react";
 import { Assistant } from "@/components/Assistant";
-import { emptyAdvisorState, requirementKeys, type AdvisorMatch, type AdvisorState } from "@/lib/advisor";
+import { emptyAdvisorState, requirementKeys, type AdvisorAlternative, type AdvisorState, type ExtraKind } from "@/lib/advisor";
 import type { Dict, Locale } from "@/lib/i18n";
+import { formatRange } from "@/lib/site";
 
-// What the overview needs to show a listing the advisor matched.
-export type LiveCard = { title: string; alias: string; href: string; cover: string; fromText: string };
+// What the overview needs to show a listing as an alternative, with the price of each optional extra.
+export type LiveCard = {
+  title: string;
+  alias: string;
+  href: string;
+  cover: string;
+  setup: [number, number];
+  monthlyText: string;
+  extras: Partial<Record<ExtraKind, { label: string; price: number }>>;
+};
 
 type View = "advisor" | "demo" | "overview";
 
@@ -23,7 +32,7 @@ type Props = {
   variant: "listing" | "advisor" | "banner";
   // The advisor's first line.
   intro: string;
-  // Set when the window belongs to one listing: adds the fit for that listing and a tab to try its agent.
+  // Set when the window belongs to one listing: marks that listing among the alternatives and adds a tab to try its agent.
   listing?: {
     id: string;
     title: string;
@@ -68,8 +77,7 @@ export function LiveWindow({ lang, labels, assistantLabels, agentTypeLabels, car
   const known = new Map(state.requirements.map((r) => [r.key, r.value]));
   const total = requirementKeys.length;
   const progress = labels.progress.replace("{n}", String(known.size)).replace("{total}", String(total));
-  const ownFit = listing ? state.matches.find((m) => m.id === listing.id) : undefined;
-  const others = state.matches.filter((m) => m.id !== listing?.id && cards[m.id]);
+  const alternatives = state.alternatives.filter((a) => cards[a.id]);
   const solved = state.solution.agentType !== "undecided";
 
   async function copyRequirements() {
@@ -79,7 +87,7 @@ export function LiveWindow({ lang, labels, assistantLabels, agentTypeLabels, car
     setTimeout(() => setCopied(false), 2000);
   }
 
-  const fitPoints = (match: AdvisorMatch) => (
+  const fitPoints = (match: AdvisorAlternative) => (
     <ul className="fit-points">
       {match.fits.map((point) => (
         <li key={point} className="fit-yes"><Check size={15} aria-hidden="true" />{point}</li>
@@ -240,38 +248,51 @@ export function LiveWindow({ lang, labels, assistantLabels, agentTypeLabels, car
                 )}
               </div>
 
-              {listing && (
-                <div className="live-block">
-                  <div className="live-block-head">
-                    <h3>{labels.fitTitle}</h3>
-                    {ownFit && <span className={`fit-badge fit-${ownFit.fit}`}>{labels.fit[ownFit.fit]}</span>}
-                  </div>
-                  {ownFit ? fitPoints(ownFit) : <p className="meta">{labels.fitEmpty}</p>}
-                </div>
-              )}
-
               <div className="live-block">
-                <h3>{listing ? labels.othersTitle : labels.matchesTitle}</h3>
-                {others.length > 0 ? (
+                <h3>{labels.altTitle}</h3>
+                {alternatives.length > 0 ? (
                   <>
-                    {others.map((match) => {
-                      const card = cards[match.id];
-                      return (
-                        <Link key={match.id} href={card.href} className="match" target="_blank">
-                          <Image src={card.cover} alt="" width={160} height={90} />
-                          <div>
-                            <span className={`fit-badge fit-${match.fit}`}>{labels.fit[match.fit]}</span>
-                            <strong>{card.title}</strong>
-                            <span className="meta">{card.alias} · {card.fromText}</span>
-                            {fitPoints(match)}
-                          </div>
-                        </Link>
-                      );
-                    })}
-                    <p className="meta">{labels.matchesNote}</p>
+                    <ol className="alt-list">
+                      {alternatives.map((alt) => {
+                        const card = cards[alt.id];
+                        const added = alt.extras.reduce((sum, kind) => sum + (card.extras[kind]?.price ?? 0), 0);
+                        const variant = alt.extras.length
+                          ? alt.extras.map((kind) => `+ ${card.extras[kind]?.label}`).join(" ")
+                          : labels.basePackage;
+                        return (
+                          <li key={`${alt.id}:${alt.extras.join("+")}`} className="alt">
+                            <Image src={card.cover} alt="" width={160} height={90} />
+                            <div className="alt-main">
+                              <div className="alt-top">
+                                <span className="stars" role="img" aria-label={labels.starsLabel.replace("{n}", String(alt.stars))}>
+                                  {[1, 2, 3, 4, 5].map((n) => (
+                                    <Star key={n} size={16} className={n <= alt.stars ? "star-on" : "star-off"} aria-hidden="true" />
+                                  ))}
+                                </span>
+                                {alt.budget !== "unknown" && (
+                                  <span className={`budget-badge budget-${alt.budget}`}>
+                                    {labels.budget[alt.budget]}
+                                  </span>
+                                )}
+                              </div>
+                              <Link href={card.href} target="_blank" className="alt-title">{card.title}</Link>
+                              <span className="meta">
+                                {card.alias} · {variant}
+                                {listing?.id === alt.id && <> · {labels.thisListing}</>}
+                              </span>
+                              <span className="alt-price">
+                                {formatRange([card.setup[0] + added, card.setup[1] + added], lang)} <small>{labels.setupLabel} · {card.monthlyText}</small>
+                              </span>
+                              {fitPoints(alt)}
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                    <p className="meta">{labels.altNote}</p>
                   </>
                 ) : (
-                  <p className="meta">{labels.matchesEmpty}</p>
+                  <p className="meta">{labels.altEmpty}</p>
                 )}
               </div>
             </aside>

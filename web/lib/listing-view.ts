@@ -72,7 +72,16 @@ export function liveCards(lang: Locale, t: Dict): Record<string, LiveCard> {
         alias: listing.alias,
         href: `/${lang}/catalog/${listing.id}`,
         cover: listing.cover,
-        fromText: `${t.catalog.from} ${formatMoney(listing.setupPrice[0], lang)}`,
+        setup: listing.setupPrice,
+        monthlyText: listing.monthlyPrice
+          ? `${formatRange(listing.monthlyPrice, lang)}${t.common.perMonth}`
+          : t.common.noMonthlyFee,
+        extras: Object.fromEntries(
+          listing.extras.map((extra) => [
+            extra.kind,
+            { label: extra.kind === "setup" ? t.catalog.extraSetup : t.catalog.extraTraining, price: extra.price },
+          ]),
+        ),
       },
     ]),
   );

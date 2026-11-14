@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { advisorSchema, parseAdvisorReply } from "@/lib/advisor";
+import { advisorSchema, parseAdvisorReply, type ListingFacts } from "@/lib/advisor";
 import { advisorPrompt, demoPrompt, listingPrompt } from "@/lib/assistant-prompts";
 import { hasLocale } from "@/lib/i18n";
 import { getListing, listings } from "@/lib/listings";
@@ -22,6 +22,18 @@ function rateLimited(ip: string) {
 }
 
 const enabled = () => Boolean(process.env.ANTHROPIC_API_KEY);
+
+// What the advisor's reply is checked against: each listing's prices and the extras it really offers.
+const listingFacts: ListingFacts = Object.fromEntries(
+  listings.map((listing) => [
+    listing.id,
+    {
+      setup: listing.setupPrice,
+      monthly: listing.monthlyPrice,
+      extras: Object.fromEntries(listing.extras.map((extra) => [extra.kind, extra.price])),
+    },
+  ]),
+);
 
 export async function GET() {
   return Response.json({ enabled: enabled() });
@@ -83,7 +95,7 @@ export async function POST(request: Request) {
       max_tokens: 16000,
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
-      // The advisor answers in JSON so the window can show requirements and matches beside the chat.
+      // The advisor answers in JSON so the window can show requirements and alternatives beside the chat.
       output_config:
         mode === "advisor"
           ? { effort: "low", format: { type: "json_schema", schema: advisorSchema(listingIds) } }
@@ -102,7 +114,7 @@ export async function POST(request: Request) {
       .trim();
     if (!reply) return Response.json({ error: "error" }, { status: 502 });
     if (mode === "advisor") {
-      const parsed = parseAdvisorReply(reply, listingIds);
+      const parsed = parseAdvisorReply(reply, listingFacts);
       if (!parsed) return Response.json({ error: "error" }, { status: 502 });
       return Response.json(parsed);
     }

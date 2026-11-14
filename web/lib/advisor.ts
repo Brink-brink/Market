@@ -6,25 +6,34 @@ export const requirementKeys = [
   "problem",
   "tasks",
   "channel",
+  "budget",
   "systems",
   "volume",
   "languages",
   "hours",
   "handover",
   "sensitiveData",
-  "budget",
   "timing",
   "area",
 ] as const;
 
 export type RequirementKey = (typeof requirementKeys)[number];
 
-export const fitLevels = ["strong", "partial", "weak"] as const;
 export const solutionTypes = ["phone", "chatbot", "booking", "reviews", "undecided"] as const;
+export const extraKinds = ["setup", "training"] as const;
+export const budgetFits = ["within", "partly", "over", "unknown"] as const;
 
-export type AdvisorMatch = {
+export type ExtraKind = (typeof extraKinds)[number];
+
+// One way to buy: a listing, alone or with some of its optional extras. The price follows from the two.
+export type AdvisorAlternative = {
   id: string;
-  fit: (typeof fitLevels)[number];
+  extras: ExtraKind[];
+  // 1 to 5: how well this alternative meets the visitor's requirements.
+  stars: number;
+  // Worked out from the listing's prices and the visitor's budget, never taken from the model.
+  // "partly": the lowest price fits the budget but the highest does not.
+  budget: (typeof budgetFits)[number];
   fits: string[];
   gaps: string[];
 };
@@ -38,23 +47,30 @@ export type AdvisorState = {
     why: string;
     tools: { name: string; why: string }[];
   };
-  matches: AdvisorMatch[];
+  alternatives: AdvisorAlternative[];
 };
 
 export const emptyAdvisorState: AdvisorState = {
   options: [],
   requirements: [],
   solution: { agentType: "undecided", why: "", tools: [] },
-  matches: [],
+  alternatives: [],
 };
 
+// What the parser needs to know about a listing: its prices and the extras it offers.
+export type ListingFacts = Record<
+  string,
+  { extras: Partial<Record<ExtraKind, number>>; setup: [number, number]; monthly: [number, number] | null }
+>;
+
 const stringList = { type: "array", items: { type: "string" } };
+const numberOrNull = { anyOf: [{ type: "number" }, { type: "null" }] };
 
 // JSON schema for the advisor's reply. The listing ids are fixed so it can only point at real listings.
 export const advisorSchema = (listingIds: string[]) => ({
   type: "object",
   additionalProperties: false,
-  required: ["reply", "options", "requirements", "solution", "matches"],
+  required: ["reply", "options", "requirements", "budgetLimit", "solution", "alternatives"],
   properties: {
     reply: { type: "string" },
     options: stringList,
@@ -66,6 +82,12 @@ export const advisorSchema = (listingIds: string[]) => ({
         required: ["key", "value"],
         properties: { key: { type: "string", enum: requirementKeys }, value: { type: "string" } },
       },
+    },
+    budgetLimit: {
+      type: "object",
+      additionalProperties: false,
+      required: ["setupMax", "monthlyMax"],
+      properties: { setupMax: numberOrNull, monthlyMax: numberOrNull },
     },
     solution: {
       type: "object",
@@ -85,15 +107,16 @@ export const advisorSchema = (listingIds: string[]) => ({
         },
       },
     },
-    matches: {
+    alternatives: {
       type: "array",
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "fit", "fits", "gaps"],
+        required: ["id", "extras", "stars", "fits", "gaps"],
         properties: {
           id: listingIds.length > 0 ? { type: "string", enum: listingIds } : { type: "string" },
-          fit: { type: "string", enum: fitLevels },
+          extras: { type: "array", items: { type: "string", enum: extraKinds } },
+          stars: { type: "integer", enum: [1, 2, 3, 4, 5] },
           fits: stringList,
           gaps: stringList,
         },
@@ -106,8 +129,32 @@ const isString = (value: unknown): value is string => typeof value === "string";
 const strings = (value: unknown, max: number) =>
   Array.isArray(value) ? value.filter(isString).map((s) => s.trim()).filter(Boolean).slice(0, max) : [];
 
+const extrasPrice = (id: string, extras: ExtraKind[], facts: ListingFacts) =>
+  extras.reduce((sum, kind) => sum + (facts[id].extras[kind] ?? 0), 0);
+
+const limit = (value: unknown) => (typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : null);
+
+// Compares the prices of an alternative with the visitor's budget. Both are in the site's currency.
+function budgetFit(
+  id: string,
+  extras: ExtraKind[],
+  facts: ListingFacts,
+  setupMax: number | null,
+  monthlyMax: number | null,
+): AdvisorAlternative["budget"] {
+  if (setupMax === null && monthlyMax === null) return "unknown";
+  const added = extrasPrice(id, extras, facts);
+  const [setupLow, setupHigh] = facts[id].setup;
+  const [monthlyLow, monthlyHigh] = facts[id].monthly ?? [0, 0];
+  if ((setupMax !== null && setupLow + added > setupMax) || (monthlyMax !== null && monthlyLow > monthlyMax)) return "over";
+  if ((setupMax !== null && setupHigh + added > setupMax) || (monthlyMax !== null && monthlyHigh > monthlyMax)) return "partly";
+  return "within";
+}
+
+const budgetRank = { within: 0, partly: 1, unknown: 2, over: 3 };
+
 // Reads the model's JSON and keeps only what the window can show. Returns null when it is not usable.
-export function parseAdvisorReply(text: string, listingIds: string[]): { reply: string; advisor: AdvisorState } | null {
+export function parseAdvisorReply(text: string, facts: ListingFacts): { reply: string; advisor: AdvisorState } | null {
   let data: Record<string, unknown>;
   try {
     data = JSON.parse(text) as Record<string, unknown>;
@@ -136,13 +183,37 @@ export function parseAdvisorReply(text: string, listingIds: string[]): { reply: 
     if (isString(name) && name.trim()) tools.push({ name: name.trim(), why: isString(why) ? why.trim() : "" });
   }
 
-  const matches: AdvisorMatch[] = [];
-  for (const item of Array.isArray(data.matches) ? data.matches : []) {
-    const { id, fit, fits, gaps } = (item ?? {}) as Record<string, unknown>;
-    if (!isString(id) || !listingIds.includes(id) || matches.some((m) => m.id === id)) continue;
-    if (!(fitLevels as readonly string[]).includes(fit as string)) continue;
-    matches.push({ id, fit: fit as AdvisorMatch["fit"], fits: strings(fits, 3), gaps: strings(gaps, 3) });
+  const rawLimit = (data.budgetLimit ?? {}) as { setupMax?: unknown; monthlyMax?: unknown };
+  const setupMax = limit(rawLimit.setupMax);
+  const monthlyMax = limit(rawLimit.monthlyMax);
+
+  const alternatives: AdvisorAlternative[] = [];
+  const taken = new Set<string>();
+  for (const item of Array.isArray(data.alternatives) ? data.alternatives : []) {
+    const { id, extras, stars, fits, gaps } = (item ?? {}) as Record<string, unknown>;
+    if (!isString(id) || !facts[id]) continue;
+    if (typeof stars !== "number" || !Number.isInteger(stars) || stars < 1 || stars > 5) continue;
+    // Only extras this listing really offers, each once, in a fixed order.
+    const chosen = extraKinds.filter(
+      (kind) => Array.isArray(extras) && extras.includes(kind) && facts[id].extras[kind] !== undefined,
+    );
+    const key = `${id}:${chosen.join("+")}`;
+    if (taken.has(key)) continue;
+    taken.add(key);
+    alternatives.push({
+      id,
+      extras: chosen,
+      stars,
+      budget: budgetFit(id, chosen, facts, setupMax, monthlyMax),
+      fits: strings(fits, 3),
+      gaps: strings(gaps, 3),
+    });
   }
+  const price = (a: AdvisorAlternative) => facts[a.id].setup[0] + extrasPrice(a.id, a.extras, facts);
+  // Most stars first. Among equals: within budget first, then the cheaper one. Nothing else decides the order.
+  alternatives.sort(
+    (a, b) => b.stars - a.stars || budgetRank[a.budget] - budgetRank[b.budget] || price(a) - price(b),
+  );
 
   return {
     reply: data.reply.trim(),
@@ -150,7 +221,7 @@ export function parseAdvisorReply(text: string, listingIds: string[]): { reply: 
       options: strings(data.options, 4),
       requirements,
       solution: { agentType, why: isString(rawSolution.why) ? rawSolution.why.trim() : "", tools },
-      matches,
+      alternatives: alternatives.slice(0, 6),
     },
   };
 }
