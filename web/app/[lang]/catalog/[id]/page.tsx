@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BadgeCheck, CalendarClock, Check, GraduationCap, ListChecks, Minus, PackageCheck, Play, Route, ShieldCheck, Star, Wrench } from "lucide-react";
+import { BadgeCheck, CalendarClock, Check, GraduationCap, ListChecks, MessagesSquare, Minus, PackageCheck, Route, ShieldCheck, Sparkles, Star, Wrench } from "lucide-react";
+import { AiHandoff } from "@/components/AiHandoff";
 import { BuyBox } from "@/components/BuyBox";
-import { LiveWindow } from "@/components/LiveWindow";
+import { handoffPrompt } from "@/lib/handoff-prompt";
 import { fill, locales } from "@/lib/i18n";
-import { listingView, liveCards } from "@/lib/listing-view";
+import { listingView } from "@/lib/listing-view";
 import { getListing, listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 import { formatMoney, site } from "@/lib/site";
@@ -31,21 +32,6 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
   const extraLabel = { setup: c.extraSetup, training: c.extraTraining };
   const extraIcon = { setup: Wrench, training: GraduationCap };
 
-  // Shown in the window's demo tab when the live demo is switched off.
-  const sampleConversation = (
-    <>
-      <p className="section-note">{c.liveOff}</p>
-      <div className="demo">
-        {listing.demo.map((turn, i) => (
-          <div key={i} className={`demo-turn demo-${turn.from}`}>
-            <small>{turn.from === "agent" ? c.agent : c.customer}</small>
-            <p>{turn.text[lang]}</p>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-
   return (
     <>
       <section className="listing-hero">
@@ -68,7 +54,7 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
       </section>
 
       <div className="highlights">
-        <div><Play size={20} aria-hidden="true" /><span>{c.highlightLive}</span></div>
+        <div><Sparkles size={20} aria-hidden="true" /><span>{c.highlightTry}</span></div>
         <div><CalendarClock size={20} aria-hidden="true" /><span>{fill(c.highlightDays, { n: listing.deliveryDays })}</span></div>
         <div><BadgeCheck size={20} aria-hidden="true" /><span>{view.proofLabel} · {fill(c.highlightReviewed, { date: listing.reviewedOn })}</span></div>
         <div><ListChecks size={20} aria-hidden="true" /><span>{fill(c.criteria, { n: listing.acceptance.length })}</span></div>
@@ -76,31 +62,30 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
 
       <div className="detail">
         <div>
-          <section id="live">
-            <LiveWindow
-              variant="listing"
-              lang={lang}
-              labels={t.live}
-              assistantLabels={t.assistant}
-              agentTypeLabels={t.agentTypes}
-              cards={liveCards(lang, t)}
-              intro={fill(t.live.introListing, { title: view.title })}
-              listing={{
-                id: listing.id,
-                title: view.title,
-                tone: view.tone,
-                greeting: listing.liveDemo.greeting[lang],
-                prompts: listing.liveDemo.prompts.map((prompt) => prompt[lang]),
-                demoNote: listing.agentType === "phone" ? `${c.livePhone} ${c.liveNote}` : c.liveNote,
-                demoPlaceholder: c.livePlaceholder,
-                sample: sampleConversation,
-              }}
-            />
+          <section id="ai">
+            {/* The requirements conversation and the demo happen in the visitor's own AI. */}
+            <AiHandoff variant="listing" labels={t.handoff} tone={view.tone} prompt={handoffPrompt(lang, listings, listing)} />
           </section>
 
           <section>
             <h2>{c.details}</h2>
             <p className="section-note">{c.detailsNote}</p>
+
+            <details className="fold">
+              <summary>
+                <MessagesSquare size={20} aria-hidden="true" />{c.sampleTitle}
+              </summary>
+              <div className="fold-body">
+                <div className="demo">
+                  {listing.demo.map((turn, i) => (
+                    <div key={i} className={`demo-turn demo-${turn.from}`}>
+                      <small>{turn.from === "agent" ? c.agent : c.customer}</small>
+                      <p>{turn.text[lang]}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </details>
 
             <details className="fold">
               <summary>

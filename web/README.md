@@ -13,10 +13,10 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Sida | Fil | Innehåll |
 | --- | --- | --- |
 | `/` | `app/[lang]/page.tsx` | Foto med skrivrutan "Vad bygger du?" som leder till annonsassistenten, fyra fördelar med ikoner, "Så fungerar det" med fotokort och växel mellan frilansare och företag, annonser ur katalogen, och ett band för köpare |
-| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och det levande fönstret med kravrådgivaren |
+| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och kortet som tar köparen till sin egen AI |
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
-| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och en knapp som öppnar kravrådgivaren |
-| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, det levande fönstret, hopfällda detaljer och prisruta |
+| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och en knapp som kopierar prompten till köparens AI |
+| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, kortet till köparens AI, hopfällda detaljer (bland annat exempelsamtalet) och prisruta |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |
 | `/build-on` | `app/[lang]/build-on/page.tsx` | Bygg vidare och uppköp, märkt som kommande |
 | `/faq`, `/terms`, `/privacy`, `/contact` | `app/[lang]/*/page.tsx` | Vanliga frågor och utkast till villkor |
@@ -29,21 +29,21 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Nytt språk | Lägg till en fil i `lib/dict/` och språket i `lib/i18n.ts` |
 | Namn, valuta, kreditpaket | `lib/site.ts` |
 | Annonser i katalogen | `lib/listings.ts` |
-| Assistenternas instruktioner | `lib/assistant-prompts.ts` |
+| Annonsassistentens instruktioner | `lib/assistant-prompts.ts` |
+| Prompten köparen tar med sig till sin AI | `lib/handoff-prompt.ts` |
 | Foton | `public/img/*.webp`, listade i `lib/images.ts`. AI-genererade för sidan (nätverkstema). Byt en bild genom att ersätta filen |
 | Färger och stil | `app/globals.css` (variablerna överst) |
 
 Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`docs/GRANSKNING.md`). Bara katalogfält, aldrig namn, kontaktuppgifter eller demolänk. Annonserna med `example: true` är exempel och ska tas bort vid lansering.
 
-## AI-assistenterna
+## AI på webbplatsen
 
-`components/Assistant.tsx` pratar med `app/api/assist/route.ts`, som anropar Claude API (`claude-opus-5-5`).
+Säljarens annonsassistent, `components/Assistant.tsx`, pratar med `app/api/assist/route.ts`, som anropar Claude API (`claude-opus-5-5`).
 
-- **Kravrådgivaren** i det levande fönstret (`components/LiveWindow.tsx`) öppnas från `/buyers`, katalogen och varje annons. Den ställer en fråga i taget om 13 krav, med svar att klicka på. Bredvid samtalet fylls en översikt i: kraven, vilken sorts agent och vilka verktyg som passar, och flera alternativ ur katalogen i olika prislägen. Ett alternativ är en annons, ensam eller med något av sina tillägg (uppsättning, utbildning), så samma annons kan ge flera alternativ. Varje alternativ får 1–5 stjärnor för hur väl det möter köparens krav, med vad som passar och vad som saknas, och visar pris och om det ryms i budgeten. Budgetmärkningen räknas ut i `lib/advisor.ts` från annonsens priser och köparens budget i euro, inte av AI:n. Öppnad från en annons finns den annonsen alltid med bland alternativen. Svaret från Claude är JSON enligt schemat i `lib/advisor.ts`, och annons-id:n är låsta till katalogen så att den bara kan peka på riktiga annonser. Ordningen följer stjärnorna; vid lika antal går det som ryms i budgeten först, sedan det billigaste. Ordningen går inte att köpa.
-- **Levande demo** är en flik i samma fönster på en annons: Claude spelar annonsens agent för ett påhittat företag. Exempelsamtalet visas när demon är avstängd.
+- **Köparen chattar inte på webbplatsen.** Kravsamtalet förs i köparens egen AI (Claude, ChatGPT eller annan). Kortet `components/AiHandoff.tsx` på `/buyers`, i katalogen och på varje annons kopierar en färdig prompt (`lib/handoff-prompt.ts`) som köparen klistrar in. Prompten innehåller de 13 kravfrågorna, reglerna och katalogens annonser med priser. AI:n ställer en fråga i taget, säger vilken sorts agent och vilka verktyg som passar, och ger flera alternativ i olika prislägen med 1–5 stjärnor för hur väl de möter kraven och hur de ligger mot budgeten. Ett alternativ är en annons, ensam eller med tillägg. Kopierad från en annons låter prompten också köparen prova agenten: AI:n spelar den för ett påhittat företag. Inget från det samtalet når webbplatsen. När katalogen växer ersätts den inklistrade katalogen av MCP-servern (fas 3).
 - **Annonsassistenten** (`/listing`) hjälper säljaren skriva en annons och kontrollerar den mot granskningskraven. Tillval, gratis under lanseringen.
 
-Samtalet sparas inte: webbläsaren skickar hela historiken varje gång. Assistenterna är avstängda tills `ANTHROPIC_API_KEY` är satt; då visas en hänvisning till `/market` i Claude.
+Annonsassistentens samtal sparas inte: webbläsaren skickar hela historiken varje gång. Den är avstängd tills `ANTHROPIC_API_KEY` är satt; då visas en hänvisning till `/market` i Claude.
 
 Skydd mot missbruk: högst 40 meddelanden per samtal, 4 000 tecken per meddelande och 30 anrop per 10 minuter och IP-adress. Gränsen per IP ligger i minnet på varje serverinstans och är bara en enkel broms. Lägg en delad spärr framför (till exempel Vercels brandvägg) innan sidan får riktig trafik, och sätt en utgiftsgräns för API-nyckeln i Claude Console.
 
@@ -60,7 +60,7 @@ npm run dev
 
 Kopiera `.env.example` till `.env.local` och fyll i när tjänsterna finns:
 
-- `ANTHROPIC_API_KEY`: slår på assistenterna. Lägg den aldrig i koden
+- `ANTHROPIC_API_KEY`: slår på annonsassistenten för säljare. Köparens väg behöver ingen nyckel. Lägg den aldrig i koden
 - `NEXT_PUBLIC_LISTING_FORM_URL`: Tallys inbäddningslänk för annonsformuläret
 - `NEXT_PUBLIC_STRIPE_LINK_SMALL`, `_MEDIUM`, `_LARGE`: Stripe Payment Links
 - `NEXT_PUBLIC_CONTACT_EMAIL`: kontaktadress

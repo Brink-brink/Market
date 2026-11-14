@@ -29,7 +29,7 @@ Förslag. Ändra här först om något byts ut, och uppdatera sedan `CLAUDE.md`.
 1. **Plugin** – paketerar skills (instruktioner, t.ex. marknadsanalysen) och en koppling till vår MCP-server. En plugin för Claude, en för ChatGPT, samma server bakom.
 2. **MCP-server** – exponerar verktygen nedan. All affärslogik ligger här, inte i pluginen.
 3. **Webbplats** – allt som har med pengar och konton att göra. Pluginen länkar aldrig hit för köp.
-   Webbplatsen är internationell (engelska som standard, svenska) och har AI-assistenter som anropar Claude API från servern (`web/app/api/assist`): kravrådgivaren och den levande demon för köpare, i ett levande fönster som öppnas från köparsidan, katalogen och varje annons, och annonsassistenten för säljare. Kravrådgivaren frågar om köparens krav, rekommenderar typ av agent och verktyg och matchar annonser i katalogen enbart efter hur väl de passar. Samtalen sparas inte. Se `web/README.md`.
+   Webbplatsen är internationell (engelska som standard, svenska) och har en AI-assistent som anropar Claude API från servern (`web/app/api/assist`): annonsassistenten för säljare. Köpare chattar inte på webbplatsen. De kopierar en prompt med kravfrågorna och katalogen till sin egen AI (Claude, ChatGPT eller annan), som ställer frågorna, rekommenderar typ av agent och verktyg och ger alternativ i olika prislägen med stjärnor för hur väl de möter kraven. Samtalen sparas inte. Se `web/README.md`.
 4. **Postgres** – all data.
 5. **Stripe** – bara på webbplatsen, för kreditpaket.
 
@@ -101,7 +101,7 @@ Köparen provar agenten själv, i annonsen på webbplatsen och via `try_listing_
 - **Skydd:** kontaktfiltret körs på varje svar, anropen begränsas per köpare och annons, och inget samtal sparas. Demon gäller ett påhittat företag.
 - **Reserv:** om demon inte svarar visas annonsens exempelsamtal.
 
-Fas 2 (webbplatsen utan server för säljare): demon för exempelannonserna spelas av Claude via `web/app/api/assist` (läge `demo`), utifrån annonsens innehåll och ett påhittat företag i `web/lib/listings.ts`. Den kräver `ANTHROPIC_API_KEY`; annars visas exempelsamtalet.
+Fas 2 (webbplatsen utan server för säljare): demon för exempelannonserna spelas av köparens egen AI, utifrån prompten som kopieras från annonsen (`web/lib/handoff-prompt.ts`), utifrån annonsens innehåll och ett påhittat företag i `web/lib/listings.ts`. Den kräver `ANTHROPIC_API_KEY`; annars visas exempelsamtalet.
 
 ## Datamodell
 

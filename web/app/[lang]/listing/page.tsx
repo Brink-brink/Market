@@ -28,7 +28,7 @@ export default async function ListingPage({ params }: PageProps<"/[lang]/listing
       <h2 id="assistant">
         {l.assistantTitle} <span className="badge badge-accent">{t.common.addonBadge}</span>
       </h2>
-      <Assistant mode="listing" lang={lang} intro={t.assistant.listingIntro} labels={t.assistant} />
+      <Assistant lang={lang} intro={t.assistant.listingIntro} labels={t.assistant} />
 
       <h2>{l.needTitle}</h2>
       <IconGrid boxed items={l.needs} icons={[Target, Package, Tag, Clock, Play, ListChecks, Database]} />

@@ -1,7 +1,6 @@
 import type { TileData } from "@/components/ListingTile";
-import type { LiveCard } from "@/components/LiveWindow";
 import { fill, type Dict, type Locale } from "./i18n";
-import { listings, type CatalogListing } from "./listings";
+import type { CatalogListing } from "./listings";
 import { formatMoney, formatRange } from "./site";
 
 // Tile colour per type of agent.
@@ -48,7 +47,7 @@ export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): Til
     summary: view.summary,
     tags: [view.proofLabel, view.industryLabel],
     features: [
-      t.catalog.highlightLive,
+      t.catalog.highlightTry,
       fill(t.catalog.criteria, { n: listing.acceptance.length }),
       ...(listing.extras.some((e) => e.kind === "setup") ? [t.catalog.tagSetup] : []),
       ...(listing.extras.some((e) => e.kind === "training") ? [t.catalog.tagTraining] : []),
@@ -62,27 +61,3 @@ export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): Til
   };
 }
 
-// The listings as the live window shows them when the advisor finds a match.
-export function liveCards(lang: Locale, t: Dict): Record<string, LiveCard> {
-  return Object.fromEntries(
-    listings.map((listing) => [
-      listing.id,
-      {
-        title: listing.title[lang],
-        alias: listing.alias,
-        href: `/${lang}/catalog/${listing.id}`,
-        cover: listing.cover,
-        setup: listing.setupPrice,
-        monthlyText: listing.monthlyPrice
-          ? `${formatRange(listing.monthlyPrice, lang)}${t.common.perMonth}`
-          : t.common.noMonthlyFee,
-        extras: Object.fromEntries(
-          listing.extras.map((extra) => [
-            extra.kind,
-            { label: extra.kind === "setup" ? t.catalog.extraSetup : t.catalog.extraTraining, price: extra.price },
-          ]),
-        ),
-      },
-    ]),
-  );
-}

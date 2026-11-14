@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { CatalogBrowser, type CatalogCard } from "@/components/CatalogBrowser";
-import { LiveWindow } from "@/components/LiveWindow";
+import { AiHandoff } from "@/components/AiHandoff";
 import { fill } from "@/lib/i18n";
-import { listingTile, listingView, liveCards } from "@/lib/listing-view";
+import { handoffPrompt } from "@/lib/handoff-prompt";
+import { listingTile, listingView } from "@/lib/listing-view";
 import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 import { formatMoney } from "@/lib/site";
@@ -41,15 +42,7 @@ export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog
       {listings.some((l) => l.example) && <p className="note">{t.common.exampleNote}</p>}
 
       {listings.length > 0 && (
-        <LiveWindow
-          variant="banner"
-          lang={lang}
-          labels={t.live}
-          assistantLabels={t.assistant}
-          agentTypeLabels={t.agentTypes}
-          cards={liveCards(lang, t)}
-          intro={t.live.introAdvisor}
-        />
+        <AiHandoff variant="banner" labels={t.handoff} prompt={handoffPrompt(lang, listings)} />
       )}
 
       {listings.length === 0 ? (

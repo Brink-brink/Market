@@ -1,8 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { advisorSchema, parseAdvisorReply, type ListingFacts } from "@/lib/advisor";
-import { advisorPrompt, demoPrompt, listingPrompt } from "@/lib/assistant-prompts";
+import { listingPrompt } from "@/lib/assistant-prompts";
 import { hasLocale } from "@/lib/i18n";
-import { getListing, listings } from "@/lib/listings";
+
+// The listing assistant for freelancers. Buyers do not chat on this website: they take a prompt to their own AI.
 
 // Limits that keep a public, unauthenticated endpoint cheap to abuse.
 const MAX_MESSAGES = 40;
@@ -23,23 +23,11 @@ function rateLimited(ip: string) {
 
 const enabled = () => Boolean(process.env.ANTHROPIC_API_KEY);
 
-// What the advisor's reply is checked against: each listing's prices and the extras it really offers.
-const listingFacts: ListingFacts = Object.fromEntries(
-  listings.map((listing) => [
-    listing.id,
-    {
-      setup: listing.setupPrice,
-      monthly: listing.monthlyPrice,
-      extras: Object.fromEntries(listing.extras.map((extra) => [extra.kind, extra.price])),
-    },
-  ]),
-);
-
 export async function GET() {
   return Response.json({ enabled: enabled() });
 }
 
-type Body = { mode?: unknown; lang?: unknown; listingId?: unknown; messages?: unknown };
+type Body = { lang?: unknown; messages?: unknown };
 
 function parseMessages(value: unknown): Anthropic.MessageParam[] | "too_long" | null {
   if (!Array.isArray(value) || value.length === 0 || value.length > MAX_MESSAGES) return null;
@@ -63,24 +51,8 @@ export async function POST(request: Request) {
   if (rateLimited(ip)) return Response.json({ error: "rate_limited" }, { status: 429 });
 
   const body = (await request.json().catch(() => null)) as Body | null;
-  const mode = body?.mode;
   const lang = body?.lang;
   if (typeof lang !== "string" || !hasLocale(lang)) {
-    return Response.json({ error: "bad_request" }, { status: 400 });
-  }
-  const focus = typeof body?.listingId === "string" ? getListing(body.listingId) : undefined;
-  const listingIds = listings.map((listing) => listing.id);
-  let system: string;
-  if (mode === "listing") {
-    system = listingPrompt(lang);
-  } else if (mode === "advisor") {
-    // The requirements advisor. A listing id means the window was opened from that listing.
-    system = advisorPrompt(lang, listings, focus);
-  } else if (mode === "demo") {
-    // The live demo plays the agent of one listing. It never calls the freelancer's own address.
-    if (!focus) return Response.json({ error: "bad_request" }, { status: 400 });
-    system = demoPrompt(focus, lang);
-  } else {
     return Response.json({ error: "bad_request" }, { status: 400 });
   }
   const messages = parseMessages(body?.messages);
@@ -95,12 +67,8 @@ export async function POST(request: Request) {
       max_tokens: 16000,
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
-      // The advisor answers in JSON so the window can show requirements and alternatives beside the chat.
-      output_config:
-        mode === "advisor"
-          ? { effort: "low", format: { type: "json_schema", schema: advisorSchema(listingIds) } }
-          : { effort: "low" },
-      system,
+      output_config: { effort: "low" },
+      system: listingPrompt(lang),
       messages,
     });
 
@@ -113,11 +81,6 @@ export async function POST(request: Request) {
       .join("\n")
       .trim();
     if (!reply) return Response.json({ error: "error" }, { status: 502 });
-    if (mode === "advisor") {
-      const parsed = parseAdvisorReply(reply, listingFacts);
-      if (!parsed) return Response.json({ error: "error" }, { status: 502 });
-      return Response.json(parsed);
-    }
     return Response.json({ reply });
   } catch (error) {
     if (error instanceof Anthropic.RateLimitError) {

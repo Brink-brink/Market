@@ -43,12 +43,13 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Omgjord design: sidan vänder sig till nya frilansare, med foton (nätverkstema), ikoner och korta texter på alla sidor
 - [x] Annonser med acceptanskriterier, demo för köpare (exempelsamtal) och tillägg för uppsättning och utbildning: webbplatsen, annonsutkastet i pluginen, granskningsreglerna
 - [ ] Testa annonsutkastet i pluginen med de nya fälten (`tests/run-market-tests.ps1 -Only listing`)
-- [x] Levande demo i annonsen på webbplatsen: Claude spelar agenten för exempelannonserna (kräver `ANTHROPIC_API_KEY`), med exempelsamtal som reserv
+- [x] Demo av agenten för exempelannonserna, spelad av en AI utifrån annonsens innehåll och ett påhittat företag, med exempelsamtal i annonsen
 - [x] Omgjord annonssida: omslagsbild, höjdpunkter, demo först, acceptanskriterier som kort, leveranssteg, prisruta med valbara tillägg
 - [x] Testa den levande demon med en riktig API-nyckel
-- [x] Levande fönster med kravrådgivare på köparsidan, i katalogen och på varje annons; detaljerna på annonssidan hopfällda
+- [x] Kravrådgivning för köpare med 13 krav, en fråga i taget; detaljerna på annonssidan hopfällda
 - [x] Kravrådgivaren ger flera alternativ i olika prislägen, med stjärnor för hur väl de möter kraven och märkning mot budgeten
 - [x] Samma kravrådgivning i pluginen (behovsutkastet): 13 krav, en fråga i taget, rekommenderad typ av agent och verktyg
+- [x] Chatten för köpare borttagen från webbplatsen: kravsamtalet och demon förs i köparens egen AI via en prompt som kopieras från köparsidan, katalogen och varje annons
 - [ ] Matchning mot katalogen från pluginen och i ChatGPT via MCP-servern (fas 3)
 - [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
