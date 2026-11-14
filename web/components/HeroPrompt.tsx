@@ -5,7 +5,6 @@ import { useState } from "react";
 import { pendingKey } from "@/lib/pending-need";
 
 type Props = {
-  mode: "need" | "listing";
   target: string;
   placeholder: string;
   cta: string;
@@ -13,14 +12,14 @@ type Props = {
 };
 
 // The box on the home page. What the visitor writes is handed to the assistant on the target page.
-export function HeroPrompt({ mode, target, placeholder, cta, hints }: Props) {
+export function HeroPrompt({ target, placeholder, cta, hints }: Props) {
   const router = useRouter();
   const [text, setText] = useState("");
 
   function go() {
     const value = text.trim();
     // Kept in the browser only, never in the address.
-    if (value) sessionStorage.setItem(pendingKey(mode), value);
+    if (value) sessionStorage.setItem(pendingKey, value);
     router.push(target);
   }
 

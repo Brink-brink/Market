@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BadgeCheck, CalendarClock, Check, GraduationCap, ListChecks, Minus, Play, ShieldCheck, Star, Wrench } from "lucide-react";
-import { Assistant } from "@/components/Assistant";
+import { BadgeCheck, CalendarClock, Check, GraduationCap, ListChecks, Minus, PackageCheck, Play, Route, ShieldCheck, Star, Wrench } from "lucide-react";
 import { BuyBox } from "@/components/BuyBox";
+import { LiveWindow } from "@/components/LiveWindow";
 import { fill, locales } from "@/lib/i18n";
-import { listingView } from "@/lib/listing-view";
+import { listingView, liveCards } from "@/lib/listing-view";
 import { getListing, listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 import { formatMoney, site } from "@/lib/site";
@@ -31,7 +31,7 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
   const extraLabel = { setup: c.extraSetup, training: c.extraTraining };
   const extraIcon = { setup: Wrench, training: GraduationCap };
 
-  // Shown in the demo frame when the live demo is switched off.
+  // Shown in the window's demo tab when the live demo is switched off.
   const sampleConversation = (
     <>
       <p className="section-note">{c.liveOff}</p>
@@ -76,102 +76,124 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
 
       <div className="detail">
         <div>
-          <section id="demo" className="demo-stage">
-            <div className={`demo-frame tone-${view.tone}`}>
-              <div className="demo-frame-head">
-                <h2>{c.liveTitle}</h2>
-                <p>{listing.agentType === "phone" ? `${c.livePhone} ${c.liveNote}` : c.liveNote}</p>
-              </div>
-              <div className="demo-frame-body">
-                <Assistant
-                  mode="demo"
-                  lang={lang}
-                  listingId={listing.id}
-                  intro={listing.liveDemo.greeting[lang]}
-                  suggestions={listing.liveDemo.prompts.map((prompt) => prompt[lang])}
-                  placeholder={c.livePlaceholder}
-                  labels={t.assistant}
-                  offContent={sampleConversation}
-                />
-              </div>
-            </div>
+          <section id="live">
+            <LiveWindow
+              variant="listing"
+              lang={lang}
+              labels={t.live}
+              assistantLabels={t.assistant}
+              agentTypeLabels={t.agentTypes}
+              cards={liveCards(lang, t)}
+              intro={fill(t.live.introListing, { title: view.title })}
+              listing={{
+                id: listing.id,
+                title: view.title,
+                tone: view.tone,
+                greeting: listing.liveDemo.greeting[lang],
+                prompts: listing.liveDemo.prompts.map((prompt) => prompt[lang]),
+                demoNote: listing.agentType === "phone" ? `${c.livePhone} ${c.liveNote}` : c.liveNote,
+                demoPlaceholder: c.livePlaceholder,
+                sample: sampleConversation,
+              }}
+            />
           </section>
 
           <section>
-            <h2>{c.included}</h2>
-            <ul className="checklist two-col">
-              {listing.includes.map((item) => (
-                <li key={item.en}><Check size={18} aria-hidden="true" />{item[lang]}</li>
-              ))}
-            </ul>
-          </section>
+            <h2>{c.details}</h2>
+            <p className="section-note">{c.detailsNote}</p>
 
-          <section id="acceptance" className="criteria-card">
-            <div className="criteria-head">
-              <span className="icon" aria-hidden="true"><ListChecks size={22} /></span>
-              <div>
-                <h2>{c.acceptanceTitle}</h2>
+            <details className="fold">
+              <summary>
+                <PackageCheck size={20} aria-hidden="true" />{c.included}
+                <span className="meta">{listing.includes.length}</span>
+              </summary>
+              <div className="fold-body">
+                <ul className="checklist two-col">
+                  {listing.includes.map((item) => (
+                    <li key={item.en}><Check size={18} aria-hidden="true" />{item[lang]}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+
+            <details className="fold" id="acceptance">
+              <summary>
+                <ListChecks size={20} aria-hidden="true" />{c.acceptanceTitle}
+                <span className="meta">{listing.acceptance.length}</span>
+              </summary>
+              <div className="fold-body">
                 <p className="section-note">{c.acceptanceNote}</p>
+                <ol className="criteria">
+                  {listing.acceptance.map((item, i) => (
+                    <li key={item.en}>
+                      <span className="check" aria-hidden="true"><Check size={16} /></span>
+                      <span className="criterion-number">{i + 1}</span>
+                      <span>{item[lang]}</span>
+                    </li>
+                  ))}
+                </ol>
               </div>
-            </div>
-            <ol className="criteria">
-              {listing.acceptance.map((item, i) => (
-                <li key={item.en}>
-                  <span className="check" aria-hidden="true"><Check size={16} /></span>
-                  <span className="criterion-number">{i + 1}</span>
-                  <span>{item[lang]}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
+            </details>
 
-          <section>
-            <h2>{c.deliveryTitle}</h2>
-            <ol className="timeline">
-              {c.deliverySteps.map((step) => (
-                <li key={step.title}>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </li>
-              ))}
-            </ol>
-          </section>
-
-          {listing.extras.length > 0 && (
-            <section id="extras">
-              <h2>{c.extrasTitle}</h2>
-              <p className="section-note">{c.extrasNote}</p>
-              <div className="extras">
-                {listing.extras.map((extra) => {
-                  const Icon = extraIcon[extra.kind];
-                  return (
-                    <div key={extra.kind} className="extra">
-                      <span className="icon" aria-hidden="true"><Icon size={22} /></span>
-                      <h3>{extraLabel[extra.kind]}</h3>
-                      <p>{extra.text[lang]}</p>
-                      <strong>{formatMoney(extra.price, lang)}</strong>
-                    </div>
-                  );
-                })}
+            <details className="fold">
+              <summary><Route size={20} aria-hidden="true" />{c.deliveryTitle}</summary>
+              <div className="fold-body">
+                <ol className="timeline">
+                  {c.deliverySteps.map((step) => (
+                    <li key={step.title}>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </li>
+                  ))}
+                </ol>
               </div>
-            </section>
-          )}
+            </details>
 
-          <section>
-            <h2>{c.notIncluded}</h2>
-            <ul className="checklist muted">
-              {listing.notIncluded.map((item) => (
-                <li key={item.en}><Minus size={18} aria-hidden="true" />{item[lang]}</li>
-              ))}
-            </ul>
-          </section>
+            {listing.extras.length > 0 && (
+              <details className="fold" id="extras">
+                <summary>
+                  <GraduationCap size={20} aria-hidden="true" />{c.extrasTitle}
+                  <span className="meta">{listing.extras.length}</span>
+                </summary>
+                <div className="fold-body">
+                  <p className="section-note">{c.extrasNote}</p>
+                  <div className="extras">
+                    {listing.extras.map((extra) => {
+                      const Icon = extraIcon[extra.kind];
+                      return (
+                        <div key={extra.kind} className="extra">
+                          <span className="icon" aria-hidden="true"><Icon size={22} /></span>
+                          <h3>{extraLabel[extra.kind]}</h3>
+                          <p>{extra.text[lang]}</p>
+                          <strong>{formatMoney(extra.price, lang)}</strong>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </details>
+            )}
 
-          <section className="data-card">
-            <span className="icon" aria-hidden="true"><ShieldCheck size={22} /></span>
-            <div>
-              <h2>{c.data}</h2>
-              <p>{listing.dataHandling[lang]}</p>
-            </div>
+            <details className="fold">
+              <summary>
+                <Minus size={20} aria-hidden="true" />{c.notIncluded}
+                <span className="meta">{listing.notIncluded.length}</span>
+              </summary>
+              <div className="fold-body">
+                <ul className="checklist muted">
+                  {listing.notIncluded.map((item) => (
+                    <li key={item.en}><Minus size={18} aria-hidden="true" />{item[lang]}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+
+            <details className="fold">
+              <summary><ShieldCheck size={20} aria-hidden="true" />{c.data}</summary>
+              <div className="fold-body">
+                <p>{listing.dataHandling[lang]}</p>
+              </div>
+            </details>
           </section>
         </div>
 
@@ -184,7 +206,6 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
           extras={listing.extras.map((extra) => ({ id: extra.kind, label: extraLabel[extra.kind], price: extra.price }))}
           labels={{ yourPackage: c.yourPackage, setupPrice: c.setupPrice, total: c.total, cta: c.requestCta, ctaNote: c.requestNote }}
         >
-          <Link href={link("/buyers#assistant")} className="button button-secondary buy-cta">{c.describeCta}</Link>
           <p className="meta">{c.aliasNote}</p>
         </BuyBox>
       </div>

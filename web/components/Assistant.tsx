@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { AdvisorState } from "@/lib/advisor";
 import type { Dict, Locale } from "@/lib/i18n";
 import { pendingKey } from "@/lib/pending-need";
 
@@ -8,41 +9,45 @@ type Message = { role: "user" | "assistant"; content: string };
 type Status = "checking" | "ready" | "off";
 
 type Props = {
-  // "need" and "listing" are the writing assistants. "demo" plays the agent in a listing.
-  mode: "need" | "listing" | "demo";
+  // "listing" writes a listing with a freelancer. "advisor" interviews a business about its requirements.
+  // "demo" plays the agent in a listing.
+  mode: "listing" | "advisor" | "demo";
   lang: Locale;
   intro: string;
   labels: Dict["assistant"];
-  // For "demo": which listing's agent to play.
+  // For "demo": which listing's agent to play. For "advisor": the listing the window was opened from.
   listingId?: string;
-  // Things the visitor can click to say.
+  // Things the visitor can click to say first.
   suggestions?: string[];
   placeholder?: string;
   // Shown instead of the standard notice when the assistant is switched off.
   offContent?: ReactNode;
+  // For "advisor": called with what the advisor knows after each reply, and with null on a restart.
+  onAdvisor?: (state: AdvisorState | null) => void;
 };
 
 // A chat with one of the assistants. The conversation lives only in this component.
-export function Assistant({ mode, lang, intro, labels, listingId, suggestions = [], placeholder, offContent }: Props) {
+export function Assistant({ mode, lang, intro, labels, listingId, suggestions = [], placeholder, offContent, onAdvisor }: Props) {
   const [status, setStatus] = useState<Status>("checking");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [copied, setCopied] = useState(false);
   const [carried, setCarried] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
-  const isDemo = mode === "demo";
+  const isListing = mode === "listing";
 
   useEffect(() => {
     fetch("/api/assist")
       .then((res) => res.json())
       .then((data: { enabled?: boolean }) => {
         setStatus(data.enabled ? "ready" : "off");
-        if (mode === "demo") return;
+        if (mode !== "listing") return;
         // Text the visitor wrote in the box on the home page.
-        const pending = sessionStorage.getItem(pendingKey(mode));
-        sessionStorage.removeItem(pendingKey(mode));
+        const pending = sessionStorage.getItem(pendingKey);
+        sessionStorage.removeItem(pendingKey);
         if (!pending) return;
         if (data.enabled) void send(pending);
         else setCarried(pending);
@@ -77,9 +82,13 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode, lang, listingId, messages: next }),
       });
-      const data = (await res.json()) as { reply?: string; error?: string };
+      const data = (await res.json()) as { reply?: string; advisor?: AdvisorState; error?: string };
       if (data.reply) {
         setMessages([...next, { role: "assistant", content: data.reply }]);
+        if (data.advisor) {
+          setOptions(data.advisor.options);
+          onAdvisor?.(data.advisor);
+        }
       } else {
         // Give the text back so the person can change it and try again.
         setMessages(messages);
@@ -116,9 +125,11 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
   }
 
   const field = placeholder ?? labels.placeholder;
+  // Before the first message: the suggestions. After a reply from the advisor: its answers to click.
+  const chips = messages.length === 0 ? suggestions : options;
 
   return (
-    <div className={isDemo ? "assistant assistant-demo" : "assistant"}>
+    <div className={`assistant assistant-${mode}`}>
       <div className="assistant-log" ref={logRef} aria-live="polite">
         <div className="bubble bubble-assistant">{intro}</div>
         {messages.map((message, i) => (
@@ -129,11 +140,11 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
 
       {notice && <p className="note" role="alert">{notice}</p>}
 
-      {suggestions.length > 0 && messages.length === 0 && (
+      {chips.length > 0 && !busy && (
         <div className="chips">
-          {suggestions.map((suggestion) => (
-            <button key={suggestion} type="button" className="chip" disabled={busy} onClick={() => void send(suggestion)}>
-              {suggestion}
+          {chips.map((chip) => (
+            <button key={chip} type="button" className="chip" onClick={() => void send(chip)}>
+              {chip}
             </button>
           ))}
         </div>
@@ -148,7 +159,7 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
       >
         <textarea
           value={input}
-          rows={isDemo ? 2 : 3}
+          rows={isListing ? 3 : 2}
           maxLength={4000}
           placeholder={field}
           aria-label={field}
@@ -165,7 +176,7 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
           <button className="button" type="submit" disabled={busy || status !== "ready" || !input.trim()}>
             {labels.send}
           </button>
-          {lastReply && !isDemo && (
+          {lastReply && isListing && (
             <button className="button button-secondary" type="button" onClick={() => void copyDraft()}>
               {copied ? labels.copied : labels.copy}
             </button>
@@ -177,7 +188,9 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
               disabled={busy}
               onClick={() => {
                 setMessages([]);
+                setOptions([]);
                 setNotice("");
+                onAdvisor?.(null);
               }}
             >
               {labels.restart}
@@ -185,7 +198,7 @@ export function Assistant({ mode, lang, intro, labels, listingId, suggestions = 
           )}
         </div>
       </form>
-      {!isDemo && <p className="meta">{labels.privacy}</p>}
+      {mode !== "demo" && <p className="meta">{labels.privacy}</p>}
     </div>
   );
 }

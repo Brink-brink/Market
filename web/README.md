@@ -13,10 +13,10 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Sida | Fil | Innehåll |
 | --- | --- | --- |
 | `/` | `app/[lang]/page.tsx` | Foto med skrivrutan "Vad bygger du?" som leder till annonsassistenten, fyra fördelar med ikoner, "Så fungerar det" med fotokort och växel mellan frilansare och företag, annonser ur katalogen, och ett band för köpare |
-| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och behovsassistenten |
+| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och det levande fönstret med kravrådgivaren |
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
-| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter |
-| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons |
+| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och en knapp som öppnar kravrådgivaren |
+| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, det levande fönstret, hopfällda detaljer och prisruta |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |
 | `/build-on` | `app/[lang]/build-on/page.tsx` | Bygg vidare och uppköp, märkt som kommande |
 | `/faq`, `/terms`, `/privacy`, `/contact` | `app/[lang]/*/page.tsx` | Vanliga frågor och utkast till villkor |
@@ -39,7 +39,8 @@ Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`
 
 `components/Assistant.tsx` pratar med `app/api/assist/route.ts`, som anropar Claude API (`claude-opus-5-5`).
 
-- **Behovsassistenten** (`/buyers`) ställer frågorna en byggare behöver svar på och skriver ett behovsutkast.
+- **Kravrådgivaren** i det levande fönstret (`components/LiveWindow.tsx`) öppnas från `/buyers`, katalogen och varje annons. Den ställer en fråga i taget om 13 krav, med svar att klicka på. Bredvid samtalet fylls en översikt i: kraven, vilken sorts agent och vilka verktyg som passar, och vilka annonser i katalogen som matchar, med vad som passar och vad som saknas. Öppnad från en annons visar den också hur just den annonsen passar. Svaret från Claude är JSON enligt schemat i `lib/advisor.ts`, och annons-id:n är låsta till katalogen så att den bara kan peka på riktiga annonser. Ordningen avgörs bara av hur väl annonsen passar.
+- **Levande demo** är en flik i samma fönster på en annons: Claude spelar annonsens agent för ett påhittat företag. Exempelsamtalet visas när demon är avstängd.
 - **Annonsassistenten** (`/listing`) hjälper säljaren skriva en annons och kontrollerar den mot granskningskraven. Tillval, gratis under lanseringen.
 
 Samtalet sparas inte: webbläsaren skickar hela historiken varje gång. Assistenterna är avstängda tills `ANTHROPIC_API_KEY` är satt; då visas en hänvisning till `/market` i Claude.

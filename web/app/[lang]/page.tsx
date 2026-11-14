@@ -26,7 +26,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <h1>{h.heroTitle}</h1>
           <p className="lead">{h.heroLead}</p>
           <HeroPrompt
-            mode="listing"
             target={link("/listing#assistant")}
             placeholder={h.heroPlaceholder}
             cta={h.heroCta}

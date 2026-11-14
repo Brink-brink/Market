@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CatalogBrowser, type CatalogCard } from "@/components/CatalogBrowser";
+import { LiveWindow } from "@/components/LiveWindow";
 import { fill } from "@/lib/i18n";
-import { listingTile, listingView } from "@/lib/listing-view";
+import { listingTile, listingView, liveCards } from "@/lib/listing-view";
 import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 import { formatMoney } from "@/lib/site";
@@ -38,6 +39,18 @@ export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog
       <h1>{c.title}</h1>
       <p className="lead">{c.lead}</p>
       {listings.some((l) => l.example) && <p className="note">{t.common.exampleNote}</p>}
+
+      {listings.length > 0 && (
+        <LiveWindow
+          variant="banner"
+          lang={lang}
+          labels={t.live}
+          assistantLabels={t.assistant}
+          agentTypeLabels={t.agentTypes}
+          cards={liveCards(lang, t)}
+          intro={t.live.introAdvisor}
+        />
+      )}
 
       {listings.length === 0 ? (
         <p className="meta">{c.empty}</p>

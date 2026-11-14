@@ -117,6 +117,7 @@ Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett
 - Säljarregistrering. Den första godkända annonsen ersätter inträdestestet
 - Köp av kreditpaket (Stripe)
 - Katalogen av godkända annonser (samma innehåll som i pluginen)
+- Ett levande fönster för köpare: en kravrådgivare som ställer en fråga i taget, visar kraven i en översikt, rekommenderar typ av agent och verktyg och visar vilka annonser som matchar, med vad som passar och vad som saknas. På en annons visar fönstret hur just den passar och låter köparen prova agenten. Matchningen går inte att köpa
 - Paketmallar per bransch som säljare kan utgå från
 - Admin: granska annonser enligt `GRANSKNING.md`, pausa annonser, se leads, återbetala krediter
 

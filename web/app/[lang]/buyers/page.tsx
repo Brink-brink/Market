@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Assistant } from "@/components/Assistant";
 import { PhotoSteps } from "@/components/HowTabs";
+import { LiveWindow } from "@/components/LiveWindow";
 import { images } from "@/lib/images";
+import { liveCards } from "@/lib/listing-view";
 import { pageContext } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/buyers">): Promise<Metadata> {
@@ -25,8 +26,17 @@ export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">
         <Image src={images.street} alt="" width={1168} height={880} priority />
       </section>
 
-      <h2 id="assistant">{b.assistantTitle}</h2>
-      <Assistant mode="need" lang={lang} intro={t.assistant.needIntro} labels={t.assistant} />
+      <div id="assistant" style={{ scrollMarginTop: 90 }}>
+        <LiveWindow
+          variant="advisor"
+          lang={lang}
+          labels={t.live}
+          assistantLabels={t.assistant}
+          agentTypeLabels={t.agentTypes}
+          cards={liveCards(lang, t)}
+          intro={t.live.introAdvisor}
+        />
+      </div>
       <p className="note">{b.sendNote}</p>
 
       <h2>{b.stepsTitle}</h2>

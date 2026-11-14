@@ -45,7 +45,9 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Testa annonsutkastet i pluginen med de nya fälten (`tests/run-market-tests.ps1 -Only listing`)
 - [x] Levande demo i annonsen på webbplatsen: Claude spelar agenten för exempelannonserna (kräver `ANTHROPIC_API_KEY`), med exempelsamtal som reserv
 - [x] Omgjord annonssida: omslagsbild, höjdpunkter, demo först, acceptanskriterier som kort, leveranssteg, prisruta med valbara tillägg
-- [ ] Testa den levande demon med en riktig API-nyckel
+- [x] Testa den levande demon med en riktig API-nyckel
+- [x] Levande fönster med kravrådgivare på köparsidan, i katalogen och på varje annons; detaljerna på annonssidan hopfällda
+- [ ] Samma kravrådgivning i pluginen (behovsutkastet) och via MCP-servern, så att köparen får den direkt i Claude och ChatGPT
 - [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
 - [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik

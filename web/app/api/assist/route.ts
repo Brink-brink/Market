@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { demoPrompt, systemPrompt } from "@/lib/assistant-prompts";
+import { advisorSchema, parseAdvisorReply } from "@/lib/advisor";
+import { advisorPrompt, demoPrompt, listingPrompt } from "@/lib/assistant-prompts";
 import { hasLocale } from "@/lib/i18n";
-import { getListing } from "@/lib/listings";
+import { getListing, listings } from "@/lib/listings";
 
 // Limits that keep a public, unauthenticated endpoint cheap to abuse.
 const MAX_MESSAGES = 40;
@@ -55,14 +56,18 @@ export async function POST(request: Request) {
   if (typeof lang !== "string" || !hasLocale(lang)) {
     return Response.json({ error: "bad_request" }, { status: 400 });
   }
+  const focus = typeof body?.listingId === "string" ? getListing(body.listingId) : undefined;
+  const listingIds = listings.map((listing) => listing.id);
   let system: string;
-  if (mode === "need" || mode === "listing") {
-    system = systemPrompt(mode, lang);
+  if (mode === "listing") {
+    system = listingPrompt(lang);
+  } else if (mode === "advisor") {
+    // The requirements advisor. A listing id means the window was opened from that listing.
+    system = advisorPrompt(lang, listings, focus);
   } else if (mode === "demo") {
     // The live demo plays the agent of one listing. It never calls the freelancer's own address.
-    const listing = typeof body?.listingId === "string" ? getListing(body.listingId) : undefined;
-    if (!listing) return Response.json({ error: "bad_request" }, { status: 400 });
-    system = demoPrompt(listing, lang);
+    if (!focus) return Response.json({ error: "bad_request" }, { status: 400 });
+    system = demoPrompt(focus, lang);
   } else {
     return Response.json({ error: "bad_request" }, { status: 400 });
   }
@@ -78,7 +83,11 @@ export async function POST(request: Request) {
       max_tokens: 16000,
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
-      output_config: { effort: "low" },
+      // The advisor answers in JSON so the window can show requirements and matches beside the chat.
+      output_config:
+        mode === "advisor"
+          ? { effort: "low", format: { type: "json_schema", schema: advisorSchema(listingIds) } }
+          : { effort: "low" },
       system,
       messages,
     });
@@ -92,6 +101,11 @@ export async function POST(request: Request) {
       .join("\n")
       .trim();
     if (!reply) return Response.json({ error: "error" }, { status: 502 });
+    if (mode === "advisor") {
+      const parsed = parseAdvisorReply(reply, listingIds);
+      if (!parsed) return Response.json({ error: "error" }, { status: 502 });
+      return Response.json(parsed);
+    }
     return Response.json({ reply });
   } catch (error) {
     if (error instanceof Anthropic.RateLimitError) {

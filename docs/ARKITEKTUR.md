@@ -29,7 +29,7 @@ Förslag. Ändra här först om något byts ut, och uppdatera sedan `CLAUDE.md`.
 1. **Plugin** – paketerar skills (instruktioner, t.ex. marknadsanalysen) och en koppling till vår MCP-server. En plugin för Claude, en för ChatGPT, samma server bakom.
 2. **MCP-server** – exponerar verktygen nedan. All affärslogik ligger här, inte i pluginen.
 3. **Webbplats** – allt som har med pengar och konton att göra. Pluginen länkar aldrig hit för köp.
-   Webbplatsen är internationell (engelska som standard, svenska) och har två AI-assistenter som anropar Claude API från servern (`web/app/api/assist`): behovsassistenten för köpare och annonsassistenten för säljare. Samtalen sparas inte. Se `web/README.md`.
+   Webbplatsen är internationell (engelska som standard, svenska) och har AI-assistenter som anropar Claude API från servern (`web/app/api/assist`): kravrådgivaren och den levande demon för köpare, i ett levande fönster som öppnas från köparsidan, katalogen och varje annons, och annonsassistenten för säljare. Kravrådgivaren frågar om köparens krav, rekommenderar typ av agent och verktyg och matchar annonser i katalogen enbart efter hur väl de passar. Samtalen sparas inte. Se `web/README.md`.
 4. **Postgres** – all data.
 5. **Stripe** – bara på webbplatsen, för kreditpaket.
 

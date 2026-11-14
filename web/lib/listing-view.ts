@@ -1,6 +1,7 @@
 import type { TileData } from "@/components/ListingTile";
+import type { LiveCard } from "@/components/LiveWindow";
 import { fill, type Dict, type Locale } from "./i18n";
-import type { CatalogListing } from "./listings";
+import { listings, type CatalogListing } from "./listings";
 import { formatMoney, formatRange } from "./site";
 
 // Tile colour per type of agent.
@@ -59,4 +60,20 @@ export function listingTile(listing: CatalogListing, lang: Locale, t: Dict): Til
     fromText: `${t.catalog.from} ${formatMoney(listing.setupPrice[0], lang)}`,
     metaText: `${view.monthlyText} · ${view.deliveryText}`,
   };
+}
+
+// The listings as the live window shows them when the advisor finds a match.
+export function liveCards(lang: Locale, t: Dict): Record<string, LiveCard> {
+  return Object.fromEntries(
+    listings.map((listing) => [
+      listing.id,
+      {
+        title: listing.title[lang],
+        alias: listing.alias,
+        href: `/${lang}/catalog/${listing.id}`,
+        cover: listing.cover,
+        fromText: `${t.catalog.from} ${formatMoney(listing.setupPrice[0], lang)}`,
+      },
+    ]),
+  );
 }
