@@ -14,7 +14,7 @@ Utifrån det föreslår den **tre paket med fast prisintervall** och bedömer om
 
 Skillen `listing-draft` hjälper dig skriva ett **annonsutkast** för ditt paket: innehåll, prisintervall, leveranstid, prototyp eller produkt i drift, demo, testinstruktioner och datahantering. Den kontrollerar utkastet mot granskningskraven och säger vad du behöver rätta. Inget sparas eller skickas än; att skicka in annonser för granskning öppnar senare.
 
-Skillen `need-draft` hjälper dig som företagare beskriva vilken AI-agent du behöver, som ett **behovsutkast** säljare kan sätta fast pris på: bransch, problem, vad agenten ska göra, nuvarande system, volym, budget, när och område. Inga kontaktuppgifter tas med. Inget sparas eller skickas än.
+Skillen `need-draft` hjälper dig som företagare reda ut vilken AI-agent du behöver. Den ställer en kravfråga i taget (verksamhet, problem, vad agenten ska göra, kanal, nuvarande system, volym, språk, tider, vad som händer när agenten inte kan hjälpa, känsliga uppgifter, budget, när och område), säger vilken sorts agent och vilka verktyg som passar dina krav, och skriver ett **behovsutkast** som säljare kan sätta fast pris på. Inga kontaktuppgifter tas med. Inget sparas eller skickas än, och annonser i katalogen går ännu inte att matcha från pluginen.
 
 I marknadsanalysen får varje siffra en källa. När skillen inte hittar något skriver den "hittade inget" i stället för att gissa. Svaret kommer på samma språk som du skriver på.
 

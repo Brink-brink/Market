@@ -47,7 +47,8 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Omgjord annonssida: omslagsbild, höjdpunkter, demo först, acceptanskriterier som kort, leveranssteg, prisruta med valbara tillägg
 - [x] Testa den levande demon med en riktig API-nyckel
 - [x] Levande fönster med kravrådgivare på köparsidan, i katalogen och på varje annons; detaljerna på annonssidan hopfällda
-- [ ] Samma kravrådgivning i pluginen (behovsutkastet) och via MCP-servern, så att köparen får den direkt i Claude och ChatGPT
+- [x] Samma kravrådgivning i pluginen (behovsutkastet): 13 krav, en fråga i taget, rekommenderad typ av agent och verktyg
+- [ ] Matchning mot katalogen från pluginen och i ChatGPT via MCP-servern (fas 3)
 - [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
 - [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik

@@ -50,7 +50,7 @@ The catalog, matching and offers are not open yet. Tell the buyer that in two or
 - Browsing listings from people who build AI agents, and getting matched with them, is not open yet.
 - Nothing they wrote has been saved or sent anywhere.
 
-Then offer one thing they can do now: write a **need draft**, a short description of what their business needs, that sellers could quote a fixed price on. Ask the same way as the role question, with two options: write a need draft now, or not now.
+Then offer one thing they can do now: write a **need draft**. You ask about their requirements one at a time, tell them which kind of agent and which tools fit, and write a short description that sellers could quote a fixed price on. Ask the same way as the role question, with two options: write a need draft now, or not now.
 
 - If they want the draft, follow this plugin's `need-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:need-draft`), passing anything the buyer has already said about their business and need.
 - If they say they have a code for a request or ask to see offers, say that requests and offers are not open yet, so there is no code yet. Do not ask for the code.

@@ -50,7 +50,7 @@ Köparen behöver inget konto. Bara det köparen godkänner sparas, och ingen ko
 
 ### 1. Behovet
 
-Claude hjälper köparen beskriva behovet med enkla frågor: bransch, vad som går fel i dag, vad agenten ska göra, nuvarande system, volym, budget, när och område (stad eller region, aldrig exakt adress). Svaret "vet inte" är okej. Kontaktuppgifter tas aldrig med i behovstexten. I fas 1 är det här **behovsutkastet** (skill `need-draft`); inget sparas.
+Claude hjälper köparen beskriva behovet med enkla frågor, en i taget: verksamhet, vad som går fel i dag, vad agenten ska göra, var kunderna når företaget, nuvarande system, volym, språk, när agenten ska arbeta, vad som händer när den inte kan hjälpa, känsliga uppgifter, budget, när och område (stad eller region, aldrig exakt adress). Svaret "vet inte" är okej. Under tiden säger Claude vilken sorts agent och vilka verktyg som passar kraven; verktygen anges som typ, inte som leverantör. Samma frågor ställs i det levande fönstret på webbplatsen. Kontaktuppgifter tas aldrig med i behovstexten. I fas 1 är det här **behovsutkastet** (skill `need-draft`); inget sparas.
 
 ### 2. Katalog eller matchning
 
