@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { Check, Copy, Sparkles, Star } from "lucide-react";
+import { Check, Copy, Download, Sparkles, Star } from "lucide-react";
 import type { Dict } from "@/lib/i18n";
+import { installCommands } from "@/lib/plugin";
 
 type Props = {
   labels: Dict["plugin"];
@@ -11,11 +13,12 @@ type Props = {
   // A large card on a listing or the buyer page, or a slim row in the catalog.
   variant: "listing" | "advisor" | "banner";
   tone?: string;
+  // The page that explains how to install the plugin.
+  installHref?: string;
 };
 
-const installCommands = ["claude plugin marketplace add Brink-brink/Market", "claude plugin install ai-jobb@ai-jobb"];
 
-function CopyLine({ text, labels }: { text: string; labels: Dict["plugin"] }) {
+export function CopyLine({ text, labels }: { text: string; labels: Dict["plugin"] }) {
   const [copied, setCopied] = useState(false);
   return (
     <div className="cmd">
@@ -38,16 +41,16 @@ function CopyLine({ text, labels }: { text: string; labels: Dict["plugin"] }) {
 
 // Points the visitor to the ai-jobb plugin in Claude. The requirements conversation happens there;
 // the plugin then opens the matching listings on this site.
-export function PluginCard({ labels, command, variant, tone }: Props) {
+export function PluginCard({ labels, command, variant, tone, installHref }: Props) {
   if (variant === "banner") {
     return (
       <div className="handoff-banner">
-        <span className="icon" aria-hidden="true"><Sparkles size={22} /></span>
-        <div>
-          <strong>{labels.bannerTitle}</strong>
-          <p>{labels.bannerText}</p>
-        </div>
         <CopyLine text={command} labels={labels} />
+        {installHref && (
+          <Link href={installHref} className="button">
+            <Download size={18} aria-hidden="true" />{labels.installCta}
+          </Link>
+        )}
       </div>
     );
   }

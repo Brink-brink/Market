@@ -17,6 +17,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
 | `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och ett band med kommandot för pluginen |
 | `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, kortet med kommandot `/ai-jobb:need-draft <id>`, hopfällda detaljer (bland annat exempelsamtalet) och prisruta |
+| `/plugin` | `app/[lang]/plugin/page.tsx` | Hur köparen hämtar pluginen ai-jobb till Claude: tre steg med kommandon att kopiera. Knappen i bandet med `/market` (framsidan och katalogen) leder hit |
 | `/picks` | `app/[lang]/picks/page.tsx` | Alternativen som pluginen öppnar: annonser med stjärnor, pris och märkning mot budgeten (`components/Picks.tsx`). Indexeras inte |
 | `/api/catalog` | `app/api/catalog/route.ts` | Katalogen som JSON för pluginen: bara katalogfält, priser och demoföretaget |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |

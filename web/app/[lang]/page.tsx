@@ -5,6 +5,7 @@ import { HeroPrompt } from "@/components/HeroPrompt";
 import { HowTabs } from "@/components/HowTabs";
 import { IconGrid } from "@/components/IconGrid";
 import { ListingTile } from "@/components/ListingTile";
+import { PluginCard } from "@/components/PluginCard";
 import { images } from "@/lib/images";
 import { listingTile } from "@/lib/listing-view";
 import { listings } from "@/lib/listings";
@@ -34,6 +35,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <p className="hero-note">{h.heroNote}</p>
         </div>
       </section>
+
+      <PluginCard variant="banner" labels={t.plugin} command="/market" installHref={link("/plugin")} />
 
       <IconGrid items={h.benefits} icons={[Coins, BadgeCheck, Users, Scale]} />
 

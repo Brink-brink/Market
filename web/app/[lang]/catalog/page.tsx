@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/catalog">)
 const budgetSteps = [500, 1000, 2500];
 
 export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog">) {
-  const { lang, t } = await pageContext(params);
+  const { lang, t, link } = await pageContext(params);
   const c = t.catalog;
 
   const cards: CatalogCard[] = listings.map((listing) => {
@@ -41,7 +41,7 @@ export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog
       {listings.some((l) => l.example) && <p className="note">{t.common.exampleNote}</p>}
 
       {listings.length > 0 && (
-        <PluginCard variant="banner" labels={t.plugin} command="/market" />
+        <PluginCard variant="banner" labels={t.plugin} command="/market" installHref={link("/plugin")} />
       )}
 
       {listings.length === 0 ? (

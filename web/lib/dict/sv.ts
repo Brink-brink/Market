@@ -269,11 +269,29 @@ const sv: Dict = {
     installTitle: "Har du inte pluginen? Installera den en gång",
     installText: "Kör det här i en terminal där Claude Code är installerat:",
     note: "Dina svar stannar i samtalet med Claude. Webbläsaren får bara veta vilka annonser som passar och din budget.",
-    bannerTitle: "Osäker på vilken som passar?",
-    bannerText: "Fråga i Claude med pluginen ai-jobb. Den frågar om ditt företag och öppnar annonserna som passar här.",
+    installCta: "Hämta pluginen till din AI",
     previewQuestion: "Vilken typ av företag har du?",
     previewOptions: ["Frisörsalong","Klinik","Restaurang"],
     previewAlt: "Öppnas i din webbläsare",
+  },
+  pluginPage: {
+    title: "Hämta pluginen ai-jobb",
+    lead: "Med pluginen frågar Claude om ditt företag, hittar agenterna i katalogen som passar dina krav och öppnar dem här, med stjärnor och priser inom din budget.",
+    steps: [
+      {
+        title: "Ha Claude Code",
+        text: "Pluginen körs i Claude Code. Installera det om du inte redan har det."
+      },
+      {
+        title: "Installera pluginen",
+        text: "Kör de här två raderna i en terminal. Det gör du bara en gång."
+      },
+      {
+        title: "Skriv /market i Claude",
+        text: "Claude ställer en fråga i taget och öppnar annonserna som passar i din webbläsare."
+      }
+    ],
+    chatgpt: "ChatGPT och andra AI-assistenter kommer senare."
   },
   picks: {
     title: "Alternativ för dina krav",

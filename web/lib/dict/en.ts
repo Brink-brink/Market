@@ -267,11 +267,29 @@ const en = {
     installTitle: "Don't have the plugin? Install it once",
     installText: "Run these in a terminal with Claude Code installed:",
     note: "Your answers stay in your conversation with Claude. The browser only gets which listings fit and your budget.",
-    bannerTitle: "Not sure which one fits?",
-    bannerText: "Ask in Claude with the ai-jobb plugin. It asks about your business and opens the listings that fit here.",
+    installCta: "Get the plugin for your AI",
     previewQuestion: "What kind of business do you run?",
     previewOptions: ["Hair salon","Clinic","Restaurant"],
     previewAlt: "Opened in your browser",
+  },
+  pluginPage: {
+    title: "Get the ai-jobb plugin",
+    lead: "With the plugin, Claude asks about your business, finds the agents in the catalog that fit your requirements and opens them here, with stars and prices within your budget.",
+    steps: [
+      {
+        title: "Have Claude Code",
+        text: "The plugin runs in Claude Code. Install it if you have not already."
+      },
+      {
+        title: "Install the plugin",
+        text: "Run these two lines in a terminal. You only do this once."
+      },
+      {
+        title: "Write /market in Claude",
+        text: "Claude asks one question at a time and opens the listings that fit in your browser."
+      }
+    ],
+    chatgpt: "ChatGPT and other AI assistants are coming later."
   },
   picks: {
     title: "Alternatives for your requirements",
