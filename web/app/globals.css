@@ -442,10 +442,24 @@ thead th { color: var(--muted); font-weight: 600; }
 /* Banner: the /market command and the install button */
 .handoff-banner .cmd { flex: 1; max-width: none; }
 .handoff-banner .button { flex: none; }
-.plugin-steps .cmd { background: var(--ink); max-width: 560px; }
-.plugin-steps .cmd code { color: var(--ink-text); }
-.plugin-steps { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 16px; counter-reset: plug; max-width: 760px; }
-.plugin-steps li { counter-increment: plug; position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px 20px 20px 72px; }
-.plugin-steps li::before { content: counter(plug); position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--ink-text); font-weight: 700; display: flex; align-items: center; justify-content: center; }
-.plugin-steps h2 { margin: 4px 0 6px; font-size: 1.2rem; }
-.plugin-steps p { margin: 0 0 12px; color: var(--muted); }
+.plugin-then .cmd { background: var(--ink); max-width: 560px; }
+.plugin-then .cmd code { color: var(--ink-text); }
+.stores { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 24px 0 8px; max-width: 900px; }
+.store { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; }
+.store h2 { margin: 4px 0 0; font-size: 1.35rem; }
+.store p { margin: 0 0 8px; color: var(--muted); flex: 1; }
+.handoff-install { margin-top: 14px; }
+
+/* Install menu: the plugin directories per AI assistant */
+.install-menu { position: relative; flex: none; }
+.install-menu .button { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font: inherit; font-weight: 600; }
+.install-list { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 320px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 8px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18); display: grid; gap: 2px; }
+.handoff .install-list { left: 0; right: auto; }
+.install-item { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 12px; align-items: center; padding: 10px 12px; border-radius: 10px; color: var(--text); text-decoration: none; }
+.install-item small { grid-column: 1; color: var(--muted); white-space: nowrap; }
+.install-item > svg, .install-item .install-badge { grid-column: 2; grid-row: 1 / span 2; }
+a.install-item:hover { background: var(--note); }
+.install-soon { cursor: default; }
+.install-soon strong, .install-soon small { opacity: 0.6; }
+.install-badge { font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 2px 10px; background: var(--note); color: var(--muted); white-space: nowrap; }
+.install-more { padding: 10px 12px 6px; border-top: 1px solid var(--border); margin-top: 4px; font-size: 0.9rem; }

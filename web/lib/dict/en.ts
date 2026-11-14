@@ -264,32 +264,35 @@ const en = {
     writeTitle: "Write this in Claude",
     copy: "Copy",
     copied: "Copied",
-    installTitle: "Don't have the plugin? Install it once",
-    installText: "Run these in a terminal with Claude Code installed:",
     note: "Your answers stay in your conversation with Claude. The browser only gets which listings fit and your budget.",
     installCta: "Get the plugin for your AI",
+    stores: { claude: "Plugin directory in Claude", chatgpt: "Plugin directory in ChatGPT" },
+    soon: "Coming soon",
+    more: "More about the plugin",
     previewQuestion: "What kind of business do you run?",
     previewOptions: ["Hair salon","Clinic","Restaurant"],
     previewAlt: "Opened in your browser",
   },
   pluginPage: {
     title: "Get the ai-jobb plugin",
-    lead: "With the plugin, Claude asks about your business, finds the agents in the catalog that fit your requirements and opens them here, with stars and prices within your budget.",
-    steps: [
-      {
-        title: "Have Claude Code",
-        text: "The plugin runs in Claude Code. Install it if you have not already."
+    lead: "With the plugin, your AI asks about your business, finds the agents in the catalog that fit your requirements and opens them here, with stars and prices within your budget.",
+    stores: {
+      claude: {
+        name: "Claude",
+        text: "In the plugin directory in Claude. Add it there, then write /market in a new conversation."
       },
-      {
-        title: "Install the plugin",
-        text: "Run these two lines in a terminal. You only do this once."
-      },
-      {
-        title: "Write /market in Claude",
-        text: "Claude asks one question at a time and opens the listings that fit in your browser."
+      chatgpt: {
+        name: "ChatGPT",
+        text: "In the plugin directory in ChatGPT. Add it there, then ask for help finding an AI agent."
       }
-    ],
-    chatgpt: "ChatGPT and other AI assistants are coming later."
+    },
+    open: "Get it in {name}",
+    soon: "Coming soon",
+    soonNote: "The plugin is not published in the directories yet. The buttons open as soon as it is.",
+    thenTitle: "Then write this",
+    more: "More AI assistants are coming later.",
+    devTitle: "Developer with Claude Code?",
+    devText: "Install it straight from the repository:"
   },
   picks: {
     title: "Alternatives for your requirements",

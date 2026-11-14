@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { Check, Copy, Download, Sparkles, Star } from "lucide-react";
+import { Check, Copy, Sparkles, Star } from "lucide-react";
+import { InstallMenu } from "@/components/InstallMenu";
 import type { Dict } from "@/lib/i18n";
-import { installCommands } from "@/lib/plugin";
 
 type Props = {
   labels: Dict["plugin"];
@@ -13,8 +12,8 @@ type Props = {
   // A large card on a listing or the buyer page, or a slim row in the catalog.
   variant: "listing" | "advisor" | "banner";
   tone?: string;
-  // The page that explains how to install the plugin.
-  installHref?: string;
+  // The page with more about the plugin, linked from the install menu.
+  installHref: string;
 };
 
 
@@ -46,11 +45,7 @@ export function PluginCard({ labels, command, variant, tone, installHref }: Prop
     return (
       <div className="handoff-banner">
         <CopyLine text={command} labels={labels} />
-        {installHref && (
-          <Link href={installHref} className="button">
-            <Download size={18} aria-hidden="true" />{labels.installCta}
-          </Link>
-        )}
+        <InstallMenu labels={labels} moreHref={installHref} />
       </div>
     );
   }
@@ -65,11 +60,7 @@ export function PluginCard({ labels, command, variant, tone, installHref }: Prop
         <h3 className="cmd-title">{labels.writeTitle}</h3>
         <CopyLine text={command} labels={labels} />
 
-        <details className="handoff-show">
-          <summary>{labels.installTitle}</summary>
-          <p>{labels.installText}</p>
-          {installCommands.map((line) => <CopyLine key={line} text={line} labels={labels} />)}
-        </details>
+        <div className="handoff-install"><InstallMenu labels={labels} moreHref={installHref} light /></div>
         <p className="handoff-note">{labels.note}</p>
       </div>
 

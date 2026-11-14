@@ -63,7 +63,7 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
         <div>
           <section id="ai">
             {/* The requirements conversation and the demo happen in Claude, through the plugin. */}
-            <PluginCard variant="listing" labels={t.plugin} tone={view.tone} command={`/ai-jobb:need-draft ${listing.id}`} />
+            <PluginCard variant="listing" labels={t.plugin} tone={view.tone} command={`/ai-jobb:need-draft ${listing.id}`} installHref={link("/plugin")} />
           </section>
 
           <section>

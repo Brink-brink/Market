@@ -52,7 +52,7 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Chatten för köpare borttagen från webbplatsen: kravsamtalet och demon förs i Claude med pluginen; webbplatsen visar kommandot
 - [x] Pluginen hämtar katalogen (`/api/catalog`) och öppnar alternativen i webbläsaren (`/picks`) med stjärnor, pris och märkning mot budgeten
 - [ ] Byt pluginens adress `http://localhost:3000` till den riktiga domänen vid lansering (`plugin/skills/need-draft`, `plugin/skills/market`)
-- [ ] Gör plugin-repot publikt eller publicera pluginen så att köpare kan installera den
+- [ ] Publicera pluginen i Claudes och ChatGPT:s kataloger och lägg in adresserna i `web/lib/plugin.ts` (knappen visar "Kommer snart" tills dess)
 - [ ] Matchning i ChatGPT via MCP-servern (fas 3)
 - [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console

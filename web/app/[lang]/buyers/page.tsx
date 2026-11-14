@@ -26,7 +26,7 @@ export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">
       </section>
 
       <div id="assistant" style={{ scrollMarginTop: 90 }}>
-        <PluginCard variant="advisor" labels={t.plugin} command="/market" />
+        <PluginCard variant="advisor" labels={t.plugin} command="/market" installHref={link("/plugin")} />
       </div>
 
       <h2>{b.stepsTitle}</h2>

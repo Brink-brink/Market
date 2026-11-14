@@ -266,32 +266,35 @@ const sv: Dict = {
     writeTitle: "Skriv det här i Claude",
     copy: "Kopiera",
     copied: "Kopierat",
-    installTitle: "Har du inte pluginen? Installera den en gång",
-    installText: "Kör det här i en terminal där Claude Code är installerat:",
     note: "Dina svar stannar i samtalet med Claude. Webbläsaren får bara veta vilka annonser som passar och din budget.",
     installCta: "Hämta pluginen till din AI",
+    stores: { claude: "Claudes katalog för plugins", chatgpt: "ChatGPT:s katalog för plugins" },
+    soon: "Kommer snart",
+    more: "Mer om pluginen",
     previewQuestion: "Vilken typ av företag har du?",
     previewOptions: ["Frisörsalong","Klinik","Restaurang"],
     previewAlt: "Öppnas i din webbläsare",
   },
   pluginPage: {
     title: "Hämta pluginen ai-jobb",
-    lead: "Med pluginen frågar Claude om ditt företag, hittar agenterna i katalogen som passar dina krav och öppnar dem här, med stjärnor och priser inom din budget.",
-    steps: [
-      {
-        title: "Ha Claude Code",
-        text: "Pluginen körs i Claude Code. Installera det om du inte redan har det."
+    lead: "Med pluginen frågar din AI om ditt företag, hittar agenterna i katalogen som passar dina krav och öppnar dem här, med stjärnor och priser inom din budget.",
+    stores: {
+      claude: {
+        name: "Claude",
+        text: "I Claudes katalog för plugins. Lägg till den där och skriv /market i ett nytt samtal."
       },
-      {
-        title: "Installera pluginen",
-        text: "Kör de här två raderna i en terminal. Det gör du bara en gång."
-      },
-      {
-        title: "Skriv /market i Claude",
-        text: "Claude ställer en fråga i taget och öppnar annonserna som passar i din webbläsare."
+      chatgpt: {
+        name: "ChatGPT",
+        text: "I ChatGPT:s katalog för plugins. Lägg till den där och be om hjälp att hitta en AI-agent."
       }
-    ],
-    chatgpt: "ChatGPT och andra AI-assistenter kommer senare."
+    },
+    open: "Hämta i {name}",
+    soon: "Kommer snart",
+    soonNote: "Pluginen är inte publicerad i katalogerna än. Knapparna öppnas så fort den är det.",
+    thenTitle: "Skriv sedan det här",
+    more: "Fler AI-assistenter kommer senare.",
+    devTitle: "Utvecklare med Claude Code?",
+    devText: "Installera den direkt från repot:"
   },
   picks: {
     title: "Alternativ för dina krav",
