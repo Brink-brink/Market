@@ -49,8 +49,11 @@ Uppdatera när något blir klart eller tillkommer.
 - [x] Kravrådgivning för köpare med 13 krav, en fråga i taget; detaljerna på annonssidan hopfällda
 - [x] Kravrådgivaren ger flera alternativ i olika prislägen, med stjärnor för hur väl de möter kraven och märkning mot budgeten
 - [x] Samma kravrådgivning i pluginen (behovsutkastet): 13 krav, en fråga i taget, rekommenderad typ av agent och verktyg
-- [x] Chatten för köpare borttagen från webbplatsen: kravsamtalet och demon förs i köparens egen AI via en prompt som kopieras från köparsidan, katalogen och varje annons
-- [ ] Matchning mot katalogen från pluginen och i ChatGPT via MCP-servern (fas 3)
+- [x] Chatten för köpare borttagen från webbplatsen: kravsamtalet och demon förs i Claude med pluginen; webbplatsen visar kommandot
+- [x] Pluginen hämtar katalogen (`/api/catalog`) och öppnar alternativen i webbläsaren (`/picks`) med stjärnor, pris och märkning mot budgeten
+- [ ] Byt pluginens adress `http://localhost:3000` till den riktiga domänen vid lansering (`plugin/skills/need-draft`, `plugin/skills/market`)
+- [ ] Gör plugin-repot publikt eller publicera pluginen så att köpare kan installera den
+- [ ] Matchning i ChatGPT via MCP-servern (fas 3)
 - [ ] Fas 3: förmedling av demon till säljarens egen agent och verktyget `try_listing_demo`
 - [ ] Testa assistenterna med en riktig API-nyckel, och sätt utgiftsgräns i Claude Console
 - [ ] Delad spärr mot missbruk framför `/api/assist` innan sidan får trafik

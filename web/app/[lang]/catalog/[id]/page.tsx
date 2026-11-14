@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BadgeCheck, CalendarClock, Check, GraduationCap, ListChecks, MessagesSquare, Minus, PackageCheck, Route, ShieldCheck, Sparkles, Star, Wrench } from "lucide-react";
-import { AiHandoff } from "@/components/AiHandoff";
 import { BuyBox } from "@/components/BuyBox";
-import { handoffPrompt } from "@/lib/handoff-prompt";
+import { PluginCard } from "@/components/PluginCard";
 import { fill, locales } from "@/lib/i18n";
 import { listingView } from "@/lib/listing-view";
 import { getListing, listings } from "@/lib/listings";
@@ -63,8 +62,8 @@ export default async function ListingDetailPage({ params }: PageProps<"/[lang]/c
       <div className="detail">
         <div>
           <section id="ai">
-            {/* The requirements conversation and the demo happen in the visitor's own AI. */}
-            <AiHandoff variant="listing" labels={t.handoff} tone={view.tone} prompt={handoffPrompt(lang, listings, listing)} />
+            {/* The requirements conversation and the demo happen in Claude, through the plugin. */}
+            <PluginCard variant="listing" labels={t.plugin} tone={view.tone} command={`/ai-jobb:need-draft ${listing.id}`} />
           </section>
 
           <section>

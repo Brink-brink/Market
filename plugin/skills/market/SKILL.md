@@ -45,23 +45,23 @@ Then:
 
 ## Step 2b: Buyer
 
-The catalog, matching and offers are not open yet. Tell the buyer that in two or three sentences:
+Tell the buyer in two or three sentences:
 
-- Browsing listings from people who build AI agents, and getting matched with them, is not open yet.
-- Nothing they wrote has been saved or sent anywhere.
+- You can help them find the AI agent their business needs: you ask about their requirements one at a time, show which listings in the catalog fit, with stars and prices within their budget, and open them in the browser.
+- Requesting offers from the freelancers is not open yet, and nothing they write is saved or sent anywhere.
 
-Then offer one thing they can do now: write a **need draft**. You ask about their requirements one at a time, tell them which kind of agent and which tools fit, and write a short description that sellers could quote a fixed price on. Ask the same way as the role question, with two options: write a need draft now, or not now.
+Then ask the same way as the role question, with two options: find the right agent now, or just browse the catalog.
 
-- If they want the draft, follow this plugin's `need-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:need-draft`), passing anything the buyer has already said about their business and need.
+- **Find the right agent:** follow this plugin's `need-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:need-draft`), passing anything the buyer has already said about their business and need.
+- **Browse the catalog:** open `http://localhost:3000/<lang>/catalog` in the browser, where `<lang>` is `sv` when you write Swedish and `en` otherwise. In Claude Code use the shell tool: `start "" "<address>"` on Windows, `open "<address>"` on macOS, `xdg-open "<address>"` on Linux. Also put the address in your reply. Then offer to help them find the right agent.
 - If they say they have a code for a request or ask to see offers, say that requests and offers are not open yet, so there is no code yet. Do not ask for the code.
-- Otherwise stop.
 
 Do not:
 
 - ask for or store contact details, company name or other identifying information
 - promise a launch date
-- link to any website, sign-up or purchase page
-- mention prices of credits, leads or anything else in the service
+- link to any sign-up or purchase page; the only addresses you give or open are the catalog, its listing pages and the alternatives page on the service
+- mention prices of credits or leads (the prices in listings are fine)
 - recommend other marketplaces or services instead
 
 If the buyer asks something general about AI agents for their business, you may answer it as usual, as an ordinary conversation outside this command.

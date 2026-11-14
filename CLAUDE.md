@@ -16,7 +16,7 @@ Detaljer: `docs/PRD.md`. Bakgrund och marknadsanalys: `docs/MARKNADSANALYS.md`.
 
 Dessa kommer från Anthropics och OpenAIs regler för plugins. Bryts de avslås pluginen vid granskning. Full lista: `docs/PLATTFORMSREGLER.md`.
 
-1. **Inget köp i pluginen.** Krediter, betalning av paket och uppköp av produkter sker bara på vår webbplats. Pluginen visar aldrig priser på krediter, länkar aldrig till kassan och uppmanar aldrig till köp.
+1. **Inget köp i pluginen.** Krediter, betalning av paket och uppköp av produkter sker bara på vår webbplats. Pluginen visar aldrig priser på krediter, länkar aldrig till kassan och uppmanar aldrig till köp. Den får öppna katalogen, annonssidor och sidan med alternativ på webbplatsen, och visa priserna i annonserna.
 2. **Ingen köpt placering.** Matchning, katalogens ordning och rankning styrs bara av relevans och kvalitet, aldrig av betalning. Granskningen av annonser kan inte heller påverkas med betalning.
 3. **Inga profiler från chattar.** Spara bara det köparen själv skickar in i en förfrågan, efter att köparen godkänt den. Begär aldrig chatthistorik.
 4. **Köparen ska inte behöva skapa konto** för att använda pluginen.

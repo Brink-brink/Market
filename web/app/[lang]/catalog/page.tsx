@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { CatalogBrowser, type CatalogCard } from "@/components/CatalogBrowser";
-import { AiHandoff } from "@/components/AiHandoff";
+import { PluginCard } from "@/components/PluginCard";
 import { fill } from "@/lib/i18n";
-import { handoffPrompt } from "@/lib/handoff-prompt";
 import { listingTile, listingView } from "@/lib/listing-view";
 import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
@@ -42,7 +41,7 @@ export default async function CatalogPage({ params }: PageProps<"/[lang]/catalog
       {listings.some((l) => l.example) && <p className="note">{t.common.exampleNote}</p>}
 
       {listings.length > 0 && (
-        <AiHandoff variant="banner" labels={t.handoff} prompt={handoffPrompt(lang, listings)} />
+        <PluginCard variant="banner" labels={t.plugin} command="/market" />
       )}
 
       {listings.length === 0 ? (

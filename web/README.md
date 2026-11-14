@@ -13,10 +13,12 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Sida | Fil | Innehåll |
 | --- | --- | --- |
 | `/` | `app/[lang]/page.tsx` | Foto med skrivrutan "Vad bygger du?" som leder till annonsassistenten, fyra fördelar med ikoner, "Så fungerar det" med fotokort och växel mellan frilansare och företag, annonser ur katalogen, och ett band för köpare |
-| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och kortet som tar köparen till sin egen AI |
+| `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och kortet som visar kommandot för pluginen i Claude |
 | `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
-| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och en knapp som kopierar prompten till köparens AI |
-| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, kortet till köparens AI, hopfällda detaljer (bland annat exempelsamtalet) och prisruta |
+| `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och ett band med kommandot för pluginen |
+| `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, kortet med kommandot `/ai-jobb:need-draft <id>`, hopfällda detaljer (bland annat exempelsamtalet) och prisruta |
+| `/picks` | `app/[lang]/picks/page.tsx` | Alternativen som pluginen öppnar: annonser med stjärnor, pris och märkning mot budgeten (`components/Picks.tsx`). Indexeras inte |
+| `/api/catalog` | `app/api/catalog/route.ts` | Katalogen som JSON för pluginen: bara katalogfält, priser och demoföretaget |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |
 | `/build-on` | `app/[lang]/build-on/page.tsx` | Bygg vidare och uppköp, märkt som kommande |
 | `/faq`, `/terms`, `/privacy`, `/contact` | `app/[lang]/*/page.tsx` | Vanliga frågor och utkast till villkor |
@@ -30,7 +32,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Namn, valuta, kreditpaket | `lib/site.ts` |
 | Annonser i katalogen | `lib/listings.ts` |
 | Annonsassistentens instruktioner | `lib/assistant-prompts.ts` |
-| Prompten köparen tar med sig till sin AI | `lib/handoff-prompt.ts` |
+| Kortet med pluginens kommandon | `components/PluginCard.tsx` |
 | Foton | `public/img/*.webp`, listade i `lib/images.ts`. AI-genererade för sidan (nätverkstema). Byt en bild genom att ersätta filen |
 | Färger och stil | `app/globals.css` (variablerna överst) |
 
@@ -40,7 +42,7 @@ Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`
 
 Säljarens annonsassistent, `components/Assistant.tsx`, pratar med `app/api/assist/route.ts`, som anropar Claude API (`claude-opus-5-5`).
 
-- **Köparen chattar inte på webbplatsen.** Kravsamtalet förs i köparens egen AI (Claude, ChatGPT eller annan). Kortet `components/AiHandoff.tsx` på `/buyers`, i katalogen och på varje annons kopierar en färdig prompt (`lib/handoff-prompt.ts`) som köparen klistrar in. Prompten innehåller de 13 kravfrågorna, reglerna och katalogens annonser med priser. AI:n ställer en fråga i taget, säger vilken sorts agent och vilka verktyg som passar, och ger flera alternativ i olika prislägen med 1–5 stjärnor för hur väl de möter kraven och hur de ligger mot budgeten. Ett alternativ är en annons, ensam eller med tillägg. Kopierad från en annons låter prompten också köparen prova agenten: AI:n spelar den för ett påhittat företag. Inget från det samtalet når webbplatsen. När katalogen växer ersätts den inklistrade katalogen av MCP-servern (fas 3).
+- **Köparen chattar inte på webbplatsen.** Kravsamtalet förs i Claude med pluginen (`plugin/skills/need-draft`). Kortet `components/PluginCard.tsx` på `/buyers`, i katalogen och på varje annons visar kommandot att skriva (`/market`, eller `/ai-jobb:need-draft <id>` från en annons) och hur pluginen installeras. Pluginen ställer kravfrågorna en i taget, hämtar katalogen från `/api/catalog`, rankar alternativ med 1–5 stjärnor och öppnar dem i webbläsaren på `/picks`. Adressen bär bara annons-id, tillägg, stjärnor och budget, aldrig vad köparen skrivit; märkningen mot budgeten räknas ut på sidan. Pluginens adress till webbplatsen är `http://localhost:3000` tills lanseringen. ChatGPT och andra klienter kommer med MCP-servern (fas 3).
 - **Annonsassistenten** (`/listing`) hjälper säljaren skriva en annons och kontrollerar den mot granskningskraven. Tillval, gratis under lanseringen.
 
 Annonsassistentens samtal sparas inte: webbläsaren skickar hela historiken varje gång. Den är avstängd tills `ANTHROPIC_API_KEY` är satt; då visas en hänvisning till `/market` i Claude.

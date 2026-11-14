@@ -14,7 +14,7 @@ Utifrån det föreslår den **tre paket med fast prisintervall** och bedömer om
 
 Skillen `listing-draft` hjälper dig skriva ett **annonsutkast** för ditt paket: innehåll, prisintervall, leveranstid, prototyp eller produkt i drift, demo, testinstruktioner och datahantering. Den kontrollerar utkastet mot granskningskraven och säger vad du behöver rätta. Inget sparas eller skickas än; att skicka in annonser för granskning öppnar senare.
 
-Skillen `need-draft` hjälper dig som företagare reda ut vilken AI-agent du behöver. Den ställer en kravfråga i taget (verksamhet, problem, vad agenten ska göra, kanal, nuvarande system, volym, språk, tider, vad som händer när agenten inte kan hjälpa, känsliga uppgifter, budget, när och område), säger vilken sorts agent och vilka verktyg som passar dina krav, och skriver ett **behovsutkast** som säljare kan sätta fast pris på. Inga kontaktuppgifter tas med. Inget sparas eller skickas än, och annonser i katalogen går ännu inte att matcha från pluginen.
+Skillen `need-draft` hjälper dig som företagare hitta rätt AI-agent. Den ställer en kravfråga i taget (verksamhet, problem, vad agenten ska göra, kanal, budget, nuvarande system, volym, språk, tider, vad som händer när agenten inte kan hjälpa, känsliga uppgifter, när och område), säger vilken sorts agent och vilka verktyg som passar, hämtar katalogen från webbplatsen och ger flera alternativ i olika prislägen med 1–5 stjärnor för hur väl de möter dina krav. Alternativen öppnas i webbläsaren. Du kan be Claude spela en agent för att prova den. Till sist skrivs ett **behovsutkast** som säljare kan sätta fast pris på. Inga kontaktuppgifter tas med, och inget sparas eller skickas än. Från en annons på webbplatsen startar du den med `/ai-jobb:need-draft <annonsens id>`.
 
 I marknadsanalysen får varje siffra en källa. När skillen inte hittar något skriver den "hittade inget" i stället för att gissa. Svaret kommer på samma språk som du skriver på.
 
@@ -26,7 +26,7 @@ I Claude Code, skriv:
 /market
 ```
 
-Claude frågar om du är köpare eller säljare. Som säljare väljer du att analysera en nisch, se köparnas intresse, skapa en annons eller se dina annonser; i dag fungerar analysen och annonsutkastet. Som köpare får du veta att katalogen och matchningen inte är öppna än, och kan skriva ett behovsutkast; inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
+Claude frågar om du är köpare eller säljare. Som säljare väljer du att analysera en nisch, se köparnas intresse, skapa en annons eller se dina annonser; i dag fungerar analysen och annonsutkastet. Som köpare får du hjälp att hitta rätt agent: Claude frågar om dina krav och öppnar annonserna som passar i webbläsaren, eller öppnar hela katalogen. Att begära erbjudanden är inte öppet än, och inget sparas. Fungerar inte `/market` (om ett annat kommando har samma namn) skriver du `/ai-jobb:market`.
 
 Du kan också gå direkt till analysen:
 

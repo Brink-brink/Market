@@ -50,7 +50,7 @@ Köparen behöver inget konto. Bara det köparen godkänner sparas, och ingen ko
 
 ### 1. Behovet
 
-Claude hjälper köparen beskriva behovet med enkla frågor, en i taget: verksamhet, vad som går fel i dag, vad agenten ska göra, var kunderna når företaget, nuvarande system, volym, språk, när agenten ska arbeta, vad som händer när den inte kan hjälpa, känsliga uppgifter, budget, när och område (stad eller region, aldrig exakt adress). Svaret "vet inte" är okej. Under tiden säger Claude vilken sorts agent och vilka verktyg som passar kraven; verktygen anges som typ, inte som leverantör. Samma frågor finns i prompten som köparen kopierar från webbplatsen till sin egen AI. Kontaktuppgifter tas aldrig med i behovstexten. I fas 1 är det här **behovsutkastet** (skill `need-draft`); inget sparas.
+Claude hjälper köparen beskriva behovet med enkla frågor, en i taget: verksamhet, vad som går fel i dag, vad agenten ska göra, var kunderna når företaget, nuvarande system, volym, språk, när agenten ska arbeta, vad som händer när den inte kan hjälpa, känsliga uppgifter, budget, när och område (stad eller region, aldrig exakt adress). Svaret "vet inte" är okej. Under tiden säger Claude vilken sorts agent och vilka verktyg som passar kraven; verktygen anges som typ, inte som leverantör. Från webbplatsen startar köparen samma samtal i Claude med pluginen. Kontaktuppgifter tas aldrig med i behovstexten. I fas 1 är det här **behovsutkastet** (skill `need-draft`); inget sparas.
 
 ### 2. Katalog eller matchning
 
@@ -117,7 +117,7 @@ Har inget erbjudande kommit inom 48 timmar efter bekräftelsen får köparen ett
 - Säljarregistrering. Den första godkända annonsen ersätter inträdestestet
 - Köp av kreditpaket (Stripe)
 - Katalogen av godkända annonser (samma innehåll som i pluginen)
-- En väg från webbplatsen till köparens egen AI: en knapp på köparsidan, i katalogen och på varje annons kopierar en färdig prompt som köparen klistrar in i Claude, ChatGPT eller annan AI. Där ställs kravfrågorna en i taget, och köparen får en rekommenderad typ av agent och verktyg samt flera alternativ i olika prislägen inom sin budget. Varje alternativ är en annons, ensam eller med tillägg, och får 1–5 stjärnor för hur väl det möter köparens krav. Stjärnorna gäller passformen mot kraven och är något annat än köparnas betyg på säljaren. Från en annons kan köparen också be sin AI spela agenten. Ordningen följer stjärnorna och går inte att köpa. Köparen chattar inte på webbplatsen
+- En väg från webbplatsen till pluginen: köparsidan, katalogen och varje annons visar kommandot att skriva i Claude (`/market`, eller `/ai-jobb:need-draft <id>` från en annons) och hur pluginen installeras. Pluginen ställer kravfrågorna en i taget, hämtar katalogen från webbplatsen och ger en rekommenderad typ av agent och verktyg samt flera alternativ i olika prislägen inom budgeten. Varje alternativ är en annons, ensam eller med tillägg, och får 1–5 stjärnor för hur väl det möter köparens krav. Stjärnorna gäller passformen mot kraven och är något annat än köparnas betyg på säljaren. Pluginen öppnar alternativen i webbläsaren på en sida med bild, pris och märkning mot budgeten; adressen bär inget av det köparen skrivit. Från en annons kan köparen också be Claude spela agenten. Ordningen följer stjärnorna och går inte att köpa. Köparen chattar inte på webbplatsen
 - Paketmallar per bransch som säljare kan utgå från
 - Admin: granska annonser enligt `GRANSKNING.md`, pausa annonser, se leads, återbetala krediter
 

@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { AiHandoff } from "@/components/AiHandoff";
 import { PhotoSteps } from "@/components/HowTabs";
-import { handoffPrompt } from "@/lib/handoff-prompt";
+import { PluginCard } from "@/components/PluginCard";
 import { images } from "@/lib/images";
-import { listings } from "@/lib/listings";
 import { pageContext } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/buyers">): Promise<Metadata> {
@@ -13,7 +11,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/buyers">):
 }
 
 export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">) {
-  const { lang, t, link } = await pageContext(params);
+  const { t, link } = await pageContext(params);
   const b = t.buyers;
   const pics = [images.bakery, images.offers, images.call];
 
@@ -28,7 +26,7 @@ export default async function BuyersPage({ params }: PageProps<"/[lang]/buyers">
       </section>
 
       <div id="assistant" style={{ scrollMarginTop: 90 }}>
-        <AiHandoff variant="advisor" labels={t.handoff} prompt={handoffPrompt(lang, listings)} />
+        <PluginCard variant="advisor" labels={t.plugin} command="/market" />
       </div>
 
       <h2>{b.stepsTitle}</h2>
