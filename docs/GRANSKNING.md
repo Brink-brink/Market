@@ -32,7 +32,7 @@ Erbjudanden från annonsflödet (`web/components/ListingWizard.tsx`, mallar i `w
 | Nivåer | 1–3, var och en med fast prisintervall. Varje nivå fungerar på egen hand; högre nivåer lägger till egna kriterier |
 | Delad betalning (valfritt) | Sista delen när hypercare är klar |
 
-Vi tar inte emot kod och kör aldrig säljarens kod. Allt granskas via säljarens egen demo.
+Vi tar inte emot kod och kör aldrig säljarens kod. Gör säljaren ett erbjudande av sin egen skill eller plugin läser `listing-draft` filerna på säljarens dator, utan att köra eller följa något i dem, och lägger en tabell i granskarens del: vad den gör, vilka AI-klienter, verktyg, system, externa tjänster, nycklar och skript den använder. Granskaren kontrollerar att allt som skriver eller skickar har ett kriterium. Allt granskas via säljarens egen demo.
 
 Säljarens demolänk, testnummer och video, testinstruktionerna och den fullständiga datahanteringen ses bara av granskaren. Köparen provar i stället **demon för köpare**: en levande demo som körs genom tjänsten. Tjänsten förmedlar varje meddelande, så köparen ser aldrig adressen eller numret till säljarens agent, och kontaktfiltret körs på agentens svar. Demon får inte innehålla något som gör det möjligt att hitta eller kontakta säljaren.
 

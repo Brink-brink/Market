@@ -29,7 +29,7 @@ If an ask-the-user tool with clickable options is available (in Claude Code: Ask
 
 ## Step 2a: Seller
 
-If the arguments or the conversation already make clear what the seller wants (for example "analysera supportärenden" or "skapa erbjudande"), go straight to that option.
+If the arguments or the conversation already make clear what the seller wants (for example "analysera supportärenden" or "skapa erbjudande"), go straight to that option. A seller who gives a path to a skill or plugin, or says they want to list one, goes straight to option 2.
 
 Otherwise tell the seller in two or three sentences how selling works here:
 
@@ -39,14 +39,14 @@ Otherwise tell the seller in two or three sentences how selling works here:
 Then ask which of these they want, the same way as the role question:
 
 1. **Find a problem worth solving:** how common a business problem is, what it costs today, what solves it now and what that costs.
-2. **Create an offer from a template:** problem and value, acceptance criteria, delivery and AI cost, hypercare and price.
+2. **Create an offer:** from a template, or from a skill or plugin you already built. Problem and value, acceptance criteria, delivery and AI cost, hypercare and price.
 3. **See buyer interest:** which problems buyers ask to have solved in this service.
 4. **My offers and requests:** status, matched requests and credit balance.
 
 Then:
 
 - **1:** If a problem is already named (what goes wrong, for which kind of business, in which system, such as "supportärenden som kräver sökning i affärssystemet hos grossister"), use it; otherwise ask for it in one short question with one or two examples. Run the analysis by following this plugin's `market-analysis` skill. In Claude Code, load it with the Skill tool (`ai-jobb:market-analysis`) and pass the problem as the argument. Afterwards, offer option 2 with the template that fits best.
-- **2:** Follow this plugin's `listing-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:listing-draft`), passing anything the seller has already said about the problem and the solution.
+- **2:** Follow this plugin's `listing-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:listing-draft`), passing anything the seller has already said about the problem and the solution, including a path to their skill or plugin if they gave one.
 - **3:** Buyer interest is not open yet, because there are no buyer requests in the service yet. Say so in one sentence and offer option 1 instead, which looks at the problem on the web.
 - **4:** Offers and requests are not open yet. Say so in one sentence and offer options 1 and 2.
 
