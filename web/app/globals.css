@@ -539,3 +539,26 @@ a.install-item:hover { background: var(--note); }
 .wz-tiers-preview { display: grid; gap: 6px; border-top: 1px solid var(--border); padding-top: 10px; }
 .wz-tiers-preview div { display: flex; justify-content: space-between; gap: 10px; font-size: 0.92rem; }
 @media (max-width: 860px) { .wz-body { grid-template-columns: 1fr; } .wz-preview { position: static; } .wz-grid3 { grid-template-columns: 1fr; } .wz-values { grid-template-columns: minmax(0, 1.4fr) 56px 56px minmax(0, 1fr); gap: 6px 4px; } }
+
+/* Listing wizard: starting from the seller's own skill or plugin */
+.wz-template-own { border-style: dashed; }
+.wz-template-own.on { border-style: solid; border-color: var(--text); }
+.wz-template-own strong { display: inline-flex; align-items: center; gap: 6px; }
+.wz-import { margin-top: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; max-width: 760px; }
+.wz-import h3 { margin: 0 0 12px; font-size: 1.15rem; }
+.wz-import label { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; font-weight: 600; margin-bottom: 12px; }
+.wz-import textarea { font-family: ui-monospace, monospace; font-size: 0.85rem; font-weight: 400; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; resize: vertical; background: var(--bg, #ffffff); color: var(--text); }
+.wz-import input[type="file"] { font: inherit; font-weight: 400; font-size: 0.9rem; }
+.wz-import .button { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font: inherit; font-weight: 600; }
+.wz-import .button:disabled { opacity: 0.7; cursor: wait; }
+.spin { animation: wz-spin 1s linear infinite; }
+@keyframes wz-spin { to { transform: rotate(360deg); } }
+.wz-source { border: 1px solid var(--border); border-radius: 14px; padding: 10px 14px; margin-bottom: 18px; background: var(--note); }
+.wz-source summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.wz-source dl { margin: 10px 0 0; display: grid; gap: 6px; font-size: 0.88rem; }
+.wz-source dl div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; }
+.wz-source dt { color: var(--muted); }
+.wz-source dd { margin: 0; }
+.wz-source ul { margin: 10px 0 0; padding-left: 18px; font-size: 0.88rem; }
+.wz-source .meta { margin: 8px 0 0; }
+@media (max-width: 640px) { .wz-source dl div { grid-template-columns: 1fr; gap: 0; } }

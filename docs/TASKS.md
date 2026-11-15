@@ -55,7 +55,7 @@ Uppdatera när något blir klart eller tillkommer.
 - [ ] Publicera pluginen i Claudes och ChatGPT:s kataloger och lägg in adresserna i `web/lib/plugin.ts` (knappen visar "Kommer snart" tills dess)
 - [x] Annonsflöde med mallar på webbplatsen och i pluginen: problem och värde, mätbara acceptanskriterier, leveransform, AI-kostnad med tak, hypercare och upp till tre nivåer
 - [x] Erbjudande från säljarens egen skill eller plugin i pluginen (`listing-draft` steg 0); test med `tests/fixtures/order-lookup-skill`
-- [ ] Samma sak på webbplatsen: ladda upp eller klistra in `SKILL.md`
+- [x] Samma sak på webbplatsen: ladda upp eller klistra in `SKILL.md` (`/api/skill-to-offer`)
 - [ ] Katalogen och köparens alternativ visar erbjudanden från mallarna (värde, kriterier, AI-kostnad, hypercare, nivåer)
 - [ ] Datasäkerhet i erbjudandet: hur den görs konkret (öppen fråga)
 - [ ] Matchning i ChatGPT via MCP-servern (fas 3)

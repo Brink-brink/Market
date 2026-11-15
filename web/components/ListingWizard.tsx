@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, Check, CheckCircle2, Copy, KeyRound, LifeBuoy, ListChecks, Plus, Trash2 } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Check, CheckCircle2, Copy, FileCode2, KeyRound, LifeBuoy, ListChecks, Loader2, Plus, Trash2 } from "lucide-react";
 import { fill, type Dict, type Locale } from "@/lib/i18n";
-import { fillCriterion, isMeasurable, offerTemplates, type Delivery, type OfferTemplate } from "@/lib/offer-templates";
+import { fillCriterion, isMeasurable, offerTemplates, type Delivery, type OfferTemplate, type SkillOffer } from "@/lib/offer-templates";
 import { site } from "@/lib/site";
 
 type Labels = Dict["wizard"];
@@ -11,7 +11,9 @@ type Labels = Dict["wizard"];
 type Row = { text: string; value: string };
 type TierDraft = { on: boolean; name: string; scope: string; criteria: Row[]; min: number; max: number };
 type Draft = {
-  templateId: OfferTemplate["id"];
+  templateId: OfferTemplate["id"] | "none";
+  // Set when the offer started from the seller's own skill or plugin. Shown to the reviewer, never to buyers.
+  source?: { found: SkillOffer["found"]; notes: string[] };
   title: string;
   problem: string;
   values: { label: string; unit: string; today: number; after: number }[];
@@ -54,12 +56,52 @@ function fromTemplate(t: OfferTemplate, lang: Locale): Draft {
   };
 }
 
+// An offer started from the seller's own skill: the matching template's numbers as suggestions,
+// with the texts Claude wrote from the files. Without a match, numbers start empty for the seller to fill in.
+function fromSkill(offer: SkillOffer, lang: Locale, labels: Labels): Draft {
+  const template = offerTemplates.find((t) => t.id === offer.templateId);
+  const base: Draft = template
+    ? fromTemplate(template, lang)
+    : {
+        templateId: "none",
+        title: "",
+        problem: "",
+        values: [{ label: labels.defaultMeasure, unit: labels.defaultUnit, today: 0, after: 0 }],
+        criteria: [],
+        delivery: offer.delivery,
+        costPerRun: 0,
+        runsPerMonth: 0,
+        cap: 0,
+        hypercareRuns: 10,
+        hypercareUnit: "",
+        tiers: [{ on: true, name: labels.basePackage, scope: offer.found.does, criteria: [], min: 0, max: 0 }],
+        splitPayment: false,
+      };
+  return {
+    ...base,
+    title: offer.title,
+    problem: offer.problem,
+    criteria: offer.criteria.map((text) => ({ text, value: "" })),
+    delivery: offer.delivery,
+    hypercareUnit: offer.hypercareUnit || base.hypercareUnit,
+    source: { found: offer.found, notes: offer.notes },
+  };
+}
+
+const maxFileChars = 60000;
+const sourceKeys = ["name", "does", "steps", "clients", "tools", "systems", "services", "keys", "scripts"] as const;
+
 // Writing an offer step by step from a template, with the buyer's view beside the form.
 // The draft is kept in this browser only. Submitting is not open yet; the seller copies the text.
 export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }) {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [copied, setCopied] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [pasted, setPasted] = useState("");
+  const [uploads, setUploads] = useState<{ name: string; text: string }[]>([]);
+  const [reading, setReading] = useState(false);
+  const [importError, setImportError] = useState("");
 
   useEffect(() => {
     try {
@@ -95,6 +137,50 @@ export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }
   const start = (t: OfferTemplate) => {
     setDraft(fromTemplate(t, lang));
     setStep(1);
+  };
+
+  const addFiles = async (list: FileList | null) => {
+    if (!list) return;
+    const read = await Promise.all(
+      Array.from(list)
+        .slice(0, 12)
+        .map(async (file) => ({ name: file.name, text: file.size > maxFileChars * 2 ? "" : await file.text() })),
+    );
+    setUploads(read.filter((f) => f.text.trim()));
+    setImportError("");
+  };
+
+  const readSkill = async () => {
+    const files = [...uploads, ...(pasted.trim() ? [{ name: "SKILL.md", text: pasted }] : [])];
+    if (files.length === 0) {
+      setImportError(labels.importEmpty);
+      return;
+    }
+    if (files.reduce((n, f) => n + f.text.length, 0) > maxFileChars) {
+      setImportError(labels.importTooLong);
+      return;
+    }
+    setReading(true);
+    setImportError("");
+    try {
+      const response = await fetch("/api/skill-to-offer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lang, files }),
+      });
+      const data = (await response.json().catch(() => ({}))) as { offer?: SkillOffer; error?: string };
+      if (data.offer) {
+        setDraft(fromSkill(data.offer, lang, labels));
+        setStep(1);
+        setImporting(false);
+      } else {
+        setImportError(data.error === "off" ? labels.importOff : data.error === "rate_limited" ? labels.importRateLimited : labels.importError);
+      }
+    } catch {
+      setImportError(labels.importError);
+    } finally {
+      setReading(false);
+    }
   };
 
   const reset = () => {
@@ -139,6 +225,14 @@ export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }
         t.scope,
         ...t.criteria.map((c) => `+ ${fillCriterion(c.text, c.value)}`),
       ]),
+      ...(draft.source
+        ? [
+            "",
+            "---",
+            `## ${labels.reviewerTitle}`,
+            ...sourceKeys.map((key) => `- ${labels.source[key]}: ${draft.source!.found[key]}`),
+          ]
+        : []),
     ];
     return lines.filter((line, i, all) => line !== "" || all[i - 1] !== "").join("\n");
   };
@@ -184,7 +278,7 @@ export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }
     <aside className="wz-preview" aria-label={labels.preview.title}>
       <p className="wz-eyebrow">{labels.preview.title}</p>
       <h3>{draft.title || "…"}</h3>
-      <p className="meta">{labels.preview.alias} · {offerTemplates.find((t) => t.id === draft.templateId)?.name[lang]}</p>
+      <p className="meta">{labels.preview.alias} · {offerTemplates.find((t) => t.id === draft.templateId)?.name[lang] ?? labels.ownSolution}</p>
       <div className="wz-metrics">
         {draft.values.map((v, i) => (
           <div key={i}>
@@ -232,7 +326,33 @@ export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }
               <span className="wz-template-go">{labels.useTemplate} <ArrowRight size={16} aria-hidden="true" /></span>
             </button>
           ))}
+          <button type="button" className={`wz-template wz-template-own${importing ? " on" : ""}`} onClick={() => setImporting(true)} aria-expanded={importing}>
+            <strong><FileCode2 size={18} aria-hidden="true" /> {labels.fromSkillTitle}</strong>
+            <span>{labels.fromSkillPitch}</span>
+            <span className="wz-template-go">{labels.fromSkillGo} <ArrowRight size={16} aria-hidden="true" /></span>
+          </button>
         </div>
+
+        {importing && (
+          <div className="wz-import">
+            <h3>{labels.fromSkillTitle}</h3>
+            <label>
+              {labels.pasteLabel}
+              <textarea rows={8} value={pasted} placeholder={labels.pastePlaceholder} onChange={(e) => { setPasted(e.target.value); setImportError(""); }} />
+            </label>
+            <label>
+              {labels.uploadLabel}
+              <input type="file" multiple accept=".md,.json,.txt,.yaml,.yml" onChange={(e) => void addFiles(e.target.files)} />
+            </label>
+            {uploads.length > 0 && <p className="meta">{uploads.map((f) => f.name).join(", ")}</p>}
+            <p className="wz-hint">{labels.importPrivacy}</p>
+            {importError && <p className="wz-error"><AlertTriangle size={16} aria-hidden="true" /> {importError}</p>}
+            <button type="button" className="button" onClick={() => void readSkill()} disabled={reading}>
+              {reading ? <Loader2 size={18} className="spin" aria-hidden="true" /> : <FileCode2 size={18} aria-hidden="true" />}
+              {reading ? labels.reading : labels.readSkill}
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -253,6 +373,20 @@ export function ListingWizard({ lang, labels }: { lang: Locale; labels: Labels }
         <section className="wz-form">
           {step === 1 && (
             <>
+              {draft.source && (
+                <details className="wz-source" open>
+                  <summary><FileCode2 size={16} aria-hidden="true" /> {fill(labels.sourceTitle, { name: draft.source.found.name })}</summary>
+                  <dl>
+                    {sourceKeys.slice(1).map((key) => (
+                      <div key={key}><dt>{labels.source[key]}</dt><dd>{draft.source!.found[key]}</dd></div>
+                    ))}
+                  </dl>
+                  {draft.source.notes.length > 0 && (
+                    <ul>{draft.source.notes.map((note) => <li key={note}>{note}</li>)}</ul>
+                  )}
+                  <p className="meta">{labels.sourceNote}</p>
+                </details>
+              )}
               <h3>{labels.problemTitle}</h3>
               <label>{labels.titleLabel}<input value={draft.title} onChange={(e) => update({ title: e.target.value })} /></label>
               <label>{labels.problemLabel}<textarea rows={4} value={draft.problem} onChange={(e) => update({ problem: e.target.value })} /></label>

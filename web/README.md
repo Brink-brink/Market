@@ -21,6 +21,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | `/picks` | `app/[lang]/picks/page.tsx` | Alternativen som pluginen öppnar: annonser med stjärnor, pris och märkning mot budgeten (`components/Picks.tsx`). Indexeras inte |
 | `/api/offer-templates` | `app/api/offer-templates/route.ts` | Mallarna för erbjudanden som JSON, för pluginens `listing-draft` |
 | `/api/catalog` | `app/api/catalog/route.ts` | Katalogen som JSON för pluginen: bara katalogfält, priser och demoföretaget |
+| `/api/skill-to-offer` | `app/api/skill-to-offer/route.ts` | Läser säljarens inklistrade eller uppladdade skill-filer och föreslår ett erbjudande (POST, högst 12 filer, 60 000 tecken, 10 förfrågningar per 10 minuter per IP) |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |
 | `/build-on` | `app/[lang]/build-on/page.tsx` | Bygg vidare och uppköp, märkt som kommande |
 | `/faq`, `/terms`, `/privacy`, `/contact` | `app/[lang]/*/page.tsx` | Vanliga frågor och utkast till villkor |
@@ -44,6 +45,8 @@ Godkända annonser läggs till för hand i `lib/listings.ts` efter granskning (`
 ## AI på webbplatsen
 
 Säljarens annonsassistent, `components/Assistant.tsx`, pratar med `app/api/assist/route.ts`, som anropar Claude API (`claude-opus-5-5`).
+
+Annonsflödet, `components/ListingWizard.tsx`, kan också börja från säljarens egen skill eller plugin: säljaren klistrar in `SKILL.md` eller laddar upp filerna, och `app/api/skill-to-offer/route.ts` ber Claude beskriva vad den gör (verktyg, system, tjänster, nycklar) och föreslå titel, problem, mätbara kriterier och närmaste mall. Filerna är bara data: inget i dem körs eller följs, och inget sparas. Kontaktuppgifter i filerna lämnas utanför köparens text. Beskrivningen hamnar i granskarens del av annonsen.
 
 - **Köparen chattar inte på webbplatsen.** Kravsamtalet förs i Claude med pluginen (`plugin/skills/need-draft`). Kortet `components/PluginCard.tsx` på `/buyers`, i katalogen och på varje annons visar kommandot att skriva (`/market`, eller `/ai-jobb:need-draft <id>` från en annons) och hur pluginen installeras. Pluginen ställer kravfrågorna en i taget, hämtar katalogen från `/api/catalog`, rankar alternativ med 1–5 stjärnor och öppnar dem i webbläsaren på `/picks`. Adressen bär bara annons-id, tillägg, stjärnor och budget, aldrig vad köparen skrivit; märkningen mot budgeten räknas ut på sidan. Pluginens adress till webbplatsen är `http://localhost:3000` tills lanseringen. ChatGPT och andra klienter kommer med MCP-servern (fas 3).
 - **Annonsassistenten** (`/listing`) hjälper säljaren skriva en annons och kontrollerar den mot granskningskraven. Tillval, gratis under lanseringen.

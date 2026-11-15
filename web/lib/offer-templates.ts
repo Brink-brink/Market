@@ -179,3 +179,15 @@ export const fillCriterion = (text: string, value: string) => text.replace("{v}"
 
 // A criterion can be checked only if it states a number, a time or a limit.
 export const isMeasurable = (text: string) => /\d/.test(text) || /\b(aldrig|never|alltid|always|innan|before)\b/i.test(text);
+
+// What /api/skill-to-offer returns after reading a seller's own skill or plugin.
+export type SkillOffer = {
+  found: Record<"name" | "does" | "steps" | "clients" | "tools" | "systems" | "services" | "keys" | "scripts", string>;
+  templateId: OfferTemplate["id"] | "none";
+  title: string;
+  problem: string;
+  criteria: string[];
+  delivery: Delivery;
+  hypercareUnit: string;
+  notes: string[];
+};
