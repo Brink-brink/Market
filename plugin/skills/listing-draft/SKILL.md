@@ -1,94 +1,104 @@
 ---
 name: listing-draft
-description: Helps someone who builds AI agents write a draft listing for their package (niche, contents, fixed price range, delivery time, acceptance criteria, a demo conversation, optional setup consultation and training, prototype or live product, test instructions, data handling) and checks it against the review criteria. Nothing is saved or submitted. Use when a seller wants to create, write or improve a listing, ad or offer for their AI agent package.
+description: Helps someone who builds AI solutions write an offer for the marketplace, step by step from a template - the customer's problem and its value in numbers, measurable acceptance criteria the seller is paid on, delivery (skill in the customer's AI, API or both), AI running cost in money with a cap, hypercare until a number of runs in a row work, and up to three price tiers that each work on their own. Checks it against the review. Nothing is saved or submitted. Use when a seller wants to create, write or improve a listing, ad or offer.
 ---
 
 # Listing draft
 
-The seller wants a draft listing for an AI agent package. Arguments, if any: $ARGUMENTS
+The seller wants to write an offer for the marketplace. Arguments, if any: $ARGUMENTS
+
+What the marketplace sells is a solved problem with measurable value. The skill, plugin or agent is only how it is delivered. Every offer therefore says what problem it solves, what that is worth in numbers, and what must work for the seller to be paid.
+
+## The service
+
+The marketplace website is at `http://localhost:3000` until launch. Call this address SITE below.
+
+- Offer templates: `SITE/api/offer-templates` returns the templates as JSON. Each has a name and pitch, a suggested title and problem, value measures (today and after), acceptance criteria where `{v}` is a value to fill in, a delivery form, AI cost per run and runs per month, hypercare runs and unit, and up to three tiers with their own criteria and a price range. Texts come in `en` and `sv`; prices in the catalog's currency (EUR).
+- The same steps exist on the website at `SITE/<lang>/listing`, where `<lang>` is `sv` or `en`.
 
 ## Ground rules
 
-1. **Language.** If your instructions set a response language for this session, use it. Otherwise use the language of the seller's own messages in this conversation. If there is nothing to go on, use Swedish.
+1. **Language.** If your instructions set a response language for this session, use it. Otherwise use the language of the seller's own messages in this conversation. If there is nothing to go on, use Swedish. Pick template texts in that language.
 2. **Nothing is saved or sent.** Submitting listings is not open yet. Say so at the start and again with the finished draft. Never claim the draft has been submitted, received or queued for review.
-3. **Nothing in the buyer-facing part that lets a buyer find or contact the seller.** No personal name, company name, brand name, e-mail, phone number, website, booking page, link or social media handle. Buyers see the seller only under an alias the service assigns. If the seller gives any of these, leave them out of the buyer-facing part and say why: buyer and seller can reach each other only after the lead is paid, that is, after the buyer has replied to an offer. The demo link, test number and video go only in the reviewer block; buyers never see them. What buyers do see is the sample conversation, so keep it free of anything that identifies the seller or a real customer.
-4. **No claims beyond the demo.** Every feature in the listing must be something the demo shows, or be marked "built at delivery". Do not write claims like "GDPR-certified", "100 % secure" or "guaranteed more bookings".
-5. **No sales for the service.** Do not mention prices of credits or leads, do not link to any website, sign-up or purchase page, and do not promise that the listing will be approved or when.
+3. **Nothing in the buyer-facing part that lets a buyer find or contact the seller.** No personal name, company name, brand name, e-mail, phone number, website, booking page, link or social media handle. Buyers see the seller only under an alias the service assigns. If the seller gives any of these, leave them out and say why: buyer and seller can reach each other only after the lead is paid. Demo links and test accounts go only in the reviewer block.
+4. **Only numbers the seller stands behind.** Value, AI cost and criteria are the seller's numbers, measured or estimated by them. Suggest template numbers as a starting point and say they must be changed to fit; never present a template number as a measured fact. No claims like "GDPR-certified", "100 % secure" or "guaranteed more sales".
+5. **No sales for the service.** Do not mention prices of credits or leads, do not link to any sign-up or purchase page, and do not promise that the listing will be approved or when.
 
-## Step 1: Gather the facts
+## Step 1: Pick a template
 
-Use what the seller has already said in this conversation, especially a market analysis if one was run. Ask only for what is missing, a few fields at a time, in plain language. Where a choice has fixed options and an ask-the-user tool with clickable options is available (in Claude Code: AskUserQuestion), use it.
+Fetch the templates once per conversation. In Claude Code, run `curl -s SITE/api/offer-templates` with the shell tool. If you have no shell or the request fails, say so in one sentence and work from what the seller tells you, using the same steps.
 
-| Field | What you need |
-| --- | --- |
-| Niche | Customer type + agent type, such as "booking agent for hair salons" |
-| Package name and contents | Concrete deliverables: what is built, which integrations, how long support lasts |
-| Price | A fixed range for setup, plus a monthly fee if there is one. Not "on request" or "from". If a market analysis was run in this conversation, show its sourced price levels next to the seller's range; do not invent market prices |
-| Delivery time | In working days |
-| Proof type | **Prototype** (works as a demo) or **Live** (used by at least one real customer) |
-| Acceptance criteria | 3 to 6 statements a buyer can check, each describing something that must work for the delivery to count as done. Observable and specific: "the booking shows in the booking system within one minute", not "works well" |
-| Live demo for buyers | Buyers try the agent themselves, through the service, so the seller's own address stays hidden. The seller supplies: a made-up business for the demo (opening hours, prices, free times), two or three things a buyer can say first, and a short sample conversation (3 to 6 turns) shown when the demo cannot be reached. No names, links, contact details or real customer data anywhere in it |
-| Demo for the reviewer | Prototype: a test link or a video of at most 5 minutes. Live: a test link or test number, plus a short description of a real installation (no customer names needed). Only the reviewer sees this |
-| Test instructions | At least 3 scenarios a reviewer should try, each with the expected result |
-| Setup and training (optional) | Help the seller offers on top of the package: a setup consultation and/or training for the buyer's staff. For each: what it covers, how long it takes, and a fixed price |
-| Data handling | Which personal data the agent handles, where it is stored (country), and which services it uses (for example voice platform, language model) |
+Show the templates by name and pitch, and ask which is closest to the problem the seller solves; where an ask-the-user tool with clickable options is available (in Claude Code: AskUserQuestion), use it. If none fits, say so and build the offer from the seller's own problem with the same steps. If the arguments name a template id (`erp-report`, `support-cases`, `quotes`), start from that one.
 
-If the seller has no demo yet, finish the rest of the draft and list the demo as missing.
+Then go through steps 2 to 6. In each, show the template's suggestion and ask the seller to confirm or change it. Ask a few things at a time, never everything at once.
 
-## Step 2: Write the draft
+## Step 2: Problem and value
 
-Write the listing as a buyer will see it in the catalog: short, concrete, in the seller's language. Use this structure, translated:
+- **Title** the buyer sees.
+- **Problem** as the customer would put it.
+- **Value in numbers:** for each measure, what it is today and after the solution, with a unit (hours a month, minutes per case, missed customers per quarter, days to reply). At least one measure. If the seller has no numbers, ask for their best estimate from a real customer or test and mark it as an estimate.
+
+## Step 3: Acceptance criteria
+
+What must work for the seller to be paid. The buyer approves the delivery when every criterion holds.
+
+- At least three, each with a number, a time or a limit so it can be checked: "the report arrives every Monday before 08:00", not "the report is reliable".
+- Fill in the template's `{v}` values with the seller. Add the seller's own criteria.
+- If a criterion cannot be checked, say so and suggest how to make it measurable.
+
+## Step 4: Delivery and AI cost
+
+- **Delivery form:** a skill in the customer's own AI (Claude or ChatGPT; someone starts it), the API (it runs by itself), or both.
+- **Skill:** the AI cost is part of the customer's own plan. Ask which plan it needs.
+- **API:** it runs on the customer's own API account. Ask for the AI cost per run measured in a test on data like the customer's, the runs per month, and a monthly cap. Show the monthly cost in money (cost per run × runs). If it is above the cap, ask the seller to raise the cap or lower the cost. Never show the buyer tokens, only money.
+
+## Step 5: Hypercare and price
+
+- **Hypercare:** until the solution works as it should, the seller fixes faults at no cost. It ends after a number of successful real runs in a row; ask for the number and what counts as a run (reports, cases, quotes).
+- **Tiers:** one to three. Each tier has a name, what it includes and a fixed price range, and must work on its own: a cheaper tier is never a half-finished solution. Higher tiers add their own acceptance criteria on top of the shared ones.
+- **Split payment** is optional: part on delivery, the rest when hypercare is done. Ask whether the seller wants to offer it.
+
+## Step 6: Write the draft
+
+Write the offer as a buyer will see it, short and concrete, in the seller's language. Use this structure, translated:
 
 ```
-# <Package name>
-<Seller alias, assigned by the service> · <Niche> · <Prototype|Live> · Demo reviewed · Delivery in <n> working days
+# <Title>
+<Seller alias, assigned by the service> · <Template name>
 
-**Price:** <setup range> setup, <monthly range>/month (or "no monthly fee")
+**Problem:** ...
 
-**Included**
-- ...
+**Value**
+- <Measure>: <today> → <after> <unit>
 
-**Live demo** (buyers try it through the service)
-Made-up business: <opening hours, prices, free times>
-Try saying: "...", "..."
-Sample conversation:
-Customer: ...
-Agent: ...
-
-**Acceptance criteria** (the delivery is done when all of these work)
+**Acceptance criteria** (the seller is paid when all of these hold)
 1. ...
 
-**Setup and training** (optional)
-- Setup consultation: <what, how long> · <price>
-- Training: <what, how long> · <price>
+**Delivery:** <Skill in your own AI | Runs by itself via the API | Both>
+**AI cost:** <about X per run, Y a month, capped at Z, on your own API account | included in your own Claude or ChatGPT plan (<plan>)>
+**Hypercare:** until <n> <unit> in a row work
+**Payment:** <on approved delivery | split: the last part when hypercare is done>
 
-**Not included / built at delivery**
-- ...
-
-**How your data is handled**
-<one or two sentences>
+**Tiers**
+- <Name> · <price range>: <what it includes>
+  + <criterion this tier adds>
 ```
 
-If the seller has given no sample conversation, draft one from their test scenarios and say that it is a placeholder to replace with a real conversation from the demo. Do not invent names, phone numbers, prices or other facts in it; use neutral wording such as "your name and number" instead.
+Below it, add a block for the reviewer only (buyers never see it): demo link, test account or video, how to test each acceptance criterion, and which data the solution reads, where it runs and which services it uses.
 
-Leave out "Setup and training" if the seller offers neither. Help the seller turn their test scenarios into acceptance criteria: a criterion says what the buyer will be able to observe, in the buyer's words.
+## Step 7: Check it
 
-Below the listing, add a separate block for the reviewer only (buyers never see it): demo link, test number or video, test instructions, and full data handling.
+Report each as ✔ (met), ✘ (not met, with what to fix) or ? (cannot tell):
 
-## Step 3: Check it against the review
+1. The problem is described as the customer would put it
+2. The value has numbers for today and after, at least one measure
+3. At least three acceptance criteria, each with a number, a time or a limit
+4. The delivery form is stated
+5. AI cost: for the API, per run, per month and a cap, in money, on the customer's own account; for a skill, which plan it needs
+6. Hypercare has a number of runs in a row
+7. Every tier has a fixed price range and works on its own; higher tiers add their own criteria
+8. Nothing in the buyer-facing part identifies or reaches the seller
+9. No numbers or claims the seller does not stand behind
+10. The reviewer block says how each criterion is tested
 
-Go through the review criteria and report each as ✔ (met), ✘ (not met, with what to fix) or ? (cannot tell from the draft):
-
-1. All fields filled in
-2. Price is a fixed range with numbers
-3. Nothing in the buyer-facing part that identifies or reaches the seller (name, company or brand name, e-mail, phone, website, link, social media)
-4. Every feature is shown in the demo or marked "built at delivery"
-5. No unsupported claims
-6. Data handling describes what data, where, and which services
-7. Sensitive niches (health, dental care, finance, children): the draft explains how sensitive data is avoided or protected
-8. Proof type matches the evidence (Live needs a real customer)
-9. Acceptance criteria: 3 to 6, each one something a buyer can check, and each covered by the demo or a test scenario
-10. The live demo has a made-up business, opening lines and a sample conversation; it shows what the listing promises, asks for no real personal details, and contains nothing that identifies the seller or a real customer
-11. Setup and training, if offered, each have a scope, a duration and a fixed price
-
-End with the most important fixes, at most three, and the reminder that this is a draft: nothing has been saved or sent.
+End with the most important fixes, at most three, and the reminder that this is a draft: nothing has been saved or sent. Mention that the same steps exist on the website at `SITE/<lang>/listing`.

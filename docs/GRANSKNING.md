@@ -18,6 +18,20 @@ En säljares första godkända annons ersätter inträdestestet. Granskningen sk
 | Testinstruktioner | Minst 3 scenarier granskaren ska prova, med förväntat resultat |
 | Datahantering | Vilka uppgifter agenten hanterar, var de lagras (land), vilka tjänster som används (t.ex. röstplattform, språkmodell) |
 
+### Erbjudanden skrivna från en mall
+
+Erbjudanden från annonsflödet (`web/components/ListingWizard.tsx`, mallar i `web/lib/offer-templates.ts`) och från `listing-draft` i pluginen har dessutom:
+
+| Fält | Krav |
+| --- | --- |
+| Problem och värde | Problemet med kundens ord, och minst ett mått i siffror: i dag och efter |
+| Acceptanskriterier | Minst 3. Varje kriterium har en siffra, en tid eller en gräns så att det går att kontrollera. Säljaren får betalt när alla håller |
+| Leveransform | Skill i kundens egen AI, API eller båda |
+| AI-kostnad | API: per körning, per månad och tak, i pengar, uppmätt i ett test, på kundens eget API-konto. Skill: vilket abonnemang som krävs |
+| Hypercare | Säljaren rättar fel utan kostnad tills ett angivet antal riktiga körningar i rad fungerar |
+| Nivåer | 1–3, var och en med fast prisintervall. Varje nivå fungerar på egen hand; högre nivåer lägger till egna kriterier |
+| Delad betalning (valfritt) | Sista delen när hypercare är klar |
+
 Vi tar inte emot kod och kör aldrig säljarens kod. Allt granskas via säljarens egen demo.
 
 Säljarens demolänk, testnummer och video, testinstruktionerna och den fullständiga datahanteringen ses bara av granskaren. Köparen provar i stället **demon för köpare**: en levande demo som körs genom tjänsten. Tjänsten förmedlar varje meddelande, så köparen ser aldrig adressen eller numret till säljarens agent, och kontaktfiltret körs på agentens svar. Demon får inte innehålla något som gör det möjligt att hitta eller kontakta säljaren.
@@ -28,6 +42,7 @@ Görs innan annonsen hamnar hos en granskare. Fel här skickas direkt tillbaka t
 
 - Alla fält ovan är ifyllda.
 - Priset är ett fast intervall med siffror.
+- Erbjudanden från en mall: minst 3 acceptanskriterier som var och en innehåller en siffra, en tid eller en gräns; värdet har siffror för i dag och efter; vid API är AI-kostnaden angiven per körning och månad och ligger under taket.
 - Det köparen ser i annonsen innehåller inget som gör det möjligt att hitta eller kontakta säljaren: inget namn, företagsnamn, varumärke, e-post, telefonnummer, webbadress eller konto i sociala medier. Kontakt lämnas ut först när leadet är betalt.
 - Demolänken svarar.
 - Inga påståenden som "GDPR-certifierad", "100 % säker" eller "garanterad ökning" utan belägg.
@@ -53,6 +68,7 @@ Görs av admin (Philip) i fas 2–3. Mål: beslut inom 3 arbetsdagar.
 - Den levande demon för köpare fungerar genom tjänsten, visar det annonsen lovar och klarar acceptanskriterierna. Granskaren provar också att få agenten att lämna ut säljarens namn, en länk eller kontaktuppgifter; lyckas det begärs ändringar.
 - Demon gäller ett påhittat företag och ber aldrig om riktiga personuppgifter.
 - Uppsättning och utbildning, om de erbjuds, har omfattning, tid och fast pris.
+- Erbjudanden från en mall: granskaren provar varje acceptanskriterium i demon, kontrollerar att varje nivå fungerar på egen hand och att AI-kostnaden per körning stämmer med en egen testkörning.
 
 ### C. Data och risk
 

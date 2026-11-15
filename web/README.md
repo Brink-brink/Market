@@ -14,11 +14,12 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | --- | --- | --- |
 | `/` | `app/[lang]/page.tsx` | Foto med skrivrutan "Vad bygger du?" som leder till annonsassistenten, fyra fördelar med ikoner, "Så fungerar det" med fotokort och växel mellan frilansare och företag, annonser ur katalogen, och ett band för köpare |
 | `/buyers` | `app/[lang]/buyers/page.tsx` | Köparens väg och kortet som visar kommandot för pluginen i Claude |
-| `/listing` | `app/[lang]/listing/page.tsx` | Annonsassistenten, krav, granskning och formulär (Tally) |
+| `/listing` | `app/[lang]/listing/page.tsx` | Annonsflödet: välj mall, problem och värde, acceptanskriterier, leverans och AI-kostnad, hypercare och nivåer, granska (`components/ListingWizard.tsx`, sparas bara i webbläsaren). Under det annonsassistenten och formuläret (Tally) |
 | `/catalog` | `app/[lang]/catalog/page.tsx` | Katalog med sök och filter, och ett band med kommandot för pluginen |
 | `/catalog/<id>` | `app/[lang]/catalog/[id]/page.tsx` | En annons: kort sammanfattning, kortet med kommandot `/ai-jobb:need-draft <id>`, hopfällda detaljer (bland annat exempelsamtalet) och prisruta |
 | `/plugin` | `app/[lang]/plugin/page.tsx` | Hur köparen hämtar pluginen ai-jobb till Claude: tre steg med kommandon att kopiera. Knappen "Hämta pluginen till din AI" öppnar en meny med katalogerna för plugins i Claude och ChatGPT (`lib/plugin.ts`; utan adress visas "Kommer snart") och en länk hit |
 | `/picks` | `app/[lang]/picks/page.tsx` | Alternativen som pluginen öppnar: annonser med stjärnor, pris och märkning mot budgeten (`components/Picks.tsx`). Indexeras inte |
+| `/api/offer-templates` | `app/api/offer-templates/route.ts` | Mallarna för erbjudanden som JSON, för pluginens `listing-draft` |
 | `/api/catalog` | `app/api/catalog/route.ts` | Katalogen som JSON för pluginen: bara katalogfält, priser och demoföretaget |
 | `/credits` | `app/[lang]/credits/page.tsx` | Kreditpaket (Stripe Payment Links) och tillvalet annonsassistenten |
 | `/build-on` | `app/[lang]/build-on/page.tsx` | Bygg vidare och uppköp, märkt som kommande |
@@ -33,6 +34,7 @@ Alla sidor finns under `/en/...` och `/sv/...`. Besökare utan språk i adressen
 | Namn, valuta, kreditpaket | `lib/site.ts` |
 | Annonser i katalogen | `lib/listings.ts` |
 | Annonsassistentens instruktioner | `lib/assistant-prompts.ts` |
+| Mallar för erbjudanden (förslag i varje steg) | `lib/offer-templates.ts` |
 | Kortet med pluginens kommandon | `components/PluginCard.tsx` |
 | Foton | `public/img/*.webp`, listade i `lib/images.ts`. AI-genererade för sidan (nätverkstema). Byt en bild genom att ersätta filen |
 | Färger och stil | `app/globals.css` (variablerna överst) |

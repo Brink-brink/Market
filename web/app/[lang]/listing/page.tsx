@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Clock, Database, FileSearch, ListChecks, Package, Play, ShieldCheck, Tag, Target } from "lucide-react";
+import { Coins, FileSearch, LifeBuoy, ListChecks, Play, ShieldCheck, Tag, Target, Truck } from "lucide-react";
 import { Assistant } from "@/components/Assistant";
 import { IconGrid } from "@/components/IconGrid";
+import { ListingWizard } from "@/components/ListingWizard";
 import { images } from "@/lib/images";
 import { pageContext } from "@/lib/page";
 import { site } from "@/lib/site";
@@ -25,13 +26,17 @@ export default async function ListingPage({ params }: PageProps<"/[lang]/listing
         <Image src={images.pair} alt="" width={1168} height={880} priority />
       </section>
 
+      <h2 id="wizard">{l.wizardTitle}</h2>
+      <ListingWizard lang={lang} labels={t.wizard} />
+      <p className="meta" style={{ marginTop: 12 }}>{l.claudeAlt}</p>
+
       <h2 id="assistant">
         {l.assistantTitle} <span className="badge badge-accent">{t.common.addonBadge}</span>
       </h2>
       <Assistant lang={lang} intro={t.assistant.listingIntro} labels={t.assistant} />
 
       <h2>{l.needTitle}</h2>
-      <IconGrid boxed items={l.needs} icons={[Target, Package, Tag, Clock, Play, ListChecks, Database]} />
+      <IconGrid boxed items={l.needs} icons={[Target, ListChecks, Truck, Coins, LifeBuoy, Tag, Play]} />
       <p className="note">{l.aliasNote}</p>
 
       <h2>{l.reviewTitle}</h2>
