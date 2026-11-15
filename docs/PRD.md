@@ -11,7 +11,7 @@
 | Roll | Vem | Vad de vill |
 | --- | --- | --- |
 | Köpare | Småföretag (först), privatpersoner (senare) | Ett fungerande agentpaket till fast pris, utan att leta |
-| Säljare | Personer som vill ha ett extrajobb och bygger med Claude/ChatGPT; många från AI-communities på Skool | Uppdrag, och veta vilken nisch som lönar sig |
+| Säljare | Personer som bygger AI-lösningar med Claude/ChatGPT, ofta som extrajobb; många från AI-communities på Skool | Uppdrag, och veta vilka problem som är värda att lösa och vad de är värda |
 | Admin | Philip | Godkänna säljare, hantera paket, följa intäkter |
 
 ## Ingång: `/market`
@@ -19,10 +19,11 @@
 Både köpare och säljare börjar med kommandot `/market` (fullt namn `/ai-jobb:market`). Claude frågar "Är du köpare eller säljare?" med klickbara alternativ där klienten har det, annars i text.
 
 - **Säljare** → en meny:
-  1. *Analysera en nisch*: marknadsanalysen (efterfrågan, priser, konkurrenter från webben)
-  2. *Se köparnas intresse*: summerad efterfrågan per nisch från förfrågningar i tjänsten, och matchade förfrågningar
-  3. *Skapa en annons*: paket + prototyp eller produkt i drift, som granskas innan den visas (se `GRANSKNING.md`)
-  4. *Mina annonser och förfrågningar*: status, matchade förfrågningar, kreditsaldo
+  Först en kort förklaring: det som säljs är ett löst problem med mätbart värde; säljaren får betalt när acceptanskriterierna håller och ger sedan hypercare. Sedan:
+  1. *Hitta ett problem värt att lösa*: värdeanalysen (hur vanligt, vad det kostar i dag, vad som löser det nu, värdet per företag, förslag på kriterier och pris, från webben)
+  2. *Skapa ett erbjudande från en mall*: problem och värde, acceptanskriterier, leverans och AI-kostnad, hypercare och nivåer, som granskas innan det visas (se `GRANSKNING.md`)
+  3. *Se köparnas intresse*: vilka problem köpare ber om att få lösta i tjänsten, och matchade förfrågningar
+  4. *Mina erbjudanden och förfrågningar*: status, matchade förfrågningar, kreditsaldo
 - **Köpare** → en meny:
   1. *Hitta någon som bygger din AI-agent*: beskriva behovet, och sedan bläddra i katalogen eller bli matchad (se Köparens väg)
   2. *Mina förfrågningar och erbjudanden*: köparen klistrar in koden från bekräftelsemejlet

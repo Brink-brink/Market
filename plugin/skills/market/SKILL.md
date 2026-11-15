@@ -1,6 +1,6 @@
 ---
 name: market
-description: Entry point for the /market command. Asks whether the user is a buyer (a business that wants an AI agent built) or a seller (someone who builds AI agents as a side job) and sends them down the right path. Use only when the user runs /market.
+description: Entry point for the /market command. Asks whether the user is a buyer (a business that wants an AI agent built) or a seller (someone who builds AI solutions that solve a concrete problem for businesses) and sends them down the right path. Use only when the user runs /market.
 ---
 
 # /market
@@ -23,25 +23,32 @@ If the arguments already say the role, skip the question. Words like "säljare",
 
 Otherwise ask one question: are you a buyer or a seller? Explain each in a few words:
 
-- **Seller:** you build AI agents and want to know which niche pays and what to charge.
+- **Seller:** you build AI solutions that solve a concrete problem for businesses, and want to find the problems worth solving and sell your solution.
 - **Buyer:** your business needs an AI agent, such as a chatbot, booking or phone agent, built for it.
 If an ask-the-user tool with clickable options is available (in Claude Code: AskUserQuestion), use it with exactly these two options. Otherwise ask in plain text. Do not build a page, form or artifact for this question.
 
 ## Step 2a: Seller
 
-If the arguments or the conversation already make clear what the seller wants (for example "analysera frisörer" or "skapa annons"), go straight to that option. Otherwise ask which of these they want, the same way as the role question:
+If the arguments or the conversation already make clear what the seller wants (for example "analysera supportärenden" or "skapa erbjudande"), go straight to that option.
 
-1. **Analyse a niche:** demand, prices and competitors from the web.
-2. **See buyer interest:** what buyers ask for in this service.
-3. **Create a listing:** your package with a prototype or live product, reviewed before it is shown.
-4. **My listings and requests:** status, matched requests and credit balance.
+Otherwise tell the seller in two or three sentences how selling works here:
+
+- What sells is a **solved problem with measurable value**: less time spent, fewer errors, follow-up that gets done, a business that keeps up in its market. The skill, plugin or API solution is how it is delivered.
+- Every offer has **acceptance criteria** with numbers; the seller is paid when they hold, then gives **hypercare** until a number of real runs in a row work.
+
+Then ask which of these they want, the same way as the role question:
+
+1. **Find a problem worth solving:** how common a business problem is, what it costs today, what solves it now and what that costs.
+2. **Create an offer from a template:** problem and value, acceptance criteria, delivery and AI cost, hypercare and price.
+3. **See buyer interest:** which problems buyers ask to have solved in this service.
+4. **My offers and requests:** status, matched requests and credit balance.
 
 Then:
 
-- **1:** If a niche (customer type + agent type, such as "bokningsagent för frisörer") is already named, use it; otherwise ask for it in one short question with one or two examples. Run the market analysis by following this plugin's `market-analysis` skill. In Claude Code, load it with the Skill tool (`ai-jobb:market-analysis`) and pass the niche as the argument.
-- **2:** Buyer interest is not open yet, because there are no buyer requests in the service yet. Say so in one sentence and offer option 1 instead, which shows demand on the web.
-- **3:** Follow this plugin's `listing-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:listing-draft`), passing anything the seller has already said about the package.
-- **4:** Listings and requests are not open yet. Say so in one sentence and offer options 1 and 3.
+- **1:** If a problem is already named (what goes wrong, for which kind of business, in which system, such as "supportärenden som kräver sökning i affärssystemet hos grossister"), use it; otherwise ask for it in one short question with one or two examples. Run the analysis by following this plugin's `market-analysis` skill. In Claude Code, load it with the Skill tool (`ai-jobb:market-analysis`) and pass the problem as the argument. Afterwards, offer option 2 with the template that fits best.
+- **2:** Follow this plugin's `listing-draft` skill. In Claude Code, load it with the Skill tool (`ai-jobb:listing-draft`), passing anything the seller has already said about the problem and the solution.
+- **3:** Buyer interest is not open yet, because there are no buyer requests in the service yet. Say so in one sentence and offer option 1 instead, which looks at the problem on the web.
+- **4:** Offers and requests are not open yet. Say so in one sentence and offer options 1 and 2.
 
 ## Step 2b: Buyer
 
