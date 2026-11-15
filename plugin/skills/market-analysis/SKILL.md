@@ -64,7 +64,7 @@ As your assessment:
 
 - **Acceptance criteria:** three to five, each with a number, a time or a limit, tied to the value in step 3 (for example "finds the right order in 9 of 10 test cases", "the report arrives every Monday before 08:00").
 - **Delivery:** a skill in the customer's own AI, an API solution that runs by itself, or both, with one line on why.
-- **Price:** a fixed range for setup, anchored to the value (for example what the customer saves in two to four months) and to what solves it now. Show both anchors. Mark it as your assessment.
+- **Price:** a fixed range for setup, anchored to the value (for example what the customer saves in two to four months) and to what solves it now. Show both anchors, and the **payback time**: setup price ÷ value per month, at the volume you assumed, for the low and the high end. If the high end pays back in more than six months, say so plainly or lower it; what solves it now may justify a higher price, but the buyer judges it against their own value. Mark it as your assessment.
 - **Template:** if the problem fits one of the marketplace's offer templates (weekly report from the business system, support cases against the system, quotes from the price list), name it.
 
 ## Step 5: Is it worth it?
